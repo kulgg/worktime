@@ -1,6 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 type TechnologyCardProps = {
 	name: string;
@@ -9,7 +11,7 @@ type TechnologyCardProps = {
 };
 
 const Home: NextPage = () => {
-	const session = trpc.useQuery(["question.getSession"]);
+	const { data: session } = useSession();
 
 	return (
 		<>
@@ -23,7 +25,14 @@ const Home: NextPage = () => {
 				<h1 className="text-4xl md:text-[5rem] leading-normal font-extrabold text-gray-700">
 					Work time tracker
 				</h1>
-				{session?.data && <div>Logged In</div>}
+				{session ? (
+					<div>
+						<span>{session.user?.email}</span>
+						<Link href="/api/auth/signout">SignOut</Link>
+					</div>
+				) : (
+					<Link href="/api/auth/signin">SignIn</Link>
+				)}
 			</main>
 		</>
 	);
