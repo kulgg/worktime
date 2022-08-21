@@ -9,6 +9,8 @@ type TechnologyCardProps = {
 };
 
 const Home: NextPage = () => {
+	const session = trpc.useQuery(["question.getSession"]);
+
 	return (
 		<>
 			<Head>
@@ -21,6 +23,7 @@ const Home: NextPage = () => {
 				<h1 className="text-4xl md:text-[5rem] leading-normal font-extrabold text-gray-700">
 					Work time tracker
 				</h1>
+				{session?.data && <div>Logged In</div>}
 			</main>
 		</>
 	);
