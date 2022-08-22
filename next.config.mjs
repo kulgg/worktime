@@ -9,10 +9,11 @@ import { env } from "./src/env/server.mjs";
  * @constraint {{import('next').NextConfig}}
  */
 function defineNextConfig(config) {
-  return config;
+	return config;
 }
 
 export default defineNextConfig({
-  reactStrictMode: true,
-  swcMinify: true,
+	reactStrictMode: true,
+	swcMinify: true,
+	experimental: { newNextLinkBehavior: true },
 });
