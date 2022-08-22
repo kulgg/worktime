@@ -14,6 +14,15 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model WorkSession {
+    id String @id @default(cuid())
+    userId String
+    name String
+    startTime DateTime
+    finishTime DateTime?
+    user User @relation(fields: [userId], references: [id]) 
+}
+
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
@@ -49,6 +58,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    workSessions WorkSession[]
 }
 
 model VerificationToken {

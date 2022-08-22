@@ -4,6 +4,7 @@ import { trpc } from "../utils/trpc";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import MobileNavBar from "../components/mobilenavbar";
+import WorkSessions from "../components/worksessions";
 
 const Home: NextPage = () => {
 	const { data: session } = useSession();
@@ -18,7 +19,9 @@ const Home: NextPage = () => {
 
 			<main>
 				<nav className="py-2 px-3">{<MobileNavBar />}</nav>
-				<div>Hello</div>
+				<div className="container px-3">
+					{session ? <WorkSessions /> : <div>Free work time tracker</div>}
+				</div>
 			</main>
 		</>
 	);
