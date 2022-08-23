@@ -1,4 +1,4 @@
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -8,7 +8,14 @@ import {
 	startSessionValidator,
 } from "../shared/start-session-validator";
 
+import { useState, useEffect } from "react";
+
+import { getTimeDifference, getClockFromMilliseconds } from "../utils/timespan";
+import { constants } from "buffer";
+import { WorkSession } from "@prisma/client";
+
 const WorkSessions: React.FC<{}> = () => {
+	const router = useRouter();
 	const {
 		register,
 		handleSubmit,
@@ -17,44 +24,106 @@ const WorkSessions: React.FC<{}> = () => {
 	} = useForm<StartSessionInputType>({
 		resolver: zodResolver(startSessionValidator),
 		defaultValues: {
-			name: "Default",
+			name: "Untitled",
 			startTime: new Date(),
 		},
 	});
 
-	const { mutate, isLoading, data } = trpc.useMutation(["worksessions.create"]);
+	const [activeWorkSessions, setActiveWorkSessions] = useState<WorkSession[]>(
+		[]
+	);
 
-	if (isLoading)
-		return (
-			<div className="min-h-screen flex items-center justify-center">
-				<p className="text-gray-500">Loading...</p>
-			</div>
-		);
+	let { isLoading: activeWorkSessionsLoading } = trpc.useQuery(
+		["worksessions.get-active-sessions"],
+		{
+			onSuccess: (data: WorkSession[]) => {
+				setActiveWorkSessions(data);
+			},
+		}
+	);
+
+	const { mutate, isLoading, data } = trpc.useMutation(
+		["worksessions.create"],
+		{
+			onSuccess: (data: WorkSession) => {
+				setActiveWorkSessions((x) => [...x, data]);
+			},
+		}
+	);
+
+	const [currentDate, setCurrentDate] = useState<Date>(new Date());
+
+	useEffect(() => {
+		setInterval(() => setCurrentDate(new Date()), 1000);
+	}, []);
+
+	const isWorkSessionActive =
+		activeWorkSessions && activeWorkSessions.length > 0;
 
 	return (
 		<div>
 			<h2>Work Sessions</h2>
-			<div>
-				<form
-					onSubmit={handleSubmit((data) => {
-						mutate({ ...data, startTime: new Date() });
-					})}
-					className="w-full"
-				>
-					<input
-						{...register("name")}
-						type="text"
-						className="input input-bordered w-full block text-gray-400 rounded-md"
-						placeholder="Default"
-					/>
-					{errors.name && <p className="text-red-500">{errors.name.message}</p>}
-					<div className="w-full">
-						<button type="submit" className="btn w-full">
-							Start Session
-						</button>
+			{isLoading ? (
+				<div>Loading...</div>
+			) : (
+				<div>
+					<form
+						onSubmit={handleSubmit((data) => {
+							if (isWorkSessionActive) {
+								return;
+							}
+							mutate({ ...data, startTime: new Date() });
+						})}
+						className="w-full"
+					>
+						<input
+							{...register("name")}
+							type="text"
+							className="input input-bordered w-full block text-gray-400 rounded-md"
+						/>
+						{errors.name && (
+							<p className="text-red-500">{errors.name.message}</p>
+						)}
+						<div className="w-full">
+							{isWorkSessionActive ? (
+								<button
+									type="submit"
+									className="border w-full bg-red-100 rounded-md"
+								>
+									Stop Session
+								</button>
+							) : (
+								<button
+									type="submit"
+									className="border w-full bg-blue-100 rounded-md"
+								>
+									Start Session
+								</button>
+							)}
+						</div>
+					</form>
+				</div>
+			)}
+			{activeWorkSessionsLoading ? (
+				<div>Loading active work sessions...</div>
+			) : (
+				isWorkSessionActive && (
+					<div>
+						{activeWorkSessions.map((x) => {
+							return (
+								<div key={x.id} className="flex justify-center gap-10">
+									<div>{x.name}</div>
+									<div>
+										{getClockFromMilliseconds(
+											getTimeDifference(currentDate, x.startTime)
+										)}
+									</div>
+								</div>
+							);
+						})}
 					</div>
-				</form>
-			</div>
+				)
+			)}
 		</div>
 	);
 };

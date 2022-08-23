@@ -20,4 +20,14 @@ export const workSessionsRouter = createProtectedRouter()
 				},
 			});
 		},
+	})
+	.query("get-active-sessions", {
+		async resolve({ ctx }) {
+			return await ctx.prisma.workSession.findMany({
+				where: {
+					userId: ctx.session.user.id,
+					finishTime: null,
+				},
+			});
+		},
 	});
