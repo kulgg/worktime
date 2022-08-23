@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
 	StartSessionInputType,
 	startSessionValidator,
-} from "../shared/start-session-validator";
+} from "../shared/work-session-validator";
 
 import { useState, useEffect } from "react";
 
@@ -29,24 +29,46 @@ const WorkSessions: React.FC<{}> = () => {
 		},
 	});
 
-	const [activeWorkSessions, setActiveWorkSessions] = useState<WorkSession[]>(
-		[]
-	);
+	const [workSessions, setWorkSessions] = useState<WorkSession[]>([]);
 
 	let { isLoading: activeWorkSessionsLoading } = trpc.useQuery(
-		["worksessions.get-active-sessions"],
+		["worksessions.get-todays-sessions"],
 		{
 			onSuccess: (data: WorkSession[]) => {
-				setActiveWorkSessions(data);
+				setWorkSessions(data);
 			},
 		}
 	);
 
-	const { mutate, isLoading, data } = trpc.useMutation(
-		["worksessions.create"],
+	const { mutate: createWorkSession, isLoading: createWorkSessionIsLoading } =
+		trpc.useMutation(["worksessions.create"], {
+			onSuccess: (data: WorkSession) => {
+				setWorkSessions((x) => [...x, data]);
+			},
+		});
+
+	const { mutate: finishWorkSession } = trpc.useMutation(
+		["worksessions.finish"],
 		{
 			onSuccess: (data: WorkSession) => {
-				setActiveWorkSessions((x) => [...x, data]);
+				setWorkSessions((x) =>
+					x.map((y) => {
+						return y.id === data.id ? data : y;
+					})
+				);
+			},
+		}
+	);
+
+	const { mutate: deleteWorkSession } = trpc.useMutation(
+		["worksessions.delete"],
+		{
+			onSuccess: (data: WorkSession) => {
+				setWorkSessions((x) =>
+					x.filter((y) => {
+						return y.id !== data.id;
+					})
+				);
 			},
 		}
 	);
@@ -57,67 +79,68 @@ const WorkSessions: React.FC<{}> = () => {
 		setInterval(() => setCurrentDate(new Date()), 1000);
 	}, []);
 
-	const isWorkSessionActive =
-		activeWorkSessions && activeWorkSessions.length > 0;
-
 	return (
 		<div>
 			<h2>Work Sessions</h2>
-			{isLoading ? (
-				<div>Loading...</div>
-			) : (
-				<div>
-					<form
-						onSubmit={handleSubmit((data) => {
-							if (isWorkSessionActive) {
-								return;
-							}
-							mutate({ ...data, startTime: new Date() });
-						})}
-						className="w-full"
-					>
-						<input
-							{...register("name")}
-							type="text"
-							className="input input-bordered w-full block text-gray-400 rounded-md"
-						/>
-						{errors.name && (
-							<p className="text-red-500">{errors.name.message}</p>
-						)}
-						<div className="w-full">
-							{isWorkSessionActive ? (
-								<button
-									type="submit"
-									className="border w-full bg-red-100 rounded-md"
-								>
-									Stop Session
-								</button>
-							) : (
-								<button
-									type="submit"
-									className="border w-full bg-blue-100 rounded-md"
-								>
-									Start Session
-								</button>
-							)}
-						</div>
-					</form>
-				</div>
-			)}
+			<div>
+				<form
+					onSubmit={handleSubmit((data) => {
+						createWorkSession({ ...data, startTime: new Date() });
+					})}
+					className="w-full"
+				>
+					<input
+						{...register("name")}
+						type="text"
+						className="input input-bordered w-full block text-gray-400 rounded-md"
+					/>
+					{errors.name && <p className="text-red-500">{errors.name.message}</p>}
+					<div className="w-full">
+						<button
+							type="submit"
+							className="border w-full bg-blue-100 rounded-md"
+						>
+							Start Session
+						</button>
+					</div>
+				</form>
+			</div>
 			{activeWorkSessionsLoading ? (
 				<div>Loading active work sessions...</div>
 			) : (
-				isWorkSessionActive && (
+				workSessions &&
+				workSessions.length > 0 && (
 					<div>
-						{activeWorkSessions.map((x) => {
-							return (
-								<div key={x.id} className="flex justify-center gap-10">
+						{workSessions.map((x) => {
+							return x.finishTime ? (
+								<div key={x.id} className="flex justify-center gap-10 mt-2">
+									<div>{x.name}</div>
+									<div>
+										{getClockFromMilliseconds(
+											getTimeDifference(x.finishTime, x.startTime)
+										)}
+									</div>
+									<button
+										onClick={() => deleteWorkSession({ id: x.id })}
+										className="bg-red-100 px-2"
+									>
+										Delete
+									</button>
+								</div>
+							) : (
+								<div key={x.id} className="flex justify-center gap-10 mt-2">
 									<div>{x.name}</div>
 									<div>
 										{getClockFromMilliseconds(
 											getTimeDifference(currentDate, x.startTime)
 										)}
 									</div>
+									<button
+										onClick={() => finishWorkSession({ id: x.id })}
+										className="bg-purple-100 px-2"
+									>
+										Stop
+									</button>
 								</div>
 							);
 						})}
