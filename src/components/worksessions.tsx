@@ -115,7 +115,10 @@ const WorkSessions: React.FC<{}> = () => {
 					<div>
 						{workSessions.map((x) => {
 							return x.finishTime ? (
-								<div key={x.id} className="flex justify-center gap-10 mt-2">
+								<div
+									key={x.id}
+									className="flex justify-center gap-10 mt-2 items-center"
+								>
 									<div>{x.name}</div>
 									<div>
 										{getClockFromMilliseconds(
@@ -124,13 +127,16 @@ const WorkSessions: React.FC<{}> = () => {
 									</div>
 									<button
 										onClick={() => deleteWorkSession({ id: x.id })}
-										className="bg-red-100 px-2"
+										className="bg-grey-400 px-3 py-1 rounded-2xl"
 									>
 										Delete
 									</button>
 								</div>
 							) : (
-								<div key={x.id} className="flex justify-center gap-10 mt-2">
+								<div
+									key={x.id}
+									className="flex justify-center gap-10 mt-2 items-center"
+								>
 									<div>{x.name}</div>
 									<div>
 										{getClockFromMilliseconds(
@@ -139,7 +145,7 @@ const WorkSessions: React.FC<{}> = () => {
 									</div>
 									<button
 										onClick={() => finishWorkSession({ id: x.id })}
-										className="bg-purple-100 px-2"
+										className="bg-grey-400 px-3 py-1 rounded-2xl"
 									>
 										Stop
 									</button>
