@@ -14,7 +14,7 @@ const MobileNavBar: React.FC<{}> = () => {
 						<MenuAlt2Icon className="h-7 w-7" />
 					</Menu.Button>
 				</div>
-				<h1 className="text-md md:text-[5rem] leading-normal font-medium">
+				<h1 className="text-sm md:text-[5rem] leading-normal">
 					{session ? (
 						<div>
 							<span>{session.user?.name}</span>

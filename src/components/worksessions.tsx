@@ -14,6 +14,8 @@ import { getTimeDifference, getClockFromMilliseconds } from "../utils/timespan";
 import { constants } from "buffer";
 import { WorkSession } from "@prisma/client";
 
+import { FireIcon } from "@heroicons/react/solid";
+
 const WorkSessions: React.FC<{}> = () => {
 	const router = useRouter();
 	const {
@@ -81,7 +83,10 @@ const WorkSessions: React.FC<{}> = () => {
 
 	return (
 		<div>
-			<h2>Work Sessions</h2>
+			<div className="flex gap-1 items-center justify-left">
+				<FireIcon className="w-5 h-5" />
+				<h2 className="text-lg">Work Sessions</h2>
+			</div>
 			<div>
 				<form
 					onSubmit={handleSubmit((data) => {
