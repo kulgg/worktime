@@ -14,17 +14,17 @@ const MobileNavBar: React.FC<{}> = () => {
 						<MenuAlt2Icon className="h-7 w-7" />
 					</Menu.Button>
 				</div>
-				<h1 className="text-lg md:text-[5rem] leading-normal font-medium text-gray-700">
+				<h1 className="text-md md:text-[5rem] leading-normal font-medium">
 					{session ? (
 						<div>
 							<span>{session.user?.name}</span>
 						</div>
 					) : (
-						<Link href="/api/auth/signin">Sign In👋</Link>
+						<Link href="/api/auth/signin">Sign In</Link>
 					)}
 				</h1>
 			</div>
-			<Menu.Items className="grid grid-cols-1 justify-between fixed z-50 bg-white">
+			<Menu.Items className="grid px-2 py-2 grid-cols-1 justify-between fixed z-50 bg-grey-700">
 				<Menu.Item>
 					<Link href="/">Blah</Link>
 				</Menu.Item>
