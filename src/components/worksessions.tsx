@@ -92,19 +92,16 @@ const WorkSessions: React.FC<{}> = () => {
 					onSubmit={handleSubmit((data) => {
 						createWorkSession({ ...data, startTime: new Date() });
 					})}
-					className="w-full"
+					className="w-full px-2 mt-1"
 				>
 					<input
 						{...register("name")}
 						type="text"
-						className="input input-bordered w-full block text-gray-400 rounded-md"
+						className="input w-full rounded-xl p-2 bg-grey-700 text-grey-300"
 					/>
 					{errors.name && <p className="text-red-500">{errors.name.message}</p>}
 					<div className="w-full">
-						<button
-							type="submit"
-							className="border w-full bg-blue-100 rounded-md"
-						>
+						<button type="submit" className="w-full bg-blue-500 rounded-md">
 							Start Session
 						</button>
 					</div>
