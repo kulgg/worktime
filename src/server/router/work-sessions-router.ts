@@ -18,8 +18,11 @@ export const workSessionsRouter = createProtectedRouter()
 			return await ctx.prisma.workSession.create({
 				data: {
 					userId: ctx.session.user.id,
-					name: input.name,
+					workPhaseId: input.workPhaseId,
 					startTime: input.startTime,
+				},
+				include: {
+					workPhase: true,
 				},
 			});
 		},
@@ -34,6 +37,9 @@ export const workSessionsRouter = createProtectedRouter()
 				data: {
 					finishTime: new Date(),
 				},
+				include: {
+					workPhase: true,
+				},
 			});
 		},
 	})
@@ -43,16 +49,6 @@ export const workSessionsRouter = createProtectedRouter()
 			return await ctx.prisma.workSession.delete({
 				where: {
 					id: input.id,
-				},
-			});
-		},
-	})
-	.query("get-active-sessions", {
-		async resolve({ ctx }) {
-			return await ctx.prisma.workSession.findMany({
-				where: {
-					userId: ctx.session.user.id,
-					finishTime: null,
 				},
 			});
 		},
@@ -67,6 +63,9 @@ export const workSessionsRouter = createProtectedRouter()
 					startTime: {
 						gte: midnight,
 					},
+				},
+				include: {
+					workPhase: true,
 				},
 			});
 		},
