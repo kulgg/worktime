@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import MobileMenu from "../components/mobilemenu";
 
 export default function Document() {
 	return (

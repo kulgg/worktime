@@ -7,7 +7,7 @@ const Header: React.FC<{}> = () => {
 	const { data: session } = useSession();
 
 	return (
-		<header className="sticky top-0 z-50 bg-grey-600 py-2 px-3">
+		<header className="sticky top-0 z-50 bg-grey-600 py-2 px-3 drop-shadow-lg">
 			<div className="flex justify-between items-center">
 				<h1 className="text-xl font-semibold">WTT</h1>
 				<div className="text-sm md:text-[5rem] leading-normal">
