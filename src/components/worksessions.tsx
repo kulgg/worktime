@@ -10,7 +10,11 @@ import {
 
 import { useState, useEffect } from "react";
 
-import { getTimeDifference, getClockFromMilliseconds } from "../utils/timespan";
+import {
+	getTimeDifference,
+	getClockFromMilliseconds,
+	getCurrentDate,
+} from "../utils/timespan";
 import { constants } from "buffer";
 import { WorkSession } from "@prisma/client";
 
@@ -90,18 +94,21 @@ const WorkSessions: React.FC<{}> = () => {
 			<div>
 				<form
 					onSubmit={handleSubmit((data) => {
-						createWorkSession({ ...data, startTime: new Date() });
+						createWorkSession({ ...data, startTime: getCurrentDate() });
 					})}
-					className="w-full px-2 mt-1"
+					className="w-full px-2 flex items-center gap-1 mt-2"
 				>
 					<input
 						{...register("name")}
 						type="text"
-						className="input w-full rounded-xl p-2 bg-grey-700 text-grey-300"
+						className="input w-full rounded-xl p-2 bg-grey-700 text-grey-200 text-sm"
 					/>
 					{errors.name && <p className="text-red-500">{errors.name.message}</p>}
-					<div className="w-full">
-						<button type="submit" className="w-full bg-blue-500 rounded-md">
+					<div className="">
+						<button
+							type="submit"
+							className="w-24 h-8 bg-blue-500 rounded-md text-sm"
+						>
 							Start Session
 						</button>
 					</div>
@@ -112,12 +119,14 @@ const WorkSessions: React.FC<{}> = () => {
 			) : (
 				workSessions &&
 				workSessions.length > 0 && (
-					<div>
-						{workSessions.map((x) => {
+					<div className="text-sm mt-4 px-2">
+						{workSessions.map((x, i) => {
+							const backgroundColor =
+								i % 2 === 0 ? "bg-grey-500" : "bg-grey-600";
 							return x.finishTime ? (
 								<div
 									key={x.id}
-									className="flex justify-center gap-10 mt-2 items-center"
+									className={`flex justify-center gap-10 mt-2 items-center`}
 								>
 									<div>{x.name}</div>
 									<div>
@@ -135,7 +144,7 @@ const WorkSessions: React.FC<{}> = () => {
 							) : (
 								<div
 									key={x.id}
-									className="flex justify-center gap-10 mt-2 items-center"
+									className={`flex justify-center gap-10 mt-2 items-center ${backgroundColor}`}
 								>
 									<div>{x.name}</div>
 									<div>

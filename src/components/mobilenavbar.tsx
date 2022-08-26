@@ -24,7 +24,7 @@ const MobileNavBar: React.FC<{}> = () => {
 					)}
 				</h1>
 			</div>
-			<Menu.Items className="grid px-2 py-2 grid-cols-1 justify-between fixed z-50 bg-grey-700">
+			<Menu.Items className="grid px-2 py-2 grid-cols-1 justify-between fixed z-50 bg-grey-700 h-32">
 				<Menu.Item>
 					<Link href="/">Blah</Link>
 				</Menu.Item>

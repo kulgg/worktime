@@ -11,3 +11,9 @@ export const getClockFromMilliseconds = (milliseconds: number): string => {
 		.toString()
 		.padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 };
+
+export function getCurrentDate(): Date {
+	const date = new Date();
+	date.setSeconds(date.getSeconds() - 1);
+	return date;
+}
