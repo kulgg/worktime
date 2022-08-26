@@ -7,14 +7,10 @@ const MobileNavBar: React.FC<{}> = () => {
 	const { data: session } = useSession();
 
 	return (
-		<Menu>
+		<nav className="py-2 px-3 shadow-lg">
 			<div className="flex justify-between items-center">
-				<div className="mt-1">
-					<Menu.Button>
-						<MenuAlt2Icon className="h-7 w-7" />
-					</Menu.Button>
-				</div>
-				<h1 className="text-sm md:text-[5rem] leading-normal">
+				<h1 className="text-xl font-semibold">WTT</h1>
+				<div className="text-sm md:text-[5rem] leading-normal">
 					{session ? (
 						<div>
 							<span>{session.user?.name}</span>
@@ -22,30 +18,9 @@ const MobileNavBar: React.FC<{}> = () => {
 					) : (
 						<Link href="/api/auth/signin">Sign In</Link>
 					)}
-				</h1>
+				</div>
 			</div>
-			<Menu.Items className="grid px-2 py-2 grid-cols-1 justify-between fixed z-50 bg-grey-700 h-32">
-				<Menu.Item>
-					<Link href="/">Blah</Link>
-				</Menu.Item>
-				<Menu.Item>
-					{({ active }) => (
-						<a
-							className={`${active && "bg-blue-500"}`}
-							href="/account-settings"
-						>
-							Documentation
-						</a>
-					)}
-				</Menu.Item>
-
-				{session && (
-					<Menu.Item>
-						<Link href="/api/auth/signout">Sign Out</Link>
-					</Menu.Item>
-				)}
-			</Menu.Items>
-		</Menu>
+		</nav>
 	);
 };
 
