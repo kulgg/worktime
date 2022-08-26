@@ -12,8 +12,14 @@ const Header: React.FC<{}> = () => {
 				<h1 className="text-xl font-semibold">WTT</h1>
 				<div className="text-sm md:text-[5rem] leading-normal">
 					{session ? (
-						<div>
+						<div className="flex flex-col items-center">
 							<span>{session.user?.name}</span>
+							<Link
+								href="/api/auth/signout"
+								className="text-[10px] text-grey-200"
+							>
+								Sign Out
+							</Link>
 						</div>
 					) : (
 						<Link href="/api/auth/signin">Sign In</Link>

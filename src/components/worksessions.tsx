@@ -139,7 +139,7 @@ const WorkSessions: React.FC<{}> = () => {
 						return x.finishTime ? (
 							<div
 								key={x.id}
-								className={`flex justify-center gap-10 mt-2 items-center`}
+								className={`flex justify-center gap-10 py-1 items-center`}
 							>
 								<div>{x.workPhase.name}</div>
 								<div>
@@ -157,7 +157,7 @@ const WorkSessions: React.FC<{}> = () => {
 						) : (
 							<div
 								key={x.id}
-								className={`flex justify-center gap-10 mt-2 items-center ${backgroundColor}`}
+								className={`flex justify-center gap-10 py-1 items-center ${backgroundColor}`}
 							>
 								<div>{x.workPhase.name}</div>
 								<div>

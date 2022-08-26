@@ -1,4 +1,8 @@
-import { HomeIcon, BriefcaseIcon } from "@heroicons/react/solid";
+import {
+	HomeIcon,
+	BriefcaseIcon,
+	ArrowRightIcon,
+} from "@heroicons/react/solid";
 import Link from "next/link";
 
 const MobileMenu: React.FC<{}> = () => {
