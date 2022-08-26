@@ -15,24 +15,17 @@ export const authOptions: NextAuthOptions = {
 			}
 			return session;
 		},
-		async signIn({ user }) {
-			const workPhasesCount = await prisma.workPhase.count({
-				where: {
+	},
+	events: {
+		async createUser({ user }) {
+			await prisma.workPhase.create({
+				data: {
 					userId: user.id,
+					name: "Untitled Project",
 				},
 			});
-			if (workPhasesCount === 0) {
-				await prisma.workPhase.create({
-					data: {
-						userId: user.id,
-						name: "Untitled Project",
-					},
-				});
-			}
-			return true;
 		},
 	},
-	// Configure one or more authentication providers
 	adapter: PrismaAdapter(prisma),
 	providers: [
 		GoogleProvider({
@@ -44,7 +37,6 @@ export const authOptions: NextAuthOptions = {
 				},
 			},
 		}),
-		// ...add more providers here
 	],
 };
 
