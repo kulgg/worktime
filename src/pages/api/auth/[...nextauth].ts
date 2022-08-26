@@ -21,7 +21,6 @@ export const authOptions: NextAuthOptions = {
 					userId: user.id,
 				},
 			});
-			console.log(workPhasesCount);
 			if (workPhasesCount === 0) {
 				await prisma.workPhase.create({
 					data: {
