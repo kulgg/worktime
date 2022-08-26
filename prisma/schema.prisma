@@ -14,13 +14,22 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model WorkSession {
+model WorkPhase {
     id String @id @default(cuid())
     userId String
     name String
+    workSessions WorkSession[]
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade) 
+}
+
+model WorkSession {
+    id String @id @default(cuid())
+    userId String
+    workPhaseId String
     startTime DateTime
     finishTime DateTime?
-    user User @relation(fields: [userId], references: [id]) 
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade) 
+    workPhase WorkPhase @relation(fields: [workPhaseId], references: [id], onDelete: Cascade)
 }
 
 // Necessary for Next auth
@@ -59,6 +68,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     workSessions WorkSession[]
+    workPhases WorkPhase[]
 }
 
 model VerificationToken {

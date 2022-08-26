@@ -17,7 +17,9 @@ const Home: NextPage = () => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<header className="sticky top-0 z-50 bg-grey-600">
-				<nav className="py-2 px-3 shadow-lg">{<MobileNavBar />}</nav>
+				<nav className="py-2 px-3 shadow-lg">
+					<MobileNavBar />
+				</nav>
 			</header>
 			<main className="overflow-hidden mt-4">
 				<div className="container px-3">

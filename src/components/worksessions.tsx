@@ -96,13 +96,14 @@ const WorkSessions: React.FC<{}> = () => {
 					onSubmit={handleSubmit((data) => {
 						createWorkSession({ ...data, startTime: getCurrentDate() });
 					})}
-					className="w-full px-2 flex items-center gap-1 mt-2"
+					className="w-full px-2 flex items-center gap-2 mt-2"
 				>
-					<input
+					<select
 						{...register("name")}
-						type="text"
-						className="input w-full rounded-xl p-2 bg-grey-700 text-grey-200 text-sm"
-					/>
+						className="input w-full rounded-xl p-2 bg-grey-700 text-grey-100 text-sm"
+					>
+						<option value="Untitled">Untitled</option>
+					</select>
 					{errors.name && <p className="text-red-500">{errors.name.message}</p>}
 					<div className="">
 						<button
