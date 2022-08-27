@@ -148,7 +148,7 @@ const WorkSessions: React.FC<{}> = () => {
 								</div>
 								<TrashIcon
 									onClick={() => deleteWorkSession({ id: x.id })}
-									className="w-5 h-5 place-self-end"
+									className="w-4 h-4 place-self-end self-center"
 								/>
 							</div>
 						) : (
@@ -164,7 +164,7 @@ const WorkSessions: React.FC<{}> = () => {
 								</div>
 								<StopIcon
 									onClick={() => finishWorkSession({ id: x.id })}
-									className="w-5 h-5 place-self-end"
+									className="w-4 h-4 place-self-end self-center"
 								/>
 							</div>
 						);

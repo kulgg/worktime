@@ -1,6 +1,9 @@
 import { createProtectedRouter } from "./protected-router";
 import { z } from "zod";
-import { createWorkPhaseValidator } from "../../shared/work-session-validator";
+import {
+	createWorkPhaseValidator,
+	finishSessionValidator,
+} from "../../shared/work-session-validator";
 
 // Example router with queries that can only be hit if the user requesting is signed in
 export const workPhasesRouter = createProtectedRouter()
@@ -53,6 +56,16 @@ export const workPhasesRouter = createProtectedRouter()
 							workSessions: true,
 						},
 					},
+				},
+			});
+		},
+	})
+	.mutation("delete", {
+		input: finishSessionValidator,
+		async resolve({ input, ctx }) {
+			return await ctx.prisma.workPhase.delete({
+				where: {
+					id: input.id,
 				},
 			});
 		},
