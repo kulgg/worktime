@@ -1,4 +1,7 @@
-export const getTimeDifference = (first: Date, second: Date): number => {
+export const getMillisecondsDifference = (
+	first: Date,
+	second: Date
+): number => {
 	return first.getTime() - second.getTime();
 };
 

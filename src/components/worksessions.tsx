@@ -11,14 +11,15 @@ import {
 import { useState, useEffect } from "react";
 
 import {
-	getTimeDifference,
+	getMillisecondsDifference,
 	getClockFromMilliseconds,
 	getCurrentDate,
 } from "../utils/timespan";
 import { constants } from "buffer";
 import { Prisma, WorkPhase, WorkSession } from "@prisma/client";
 
-import { FireIcon } from "@heroicons/react/solid";
+import { FireIcon, StopIcon } from "@heroicons/react/solid";
+import { TrashIcon } from "@heroicons/react/outline";
 
 const WorkSessions: React.FC<{}> = () => {
 	const workSessionWithWorkPhase = Prisma.validator<Prisma.WorkSessionArgs>()({
@@ -139,38 +140,34 @@ const WorkSessions: React.FC<{}> = () => {
 						return x.finishTime ? (
 							<div
 								key={x.id}
-								className={`flex justify-center gap-10 py-1 items-center`}
+								className={`grid grid-cols-7 py-2 px-4 items-center ${backgroundColor}`}
 							>
-								<div>{x.workPhase.name}</div>
-								<div>
+								<div className="col-span-4">{x.workPhase.name}</div>
+								<div className="col-span-2">
 									{getClockFromMilliseconds(
-										getTimeDifference(x.finishTime, x.startTime)
+										getMillisecondsDifference(x.finishTime, x.startTime)
 									)}
 								</div>
-								<button
+								<TrashIcon
 									onClick={() => deleteWorkSession({ id: x.id })}
-									className="bg-grey-400 px-3 py-1 rounded-2xl"
-								>
-									Delete
-								</button>
+									className="w-5 h-5 place-self-end"
+								/>
 							</div>
 						) : (
 							<div
 								key={x.id}
-								className={`flex justify-center gap-10 py-1 items-center ${backgroundColor}`}
+								className={`grid grid-cols-7 py-2 px-4 items-center ${backgroundColor}`}
 							>
-								<div>{x.workPhase.name}</div>
-								<div>
+								<div className="col-span-4">{x.workPhase.name}</div>
+								<div className="col-span-2">
 									{getClockFromMilliseconds(
-										getTimeDifference(currentDate, x.startTime)
+										getMillisecondsDifference(currentDate, x.startTime)
 									)}
 								</div>
-								<button
+								<StopIcon
 									onClick={() => finishWorkSession({ id: x.id })}
-									className="bg-grey-400 px-3 py-1 rounded-2xl"
-								>
-									Stop
-								</button>
+									className="w-5 h-5 place-self-end"
+								/>
 							</div>
 						);
 					})}
