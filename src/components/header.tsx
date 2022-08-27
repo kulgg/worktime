@@ -7,10 +7,10 @@ const Header: React.FC<{}> = () => {
 	const { data: session } = useSession();
 
 	return (
-		<header className="sticky top-0 z-50 bg-grey-600 py-2 px-3 drop-shadow-lg">
+		<header className="sticky top-0 z-50 bg-grey-600 px-3 drop-shadow-lg h-14 flex flex-col justify-center">
 			<div className="flex justify-between items-center">
 				<Link href="/">
-					<h1 className="text-xl font-semibold">WTT</h1>
+					<h1 className="text-2xl font-semibold">WTT</h1>
 				</Link>
 				<div className="text-sm md:text-[5rem] leading-normal">
 					{session ? (
