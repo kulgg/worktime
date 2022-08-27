@@ -1,4 +1,3 @@
-import router, { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -29,7 +28,6 @@ const WorkSessions: React.FC<{}> = () => {
 		typeof workSessionWithWorkPhase
 	>;
 
-	const router = useRouter();
 	const {
 		register,
 		handleSubmit,
