@@ -99,13 +99,17 @@ const WorkSessions: React.FC<{}> = () => {
 				<h2 className="text-lg">Work Sessions</h2>
 			</div>
 			<div>
-				<form
-					onSubmit={handleSubmit((data) => {
-						createWorkSession({ ...data, startTime: getCurrentDate() });
-					})}
-					className="w-full px-2 flex items-center gap-2 mt-2"
-				>
-					{!workPhasesIsLoading && (
+				{!workPhasesIsLoading && (
+					<form
+						onSubmit={handleSubmit((data) => {
+							console.log(data);
+							if (data.workPhaseId === "" && workPhases && workPhases[0]) {
+								data.workPhaseId = workPhases[0].id;
+							}
+							createWorkSession({ ...data, startTime: getCurrentDate() });
+						})}
+						className="w-full px-2 flex items-center gap-2 mt-2"
+					>
 						<select
 							{...register("workPhaseId")}
 							className="input w-full rounded-xl p-2 bg-grey-700 text-grey-100 text-sm"
@@ -120,16 +124,16 @@ const WorkSessions: React.FC<{}> = () => {
 									);
 								})}
 						</select>
-					)}
-					<div className="">
-						<button
-							type="submit"
-							className="w-24 h-8 bg-blue-500 rounded-md text-sm"
-						>
-							Start Session
-						</button>
-					</div>
-				</form>
+						<div className="">
+							<button
+								type="submit"
+								className="w-24 h-8 bg-blue-500 rounded-md text-sm"
+							>
+								Start Session
+							</button>
+						</div>
+					</form>
+				)}
 			</div>
 			{!activeWorkSessionsLoading && workSessions && workSessions.length > 0 && (
 				<div className="text-sm mt-4 px-2">

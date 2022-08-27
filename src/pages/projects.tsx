@@ -134,7 +134,7 @@ const Projects: NextPage = () => {
 									})}
 								</div>
 								<div className="relative inset-x-0 bottom-0">
-									{!createWorkPhaseIsLoading && editMode && (
+									{!createWorkPhaseIsLoading && (
 										<div>
 											<form
 												onSubmit={handleSubmit((data) => {
