@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { MenuAlt2Icon, LoginIcon } from "@heroicons/react/solid";
 import { Menu } from "@headlessui/react";
 import Link from "next/link";
@@ -16,12 +16,12 @@ const Header: React.FC<{}> = () => {
 					{session ? (
 						<div className="flex flex-col items-center">
 							<span>{session.user?.name}</span>
-							<Link
-								href="/api/auth/signout"
+							<button
+								onClick={() => signOut()}
 								className="text-[10px] text-grey-200"
 							>
 								Sign Out
-							</Link>
+							</button>
 						</div>
 					) : (
 						<Link href="/api/auth/signin">Sign In</Link>
