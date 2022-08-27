@@ -9,7 +9,9 @@ const Header: React.FC<{}> = () => {
 	return (
 		<header className="sticky top-0 z-50 bg-grey-600 py-2 px-3 drop-shadow-lg">
 			<div className="flex justify-between items-center">
-				<h1 className="text-xl font-semibold">WTT</h1>
+				<Link href="/">
+					<h1 className="text-xl font-semibold">WTT</h1>
+				</Link>
 				<div className="text-sm md:text-[5rem] leading-normal">
 					{session ? (
 						<div className="flex flex-col items-center">
