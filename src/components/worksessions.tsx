@@ -19,8 +19,10 @@ import { Prisma, WorkPhase, WorkSession } from "@prisma/client";
 
 import { FireIcon, StopIcon } from "@heroicons/react/solid";
 import { TrashIcon } from "@heroicons/react/outline";
+import { QueryClient, useQueryClient } from "react-query";
 
 const WorkSessions: React.FC<{}> = () => {
+	console.log("rendering");
 	const workSessionWithWorkPhase = Prisma.validator<Prisma.WorkSessionArgs>()({
 		include: { workPhase: true },
 	});
@@ -40,37 +42,46 @@ const WorkSessions: React.FC<{}> = () => {
 		},
 	});
 
-	const [workSessions, setWorkSessions] = useState<WorkSessionWithWorkPhase[]>(
-		[]
-	);
-
-	let { isLoading: activeWorkSessionsLoading } = trpc.useQuery(
-		["worksessions.get-todays-sessions"],
-		{
-			onSuccess: (data: WorkSessionWithWorkPhase[]) => {
-				setWorkSessions(data);
-			},
-		}
-	);
+	let {
+		data: workSessions,
+		isLoading: activeWorkSessionsLoading,
+		refetch: refetchWorkSessions,
+	} = trpc.useQuery(["worksessions.get-todays-sessions"], {});
 
 	const { data: workPhases, isLoading: workPhasesIsLoading } = trpc.useQuery([
 		"workphases.get-all",
 	]);
 
+	const qc = useQueryClient();
+
 	const { mutate: createWorkSession, isLoading: createWorkSessionIsLoading } =
 		trpc.useMutation(["worksessions.create"], {
 			onSuccess: (data: WorkSessionWithWorkPhase) => {
-				setWorkSessions((x) => [...x, data]);
+				qc.setQueryData(
+					["worksessions.get-todays-sessions"],
+					(old: WorkSessionWithWorkPhase[] | undefined) => {
+						if (!old) {
+							return [data];
+						}
+						return [...old, data];
+					}
+				);
 			},
 		});
 
 	const { mutate: finishWorkSession, isLoading: finishWorkSessionIsLoading } =
 		trpc.useMutation(["worksessions.finish"], {
 			onSuccess: (data: WorkSessionWithWorkPhase) => {
-				setWorkSessions((x) =>
-					x.map((y) => {
-						return y.id === data.id ? data : y;
-					})
+				qc.setQueryData(
+					["worksessions.get-todays-sessions"],
+					(old: WorkSessionWithWorkPhase[] | undefined) => {
+						if (!old) {
+							return [data];
+						}
+						return old.map((x) => {
+							return x.id === data.id ? data : x;
+						});
+					}
 				);
 			},
 		});
@@ -78,10 +89,14 @@ const WorkSessions: React.FC<{}> = () => {
 	const { mutate: deleteWorkSession, isLoading: deleteWorkSessionIsLoading } =
 		trpc.useMutation(["worksessions.delete"], {
 			onSuccess: (data: WorkSession) => {
-				setWorkSessions((x) =>
-					x.filter((y) => {
-						return y.id !== data.id;
-					})
+				qc.setQueryData(
+					["worksessions.get-todays-sessions"],
+					(old: WorkSessionWithWorkPhase[] | undefined) => {
+						if (!old) {
+							return [];
+						}
+						return old.filter((x) => x.id !== data.id);
+					}
 				);
 			},
 		});
@@ -89,7 +104,13 @@ const WorkSessions: React.FC<{}> = () => {
 	const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
 	useEffect(() => {
-		setInterval(() => setCurrentDate(new Date()), 1000);
+		const interval = setInterval(() => {
+			setCurrentDate(new Date());
+		}, 1000);
+
+		return () => {
+			clearInterval(interval);
+		};
 	}, []);
 
 	return (
