@@ -6,7 +6,7 @@ import Link from "next/link";
 import Header from "../components/header";
 import WorkSessions from "../components/worksessions";
 import { BriefcaseIcon, HomeIcon } from "@heroicons/react/solid";
-import MobileMenu from "../components/mobilemenu";
+import Footer from "../components/footer";
 
 const Home: NextPage = () => {
 	const { data: session } = useSession();
@@ -25,7 +25,7 @@ const Home: NextPage = () => {
 					{session ? <WorkSessions /> : <div>Free work time tracker</div>}
 				</div>
 			</main>
-			<MobileMenu />
+			<Footer></Footer>
 		</div>
 	);
 };

@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { trpc } from "../utils/trpc";
 import Link from "next/link";
 import Header from "../components/header";
-import MobileMenu from "../components/mobilemenu";
+import Footer from "../components/footer";
 import { BriefcaseIcon } from "@heroicons/react/solid";
 import { useForm } from "react-hook-form";
 import {
@@ -133,33 +133,6 @@ const Projects: NextPage = () => {
 										);
 									})}
 								</div>
-								<div className="relative inset-x-0 bottom-0">
-									{!createWorkPhaseIsLoading && (
-										<div>
-											<form
-												onSubmit={handleSubmit((data) => {
-													createWorkPhase(data);
-												})}
-												className="w-full flex items-center gap-2 mt-5"
-											>
-												<input
-													{...register("name")}
-													className="input w-full rounded-xl p-2 bg-grey-700 text-grey-100 text-sm"
-													defaultValue={0}
-													type="text"
-												/>
-												<div className="">
-													<button
-														type="submit"
-														className="w-24 h-8 bg-blue-500 rounded-md text-sm"
-													>
-														Add Project
-													</button>
-												</div>
-											</form>
-										</div>
-									)}
-								</div>
 							</div>
 						)
 					) : (
@@ -175,7 +148,35 @@ const Projects: NextPage = () => {
 					)}
 				</div>
 			</main>
-			<MobileMenu />
+			<Footer>
+				<div className="py-4 px-4 bg-grey-600">
+					{!createWorkPhaseIsLoading && (
+						<div>
+							<form
+								onSubmit={handleSubmit((data) => {
+									createWorkPhase(data);
+								})}
+								className="w-full flex items-center gap-2"
+							>
+								<input
+									{...register("name")}
+									className="input w-full rounded-xl p-2 bg-grey-700 text-grey-100 text-sm"
+									defaultValue={0}
+									type="text"
+								/>
+								<div className="">
+									<button
+										type="submit"
+										className="w-24 h-8 bg-blue-500 rounded-md text-sm"
+									>
+										Add Project
+									</button>
+								</div>
+							</form>
+						</div>
+					)}
+				</div>
+			</Footer>
 		</div>
 	);
 };
