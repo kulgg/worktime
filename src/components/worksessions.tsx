@@ -7,7 +7,7 @@ import {
 	startSessionValidator,
 } from "../shared/work-session-validator";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction, Dispatch } from "react";
 
 import {
 	getMillisecondsDifference,
@@ -21,8 +21,10 @@ import { FireIcon, StopIcon } from "@heroicons/react/solid";
 import { TrashIcon } from "@heroicons/react/outline";
 import { QueryClient, useQueryClient } from "react-query";
 
-const WorkSessions: React.FC<{}> = () => {
-	console.log("rendering");
+const WorkSessions: React.FC<{
+	currentDate: Date;
+	setCurrentDate: Dispatch<SetStateAction<Date>>;
+}> = ({ currentDate, setCurrentDate }) => {
 	const workSessionWithWorkPhase = Prisma.validator<Prisma.WorkSessionArgs>()({
 		include: { workPhase: true },
 	});
@@ -101,8 +103,6 @@ const WorkSessions: React.FC<{}> = () => {
 			},
 		});
 
-	const [currentDate, setCurrentDate] = useState<Date>(new Date());
-
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setCurrentDate(new Date());
@@ -117,7 +117,7 @@ const WorkSessions: React.FC<{}> = () => {
 		<div>
 			<div className="flex gap-1 items-center justify-left">
 				<FireIcon className="w-5 h-5" />
-				<h2 className="text-lg">Work Sessions</h2>
+				<h2 className="text-lg">Today's Work Sessions</h2>
 			</div>
 			<div>
 				{!workPhasesIsLoading && (
@@ -150,7 +150,7 @@ const WorkSessions: React.FC<{}> = () => {
 								type="submit"
 								className="w-24 h-8 bg-blue-500 rounded-md text-sm"
 							>
-								Start Session
+								Start
 							</button>
 						</div>
 					</form>
