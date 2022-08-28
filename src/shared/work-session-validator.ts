@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const startSessionValidator = z.object({
 	startTime: z.date(),
-	workPhaseId: z.string(),
+	workPhaseId: z.string().cuid(),
 });
 
 export const finishSessionValidator = z.object({
