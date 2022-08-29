@@ -20,6 +20,7 @@ import { Prisma, WorkPhase, WorkSession } from "@prisma/client";
 import { FireIcon, StopIcon } from "@heroicons/react/solid";
 import { TrashIcon } from "@heroicons/react/outline";
 import { QueryClient, useQueryClient } from "react-query";
+import { groupBy } from "../utils/arrays";
 
 const WorkSessions: React.FC<{
 	currentDate: Date;
@@ -113,6 +114,11 @@ const WorkSessions: React.FC<{
 		};
 	}, []);
 
+	let sessionsByProject: Record<string, WorkSessionWithWorkPhase[]> = {};
+	if (workSessions && workSessions.length > 0) {
+		sessionsByProject = groupBy(workSessions, (x) => x.workPhaseId);
+	}
+
 	return (
 		<div>
 			<div className="flex gap-1 items-center justify-left">
@@ -129,11 +135,11 @@ const WorkSessions: React.FC<{
 							}
 							createWorkSession({ ...data, startTime: getCurrentDate() });
 						})}
-						className="w-full px-2 flex items-center gap-2 mt-2"
+						className="w-full px-2 flex justify-center items-center gap-2 mt-2"
 					>
 						<select
 							{...register("workPhaseId")}
-							className="input w-full rounded-xl p-2 bg-grey-700 text-grey-100 text-sm"
+							className="input w-[300px] rounded-xl p-2 bg-grey-700 text-grey-100 text-sm"
 							defaultValue={0}
 						>
 							{workPhases &&
@@ -156,41 +162,48 @@ const WorkSessions: React.FC<{
 					</form>
 				)}
 			</div>
-			{!activeWorkSessionsLoading && workSessions && workSessions.length > 0 && (
-				<div className="text-sm mt-4 px-2">
-					{workSessions.map((x, i) => {
-						const backgroundColor = i % 2 === 0 ? "bg-grey-500" : "bg-grey-600";
-						return x.finishTime ? (
-							<div
-								key={x.id}
-								className={`grid grid-cols-7 py-2 px-4 items-center ${backgroundColor}`}
-							>
-								<div className="col-span-4">{x.workPhase.name}</div>
-								<div className="col-span-2">
-									{getClockFromMilliseconds(
-										getMillisecondsDifference(x.finishTime, x.startTime)
-									)}
-								</div>
-								<TrashIcon
-									onClick={() => deleteWorkSession({ id: x.id })}
-									className="w-4 h-4 place-self-end self-center"
-								/>
-							</div>
-						) : (
-							<div
-								key={x.id}
-								className={`grid grid-cols-7 py-2 px-4 items-center ${backgroundColor}`}
-							>
-								<div className="col-span-4">{x.workPhase.name}</div>
-								<div className="col-span-2">
-									{getClockFromMilliseconds(
-										getMillisecondsDifference(currentDate, x.startTime)
-									)}
-								</div>
-								<StopIcon
-									onClick={() => finishWorkSession({ id: x.id })}
-									className="w-4 h-4 place-self-end self-center"
-								/>
+			{!activeWorkSessionsLoading && sessionsByProject && (
+				<div className="text-sm mt-4 px-2 grid grid-cols-1 sm:grid-cols-2">
+					{Object.keys(sessionsByProject).map((project: string) => {
+						return (
+							<div key={project}>
+								{sessionsByProject[project]?.map((x, i) => {
+									const backgroundColor =
+										i % 2 === 0 ? "bg-grey-500" : "bg-grey-600";
+									return x.finishTime ? (
+										<div
+											key={x.id}
+											className={`grid grid-cols-7 py-2 px-4 items-center ${backgroundColor}`}
+										>
+											<div className="col-span-4">{x.workPhase.name}</div>
+											<div className="col-span-2">
+												{getClockFromMilliseconds(
+													getMillisecondsDifference(x.finishTime, x.startTime)
+												)}
+											</div>
+											<TrashIcon
+												onClick={() => deleteWorkSession({ id: x.id })}
+												className="w-4 h-4 place-self-end self-center"
+											/>
+										</div>
+									) : (
+										<div
+											key={x.id}
+											className={`grid grid-cols-7 py-2 px-4 items-center ${backgroundColor}`}
+										>
+											<div className="col-span-4">{x.workPhase.name}</div>
+											<div className="col-span-2">
+												{getClockFromMilliseconds(
+													getMillisecondsDifference(currentDate, x.startTime)
+												)}
+											</div>
+											<StopIcon
+												onClick={() => finishWorkSession({ id: x.id })}
+												className="w-4 h-4 place-self-end self-center"
+											/>
+										</div>
+									);
+								})}
 							</div>
 						);
 					})}

@@ -54,7 +54,7 @@ const Home: NextPage = () => {
 
 			<Header />
 			<main className="overflow-hidden mt-4 flex-grow">
-				<div className="container px-3">
+				<div className="px-3">
 					{session ? (
 						<WorkSessions
 							currentDate={currentDate}
