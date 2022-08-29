@@ -163,7 +163,7 @@ const WorkSessions: React.FC<{
 				)}
 			</div>
 			{!activeWorkSessionsLoading && sessionsByProject && (
-				<div className="text-sm mt-4 px-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+				<div className="text-sm mt-4 px-2 grid grid-flow-row-dense grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-2 gap-4">
 					{Object.keys(sessionsByProject).map((project: string, i) => {
 						return (
 							<div key={project} className="">
