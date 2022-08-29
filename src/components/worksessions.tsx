@@ -163,10 +163,10 @@ const WorkSessions: React.FC<{
 				)}
 			</div>
 			{!activeWorkSessionsLoading && sessionsByProject && (
-				<div className="text-sm mt-4 px-2 grid grid-cols-1 sm:grid-cols-2">
-					{Object.keys(sessionsByProject).map((project: string) => {
+				<div className="text-sm mt-4 px-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+					{Object.keys(sessionsByProject).map((project: string, i) => {
 						return (
-							<div key={project}>
+							<div key={project} className="">
 								{sessionsByProject[project]?.map((x, i) => {
 									const backgroundColor =
 										i % 2 === 0 ? "bg-grey-500" : "bg-grey-600";
