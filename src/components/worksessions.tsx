@@ -167,10 +167,10 @@ const WorkSessions: React.FC<{
 			{!activeWorkSessionsLoading &&
 				sessionsByProject &&
 				Object.keys(sessionsByProject).length > 0 && (
-					<div className="bg-grey-700 py-6 text-sm mt-4 px-4 grid grid-flow-row-dense grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 sm:gap-2 gap-4">
+					<div className="bg-grey-600 py-6 text-sm mt-4 px-4 grid grid-flow-row-dense grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 sm:gap-2 gap-4">
 						{Object.keys(sessionsByProject).map((project: string, i) => {
 							return (
-								<div key={project} className="bg-grey-500">
+								<div key={project} className="bg-grey-500 shadow-md">
 									<div className="px-4 py-2 bg-grey-400 text-grey-100 flex justify-between items-center">
 										<span>
 											{sessionsByProject[project]?.at(0)?.workPhase.name}
@@ -186,7 +186,7 @@ const WorkSessions: React.FC<{
 												)
 											}
 										>
-											<span className="text-blue-400 text-base">
+											<span className="text-blue-400 font-medium">
 												{getClockFromMilliseconds(
 													totalMilliseconds(
 														currentDate,
