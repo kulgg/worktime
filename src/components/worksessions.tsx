@@ -21,18 +21,20 @@ import { FireIcon, StopIcon } from "@heroicons/react/solid";
 import { TrashIcon } from "@heroicons/react/outline";
 import { QueryClient, useQueryClient } from "react-query";
 import { groupBy } from "../utils/arrays";
+import { copyWorkTimeToClipboard } from "../utils/clipboard";
+import { totalMilliseconds } from "../utils/worksessions";
+
+const workSessionWithWorkPhase = Prisma.validator<Prisma.WorkSessionArgs>()({
+	include: { workPhase: true },
+});
+export type WorkSessionWithWorkPhase = Prisma.WorkSessionGetPayload<
+	typeof workSessionWithWorkPhase
+>;
 
 const WorkSessions: React.FC<{
 	currentDate: Date;
 	setCurrentDate: Dispatch<SetStateAction<Date>>;
 }> = ({ currentDate, setCurrentDate }) => {
-	const workSessionWithWorkPhase = Prisma.validator<Prisma.WorkSessionArgs>()({
-		include: { workPhase: true },
-	});
-	type WorkSessionWithWorkPhase = Prisma.WorkSessionGetPayload<
-		typeof workSessionWithWorkPhase
-	>;
-
 	const {
 		register,
 		handleSubmit,
@@ -121,11 +123,11 @@ const WorkSessions: React.FC<{
 
 	return (
 		<div>
-			<div className="flex gap-1 items-center justify-left">
+			<div className="flex gap-1 items-center justify-left px-3">
 				<FireIcon className="w-5 h-5" />
 				<h2 className="text-lg">Today's Work Sessions</h2>
 			</div>
-			<div>
+			<div className="px-3">
 				{!workPhasesIsLoading && (
 					<form
 						onSubmit={handleSubmit((data) => {
@@ -162,53 +164,98 @@ const WorkSessions: React.FC<{
 					</form>
 				)}
 			</div>
-			{!activeWorkSessionsLoading && sessionsByProject && (
-				<div className="text-sm mt-4 px-2 grid grid-flow-row-dense grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-2 gap-4">
-					{Object.keys(sessionsByProject).map((project: string, i) => {
-						return (
-							<div key={project} className="">
-								{sessionsByProject[project]?.map((x, i) => {
-									const backgroundColor =
-										i % 2 === 0 ? "bg-grey-500" : "bg-grey-600";
-									return x.finishTime ? (
+			{!activeWorkSessionsLoading &&
+				sessionsByProject &&
+				Object.keys(sessionsByProject).length > 0 && (
+					<div className="bg-grey-700 py-6 text-sm mt-4 px-4 grid grid-flow-row-dense grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 sm:gap-2 gap-4">
+						{Object.keys(sessionsByProject).map((project: string, i) => {
+							return (
+								<div key={project} className="bg-grey-500">
+									<div className="px-4 py-2 bg-grey-400 text-grey-100 flex justify-between items-center">
+										<span>
+											{sessionsByProject[project]?.at(0)?.workPhase.name}
+										</span>
 										<div
-											key={x.id}
-											className={`grid grid-cols-7 py-2 px-4 items-center ${backgroundColor}`}
+											className="flex flex-row justify-center gap-1 items-center cursor-pointer"
+											onClick={() =>
+												copyWorkTimeToClipboard(
+													totalMilliseconds(
+														currentDate,
+														sessionsByProject[project]
+													)
+												)
+											}
 										>
-											<div className="col-span-4">{x.workPhase.name}</div>
-											<div className="col-span-2">
+											<span className="text-blue-400 text-base">
 												{getClockFromMilliseconds(
-													getMillisecondsDifference(x.finishTime, x.startTime)
+													totalMilliseconds(
+														currentDate,
+														sessionsByProject[project]
+													)
 												)}
-											</div>
-											<TrashIcon
-												onClick={() => deleteWorkSession({ id: x.id })}
-												className="w-4 h-4 place-self-end self-center"
-											/>
+											</span>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												fill="none"
+												viewBox="0 0 24 24"
+												strokeWidth={1.2}
+												stroke="currentColor"
+												className="w-4 h-4"
+											>
+												<path
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"
+												/>
+											</svg>
 										</div>
-									) : (
-										<div
-											key={x.id}
-											className={`grid grid-cols-7 py-2 px-4 items-center ${backgroundColor}`}
-										>
-											<div className="col-span-4">{x.workPhase.name}</div>
-											<div className="col-span-2">
-												{getClockFromMilliseconds(
-													getMillisecondsDifference(currentDate, x.startTime)
-												)}
+									</div>
+									{sessionsByProject[project]?.map((x, i) => {
+										return x.finishTime ? (
+											<div
+												key={x.id}
+												className={`grid grid-cols-7 py-2 px-4 items-center bg-grey-500`}
+											>
+												<div className="col-span-1 text-grey-200 text-xs">
+													Finished
+												</div>
+												<div className="col-span-3"></div>
+												<div className="col-span-2">
+													{getClockFromMilliseconds(
+														getMillisecondsDifference(x.finishTime, x.startTime)
+													)}
+												</div>
+												<TrashIcon
+													onClick={() => deleteWorkSession({ id: x.id })}
+													className="w-4 h-4 place-self-end self-center cursor-pointer"
+												/>
 											</div>
-											<StopIcon
-												onClick={() => finishWorkSession({ id: x.id })}
-												className="w-4 h-4 place-self-end self-center"
-											/>
-										</div>
-									);
-								})}
-							</div>
-						);
-					})}
-				</div>
-			)}
+										) : (
+											<div
+												key={x.id}
+												className={`grid grid-cols-7 py-2 px-4 items-center bg-grey-500`}
+											>
+												<div className="col-span-1 flex justify-center items-center text-white bg-green-600 text-xs rounded-sm">
+													<span className="py-[2px]">Active</span>
+												</div>
+												<div className="col-span-3"></div>
+												<div className="col-span-2">
+													{getClockFromMilliseconds(
+														getMillisecondsDifference(currentDate, x.startTime)
+													)}
+												</div>
+												<StopIcon
+													onClick={() => finishWorkSession({ id: x.id })}
+													className="w-4 h-4 place-self-end self-center cursor-pointer"
+												/>
+											</div>
+										);
+									})}
+								</div>
+							);
+						})}
+					</div>
+				)}
 		</div>
 	);
 };

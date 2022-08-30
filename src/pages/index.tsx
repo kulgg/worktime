@@ -16,6 +16,7 @@ import {
 	getMillisecondsDifference,
 } from "../utils/timespan";
 import { useState } from "react";
+import { copyWorkTimeToClipboard } from "../utils/clipboard";
 
 const Home: NextPage = () => {
 	console.log("rendering");
@@ -38,12 +39,6 @@ const Home: NextPage = () => {
 					.reduce((acc, x) => acc + x)
 			: 0;
 
-	function copyWorkTimeToClipboard() {
-		const clockString = getClockFromMilliseconds(totalMilliseconds);
-		const hourMinutes = clockString.slice(0, clockString.length - 3);
-		navigator.clipboard.writeText(hourMinutes.replace(/^0{1}/, ""));
-	}
-
 	return (
 		<div className="text-white flex flex-col min-h-screen">
 			<Head>
@@ -54,23 +49,21 @@ const Home: NextPage = () => {
 
 			<Header />
 			<main className="overflow-hidden mt-4 flex-grow">
-				<div className="px-3">
-					{session ? (
-						<WorkSessions
-							currentDate={currentDate}
-							setCurrentDate={setCurrentDate}
-						/>
-					) : (
-						<div>Free work time tracker</div>
-					)}
-				</div>
+				{session ? (
+					<WorkSessions
+						currentDate={currentDate}
+						setCurrentDate={setCurrentDate}
+					/>
+				) : (
+					<div>Free work time tracker</div>
+				)}
 			</main>
 			<Footer>
 				<div className="py-4 px-6 text-center flex flex-row justify-between items-center bg-grey-500">
 					<span className="text-grey-200 text-xs">Todays worktime:</span>
 					<div
 						className="flex flex-row justify-center gap-1 items-center"
-						onClick={copyWorkTimeToClipboard}
+						onClick={() => copyWorkTimeToClipboard(totalMilliseconds)}
 					>
 						<span className="text-grey-100 text-md">
 							{getClockFromMilliseconds(totalMilliseconds)}
