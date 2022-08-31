@@ -14,6 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Prisma, WorkPhase } from "@prisma/client";
 import { useState } from "react";
 import { PencilIcon, PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
+import PageContainer from "../components/pagecontainer";
 
 const Projects: NextPage = () => {
 	const workPhaseWithSessionCounts = Prisma.validator<Prisma.WorkPhaseArgs>()({
@@ -72,9 +73,8 @@ const Projects: NextPage = () => {
 	});
 
 	return (
-		<div className="flex flex-col min-h-screen text-white">
-			<Header />
-			<main className="overflow-hidden mt-4 flex-grow container px-3">
+		<PageContainer>
+			<main className="overflow-hidden mt-4 px-3">
 				<div className="flex items-center justify-between">
 					<div className="flex gap-2 items-center">
 						<BriefcaseIcon className="w-5 h-5" />
@@ -148,36 +148,34 @@ const Projects: NextPage = () => {
 					)}
 				</div>
 			</main>
-			<Footer>
-				<div className="py-4 px-4 bg-grey-600">
-					{!createWorkPhaseIsLoading && (
-						<div>
-							<form
-								onSubmit={handleSubmit((data) => {
-									createWorkPhase(data);
-								})}
-								className="w-full flex items-center gap-2"
-							>
-								<input
-									{...register("name")}
-									className="input w-full rounded-xl p-2 bg-grey-700 text-grey-100 text-sm"
-									defaultValue={0}
-									type="text"
-								/>
-								<div className="">
-									<button
-										type="submit"
-										className="w-24 h-8 bg-blue-500 rounded-md text-sm"
-									>
-										Add Project
-									</button>
-								</div>
-							</form>
-						</div>
-					)}
-				</div>
-			</Footer>
-		</div>
+			<div className="py-4 px-4 bg-grey-600">
+				{!createWorkPhaseIsLoading && (
+					<div>
+						<form
+							onSubmit={handleSubmit((data) => {
+								createWorkPhase(data);
+							})}
+							className="w-full flex items-center gap-2"
+						>
+							<input
+								{...register("name")}
+								className="input w-full rounded-xl p-2 bg-grey-700 text-grey-100 text-sm"
+								defaultValue={0}
+								type="text"
+							/>
+							<div className="">
+								<button
+									type="submit"
+									className="w-24 h-8 bg-blue-500 rounded-md text-sm"
+								>
+									Add Project
+								</button>
+							</div>
+						</form>
+					</div>
+				)}
+			</div>
+		</PageContainer>
 	);
 };
 

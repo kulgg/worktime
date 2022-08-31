@@ -1,6 +1,7 @@
 import { signOut, useSession } from "next-auth/react";
 import { Menu } from "@headlessui/react";
 import Link from "next/link";
+import { BriefcaseIcon, HomeIcon } from "@heroicons/react/solid";
 
 const Header: React.FC<{}> = () => {
 	const { data: session } = useSession();
@@ -11,9 +12,9 @@ const Header: React.FC<{}> = () => {
 				<Link href="/">
 					<h1 className="text-2xl font-semibold">WTT</h1>
 				</Link>
-				<div className="text-sm md:text-[5rem] leading-normal">
+				<div className="text-sm leading-normal">
 					{session ? (
-						<div className="flex flex-col items-center">
+						<div className="flex flex-row gap-4 justify-center items-center">
 							<Link href="/profile">
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
