@@ -82,7 +82,7 @@ const Projects: NextPage = () => {
 					</div>
 					<div className="text-sm text-grey-100"></div>
 				</div>
-				<div className="px-2 mt-4">
+				<div className="mt-4">
 					{session ? (
 						!isLoading &&
 						data && (
@@ -148,7 +148,7 @@ const Projects: NextPage = () => {
 					)}
 				</div>
 			</main>
-			<div className="py-4 px-4 bg-grey-600">
+			<div className="py-4 px-3 bg-grey-600">
 				{!createWorkPhaseIsLoading && (
 					<div>
 						<form
