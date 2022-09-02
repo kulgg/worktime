@@ -10,20 +10,20 @@ const PageContainer: React.FC<{
 	return (
 		<div className="block sm:flex flex-row">
 			<div className="bg-grey-700 w-32 hidden sm:block pt-16">
-				<nav className="bg-grey-800 flex flex-col items-center text-white gap-6">
+				<nav className="flex flex-col items-center text-white gap-6">
 					<Link
 						className="flex flex-row items-center justify-between gap-2"
 						href="/"
 					>
-						<HomeIcon className="w-4 h-4 text-grey-200" />
-						<span className="text-xs">Home</span>
+						<HomeIcon className="w-4 h-4 text-grey-200 hover:text-white" />
+						<span className="text-xs hover:text-grey-200">Home</span>
 					</Link>
 					<Link
-						className="flex flex-row items-center justify-between gap-2"
+						className="flex flex-row items-center justify-between gap-2 "
 						href="/projects"
 					>
 						<BriefcaseIcon className="w-4 h-4 text-grey-200" />
-						<span className="text-xs">Projects</span>
+						<span className="text-xs hover:text-grey-200">Projects</span>
 					</Link>
 				</nav>
 			</div>

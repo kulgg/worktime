@@ -134,8 +134,8 @@ const WorkSessions: React.FC<{
 
 	return (
 		<div>
-			<div className="px-3 block sm:flex flex-row justify-between items-center">
-				<div className="flex gap-1 items-center justify-left px-3">
+			<div className="block sm:flex flex-row justify-between items-center">
+				<div className="flex gap-1 items-center justify-left">
 					<FireIcon className="w-5 h-5" />
 					<h2 className="text-lg">Today's Work Sessions</h2>
 				</div>
@@ -204,7 +204,7 @@ const WorkSessions: React.FC<{
 			{!activeWorkSessionsLoading &&
 				sessionsByProject &&
 				Object.keys(sessionsByProject).length > 0 && (
-					<div className="bg-grey-600 px-4 py-6 text-sm mt-4 grid grid-flow-row-dense grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 sm:gap-2 gap-4">
+					<div className="bg-grey-600 py-6 text-sm mt-4 grid grid-flow-row-dense grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 sm:gap-2 gap-4">
 						{Object.keys(sessionsByProject).map((project: string, i) => {
 							return (
 								<div key={project} className="bg-grey-500 shadow-md">

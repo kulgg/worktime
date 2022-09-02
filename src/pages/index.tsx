@@ -27,7 +27,7 @@ const Home: NextPage = () => {
 
 	return (
 		<PageContainer>
-			<main className="overflow-hidden mt-4">
+			<main className="overflow-hidden px-3 mt-4">
 				{session ? (
 					<WorkSessions
 						currentDate={currentDate}
