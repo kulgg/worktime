@@ -3,30 +3,14 @@ import Link from "next/link";
 import React from "react";
 import Footer from "./footer";
 import Header from "./header";
+import Sidebar from "./sidebar";
 
 const PageContainer: React.FC<{
 	children?: React.ReactNode;
 }> = ({ children }) => {
 	return (
 		<div className="block sm:flex flex-row">
-			<div className="bg-grey-700 w-32 hidden sm:block pt-16">
-				<nav className="flex flex-col items-center text-white gap-6">
-					<Link
-						className="flex flex-row items-center justify-between gap-2"
-						href="/"
-					>
-						<HomeIcon className="w-4 h-4 text-grey-200 hover:text-white" />
-						<span className="text-xs hover:text-grey-200">Home</span>
-					</Link>
-					<Link
-						className="flex flex-row items-center justify-between gap-2 "
-						href="/projects"
-					>
-						<BriefcaseIcon className="w-4 h-4 text-grey-200" />
-						<span className="text-xs hover:text-grey-200">Projects</span>
-					</Link>
-				</nav>
-			</div>
+			<Sidebar />
 			<div className="text-white flex flex-col h-screen w-full">
 				<Header />
 				<div className="mb-auto container self-center">{children}</div>
