@@ -14,7 +14,7 @@ const PageContainer: React.FC<{
 			<div className="text-white flex flex-col h-screen w-full">
 				<Header />
 				<div className="mb-auto container self-center">{children}</div>
-				<div className="sm:hidden">
+				<div className="md:hidden">
 					<Footer />
 				</div>
 			</div>
