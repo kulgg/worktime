@@ -13,11 +13,11 @@ const SidebarEntry = ({
 }): JSX.Element => {
 	return (
 		<Link
-			className="flex flex-row justify-left items-center gap-2 w-32 pl-3 mx-1 rounded-xl h-10 group hover:bg-grey-900"
+			className="flex flex-row justify-left items-center gap-2 w-36 pl-3 mx-1 rounded-full h-10 group hover:bg-grey-900"
 			href={page}
 		>
 			<div className="w-4 h-4 text-grey-200 group-hover:text-white">{icon}</div>
-			<span className="text-xs pt-[2px]">{text}</span>
+			<span className="text-xs lg:text-[13px]">{text}</span>
 		</Link>
 	);
 };

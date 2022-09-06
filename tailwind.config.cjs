@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
 	content: ["./src/**/*.{js,ts,jsx,tsx}"],
 	theme: {
@@ -14,6 +15,9 @@ module.exports = {
 				"grey-700": "#0f212d",
 				"grey-800": "#071d29",
 				"grey-900": "#071823",
+			},
+			fontFamily: {
+				inter: ["Inter", "sans-serif"],
 			},
 		},
 	},

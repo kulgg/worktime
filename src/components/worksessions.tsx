@@ -145,7 +145,7 @@ const WorkSessions: React.FC<{
 						className="flex flex-row justify-center gap-1 items-center cursor-pointer"
 						onClick={() => copyWorkTimeToClipboard(totalMillisecondsToday)}
 					>
-						<span className="text-grey-100">
+						<span className="text-grey-100 font-sans">
 							{getClockFromMilliseconds(totalMillisecondsToday)}
 						</span>
 						<svg
@@ -223,7 +223,7 @@ const WorkSessions: React.FC<{
 												)
 											}
 										>
-											<span className="text-blue-400 font-medium">
+											<span className="text-blue-400 font-sans font-medium">
 												{getClockFromMilliseconds(
 													totalMilliseconds(
 														currentDate,
@@ -257,7 +257,7 @@ const WorkSessions: React.FC<{
 													Finished
 												</div>
 												<div className="col-span-3"></div>
-												<div className="col-span-2">
+												<div className="col-span-2 font-sans">
 													{getClockFromMilliseconds(
 														getMillisecondsDifference(x.finishTime, x.startTime)
 													)}
@@ -276,7 +276,7 @@ const WorkSessions: React.FC<{
 													<span className="py-[2px]">Active</span>
 												</div>
 												<div className="col-span-3"></div>
-												<div className="col-span-2">
+												<div className="col-span-2 font-sans">
 													{getClockFromMilliseconds(
 														getMillisecondsDifference(currentDate, x.startTime)
 													)}
