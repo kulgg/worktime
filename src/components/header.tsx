@@ -3,7 +3,7 @@ import { Menu } from "@headlessui/react";
 import Link from "next/link";
 import { BriefcaseIcon, HomeIcon } from "@heroicons/react/solid";
 
-const Header: React.FC<{}> = () => {
+const Header = (): JSX.Element => {
 	const { data: session } = useSession();
 
 	return (

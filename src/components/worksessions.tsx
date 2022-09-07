@@ -47,7 +47,7 @@ const WorkSessions: React.FC<{
 		},
 	});
 
-	let {
+	const {
 		data: workSessions,
 		isLoading: activeWorkSessionsLoading,
 		refetch: refetchWorkSessions,
@@ -137,7 +137,7 @@ const WorkSessions: React.FC<{
 			<div className="block sm:flex flex-row justify-between items-center">
 				<div className="flex gap-1 items-center justify-left">
 					<FireIcon className="w-5 h-5" />
-					<h2 className="text-lg">Today's Work Sessions</h2>
+					<h2 className="text-lg">Today&apos;s Work Sessions</h2>
 				</div>
 				<div className="text-center hidden sm:flex flex-row gap-2 items-center justify-center">
 					<span className="text-grey-200 text-xs">Total</span>
