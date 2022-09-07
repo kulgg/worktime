@@ -8,6 +8,7 @@ import WorkSessions from "../components/worksessions";
 import {
 	BriefcaseIcon,
 	ClipboardCopyIcon,
+	FireIcon,
 	HomeIcon,
 } from "@heroicons/react/solid";
 import Footer from "../components/footer";
@@ -18,6 +19,7 @@ import {
 import { useState } from "react";
 import { copyWorkTimeToClipboard } from "../utils/clipboard";
 import PageContainer from "../components/pagecontainer";
+import SignIn from "../components/signin";
 
 const Home: NextPage = () => {
 	console.log("rendering");
@@ -34,7 +36,13 @@ const Home: NextPage = () => {
 						setCurrentDate={setCurrentDate}
 					/>
 				) : (
-					<div>Free work time tracker</div>
+					<div>
+						<div className="flex gap-1 items-center justify-left">
+							<FireIcon className="w-5 h-5" />
+							<h2 className="text-lg">Free work time tracker</h2>
+						</div>
+						<SignIn text={"to start"} />
+					</div>
 				)}
 			</main>
 		</PageContainer>
