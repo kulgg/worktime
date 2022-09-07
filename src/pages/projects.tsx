@@ -16,6 +16,7 @@ import { useState } from "react";
 import { PencilIcon, PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
 import PageContainer from "../components/pagecontainer";
 import SignIn from "../components/signin";
+import { useQueryClient } from "react-query";
 
 const Projects: NextPage = () => {
 	const workPhaseWithSessionCounts = Prisma.validator<Prisma.WorkPhaseArgs>()({
@@ -33,31 +34,41 @@ const Projects: NextPage = () => {
 
 	const { data: session } = useSession();
 
-	const [workPhases, setWorkPhases] = useState<WorkPhaseWithSessionCounts[]>(
-		[]
-	);
 	const [editMode, setEditMode] = useState<boolean>(false);
 
-	const { data, isLoading } = trpc.useQuery(
-		["workphases.get-all-with-session-counts"],
-		{
-			onSuccess: (phases) => {
-				setWorkPhases(phases);
-			},
-		}
-	);
+	const { data: workPhases, isLoading } = trpc.useQuery([
+		"workphases.get-all-with-session-counts",
+	]);
+
+	const qc = useQueryClient();
 
 	const { mutate: createWorkPhase, isLoading: createWorkPhaseIsLoading } =
 		trpc.useMutation(["workphases.create"], {
-			onSuccess: (createdWorkPhase) => {
-				setWorkPhases((x) => [...x, createdWorkPhase]);
+			onSuccess: (createdWorkPhase: WorkPhaseWithSessionCounts) => {
+				qc.setQueryData(
+					["workphases.get-all-with-session-counts"],
+					(old: WorkPhaseWithSessionCounts[] | undefined) => {
+						if (!old) {
+							return [createdWorkPhase];
+						}
+						return [...old, createdWorkPhase];
+					}
+				);
 			},
 		});
 
 	const { mutate: deleteWorkPhase, isLoading: deleteWorkPhaseIsLoading } =
 		trpc.useMutation(["workphases.delete"], {
 			onSuccess: (deletedWorkPhase) => {
-				setWorkPhases((x) => x.filter((y) => y.id !== deletedWorkPhase.id));
+				qc.setQueryData(
+					["workphases.get-all-with-session-counts"],
+					(old: WorkPhaseWithSessionCounts[] | undefined) => {
+						if (!old) {
+							return [];
+						}
+						return old.filter((x) => x.id !== deletedWorkPhase.id);
+					}
+				);
 			},
 		});
 
@@ -86,7 +97,7 @@ const Projects: NextPage = () => {
 				<div className="mt-4">
 					{session ? (
 						!isLoading &&
-						data && (
+						workPhases && (
 							<div>
 								<div>
 									<label
