@@ -135,10 +135,10 @@ const Projects = () => {
 													{x._count.workSessions}
 												</div>
 												{editMode && (
-													<div className="flex justify-end items-center text-red-400 cursor-pointer">
+													<div className="flex justify-end items-center text-red-400">
 														<TrashIcon
 															onClick={() => deleteWorkPhase({ id: x.id })}
-															className="w-4 h-4"
+															className="w-4 h-4 cursor-pointer"
 														/>
 													</div>
 												)}
