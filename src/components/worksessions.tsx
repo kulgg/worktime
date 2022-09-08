@@ -23,6 +23,7 @@ import { QueryClient, useQueryClient } from "react-query";
 import { groupBy } from "../utils/arrays";
 import { copyWorkTimeToClipboard } from "../utils/clipboard";
 import { totalMilliseconds } from "../utils/worksessions";
+import { Session } from "next-auth";
 
 const workSessionWithWorkPhase = Prisma.validator<Prisma.WorkSessionArgs>()({
 	include: { workPhase: true },

@@ -1,10 +1,14 @@
-import type { NextPage } from "next";
+import type {
+	GetServerSideProps,
+	GetServerSidePropsContext,
+	InferGetServerSidePropsType,
+	NextPage,
+} from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Header from "../components/header";
-import WorkSessions from "../components/worksessions";
 import {
 	BriefcaseIcon,
 	ClipboardCopyIcon,
@@ -20,17 +24,19 @@ import { useState } from "react";
 import { copyWorkTimeToClipboard } from "../utils/clipboard";
 import PageContainer from "../components/pagecontainer";
 import SignIn from "../components/signin";
+import { Session, unstable_getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
+import dynamic from "next/dynamic";
+import WorkSessions from "../components/worksessions";
 
-const Home: NextPage = () => {
+const Home = ({ user }: { user: Session | null }) => {
 	console.log("rendering");
-	const { data: session } = useSession();
-
 	const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
 	return (
 		<PageContainer>
 			<main className="overflow-hidden px-3 mt-4">
-				{session ? (
+				{user ? (
 					<WorkSessions
 						currentDate={currentDate}
 						setCurrentDate={setCurrentDate}
@@ -47,6 +53,22 @@ const Home: NextPage = () => {
 			</main>
 		</PageContainer>
 	);
+};
+
+export const getServerSideProps = async (
+	context: GetServerSidePropsContext
+) => {
+	const session = await unstable_getServerSession(
+		context.req,
+		context.res,
+		authOptions
+	);
+
+	return {
+		props: {
+			user: session,
+		},
+	};
 };
 
 export default Home;

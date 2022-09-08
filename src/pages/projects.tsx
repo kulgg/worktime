@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { GetServerSidePropsContext, NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { trpc } from "../utils/trpc";
 import Link from "next/link";
@@ -17,8 +17,10 @@ import { PencilIcon, PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
 import PageContainer from "../components/pagecontainer";
 import SignIn from "../components/signin";
 import { useQueryClient } from "react-query";
+import { Session, unstable_getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
 
-const Projects: NextPage = () => {
+const Projects = ({ user: session }: { user: Session | null }) => {
 	const workPhaseWithSessionCounts = Prisma.validator<Prisma.WorkPhaseArgs>()({
 		include: {
 			_count: {
@@ -31,8 +33,6 @@ const Projects: NextPage = () => {
 	type WorkPhaseWithSessionCounts = Prisma.WorkPhaseGetPayload<
 		typeof workPhaseWithSessionCounts
 	>;
-
-	const { data: session } = useSession();
 
 	const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -182,6 +182,22 @@ const Projects: NextPage = () => {
 			</main>
 		</PageContainer>
 	);
+};
+
+export const getServerSideProps = async (
+	context: GetServerSidePropsContext
+) => {
+	const session = await unstable_getServerSession(
+		context.req,
+		context.res,
+		authOptions
+	);
+
+	return {
+		props: {
+			user: session,
+		},
+	};
 };
 
 export default Projects;
