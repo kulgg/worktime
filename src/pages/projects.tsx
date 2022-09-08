@@ -20,7 +20,9 @@ import { useQueryClient } from "react-query";
 import { Session, unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 
-const Projects = ({ user: session }: { user: Session | null }) => {
+const Projects = () => {
+	const { data: session } = useSession();
+
 	const workPhaseWithSessionCounts = Prisma.validator<Prisma.WorkPhaseArgs>()({
 		include: {
 			_count: {
@@ -195,7 +197,7 @@ export const getServerSideProps = async (
 
 	return {
 		props: {
-			user: session,
+			session: session,
 		},
 	};
 };

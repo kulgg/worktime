@@ -29,14 +29,15 @@ import { authOptions } from "./api/auth/[...nextauth]";
 import dynamic from "next/dynamic";
 import WorkSessions from "../components/worksessions";
 
-const Home = ({ user }: { user: Session | null }) => {
+const Home = () => {
 	console.log("rendering");
+	const { data: session } = useSession();
 	const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
 	return (
 		<PageContainer>
 			<main className="overflow-hidden px-3 mt-4">
-				{user ? (
+				{session ? (
 					<WorkSessions
 						currentDate={currentDate}
 						setCurrentDate={setCurrentDate}
@@ -66,7 +67,7 @@ export const getServerSideProps = async (
 
 	return {
 		props: {
-			user: session,
+			session: session,
 		},
 	};
 };
