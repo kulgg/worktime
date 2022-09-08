@@ -119,7 +119,6 @@ const Projects: NextPage = () => {
 									<div className="grid grid-cols-6 text-grey-200 text-xs">
 										<div className="col-span-4">Name</div>
 										<div className="col-span-1">Sessions</div>
-										<div className="flex justify-start items-center"></div>
 									</div>
 									{workPhases.map((x, i) => {
 										const backgroundColor =
@@ -130,7 +129,7 @@ const Projects: NextPage = () => {
 												className={`grid grid-cols-6 text-sm py-2 px-2 ${backgroundColor}`}
 											>
 												<div className="col-span-4">{x.name}</div>
-												<div className="col-span-1 text-center">
+												<div className="col-span-1 px-2">
 													{x._count.workSessions}
 												</div>
 												{editMode && (
@@ -145,32 +144,34 @@ const Projects: NextPage = () => {
 										);
 									})}
 								</div>
-								<div className="py-4 px-3 bg-grey-600">
-									{!createWorkPhaseIsLoading && (
-										<div>
-											<form
-												onSubmit={handleSubmit((data) => {
-													createWorkPhase(data);
-												})}
-												className="w-full flex items-center gap-2"
-											>
-												<input
-													{...register("name")}
-													className="input w-full rounded-xl p-2 bg-grey-700 text-grey-100 text-sm"
-													defaultValue={0}
-													type="text"
-												/>
-												<div className="">
-													<button
-														type="submit"
-														className="w-24 h-8 bg-blue-500 rounded-md text-sm"
-													>
-														Add Project
-													</button>
-												</div>
-											</form>
-										</div>
-									)}
+								<div className="flex items-center justify-center">
+									<div className="py-4 w-96 bg-grey-600">
+										{!createWorkPhaseIsLoading && (
+											<div>
+												<form
+													onSubmit={handleSubmit((data) => {
+														createWorkPhase(data);
+													})}
+													className="flex items-center gap-2"
+												>
+													<input
+														{...register("name")}
+														className="input w-full rounded-xl p-2 bg-grey-700 text-grey-100 text-sm"
+														defaultValue={0}
+														type="text"
+													/>
+													<div className="">
+														<button
+															type="submit"
+															className="w-24 h-8 bg-blue-500 rounded-md text-sm"
+														>
+															Add Project
+														</button>
+													</div>
+												</form>
+											</div>
+										)}
+									</div>
 								</div>
 							</div>
 						)
