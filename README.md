@@ -1,6 +1,6 @@
 # Work Time Tracker
 
-## Todo
+## Additional features
 
 - [x] Server Side Rendering (pass Auth)
 - [ ] Animations
