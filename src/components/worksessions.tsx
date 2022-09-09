@@ -207,7 +207,7 @@ const WorkSessions = (): JSX.Element => {
 			{!activeWorkSessionsLoading &&
 				sessionsByProject &&
 				Object.keys(sessionsByProject).length > 0 && (
-					<div className="bg-grey-600 py-6 text-sm mt-4 grid grid-cols-1 gap-4">
+					<div className="bg-grey-600 py-6 text-sm mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
 						{Object.keys(sessionsByProject).map((project: string, i) => {
 							return (
 								<div key={project} className="bg-grey-500 shadow-md">
