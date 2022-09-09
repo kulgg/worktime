@@ -1,45 +1,23 @@
-import type {
-	GetServerSideProps,
-	GetServerSidePropsContext,
-	InferGetServerSidePropsType,
-	NextPage,
-} from "next";
-import Head from "next/head";
-import { trpc } from "../utils/trpc";
+import { FireIcon } from "@heroicons/react/solid";
+import type { GetServerSidePropsContext } from "next";
+import { unstable_getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
-import Header from "../components/header";
-import {
-	BriefcaseIcon,
-	ClipboardCopyIcon,
-	FireIcon,
-	HomeIcon,
-} from "@heroicons/react/solid";
-import Footer from "../components/footer";
-import {
-	getClockFromMilliseconds,
-	getMillisecondsDifference,
-} from "../utils/timespan";
-import { useState } from "react";
-import { copyWorkTimeToClipboard } from "../utils/clipboard";
 import PageContainer from "../components/pagecontainer";
-import SignIn from "../components/signin";
-import { Session, unstable_getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]";
-import dynamic from "next/dynamic";
 import WorkSessions from "../components/worksessions";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 const HomeContents = (): JSX.Element => {
 	const { data: session } = useSession();
 
 	if (!session) {
 		return (
-			<div>
-				<div className="flex gap-1 items-center justify-left">
-					<FireIcon className="w-5 h-5" />
-					<h2 className="text-lg">Free work time tracker</h2>
+			<div className="px-2 text-center">
+				<h1 className="font-sans font-base text-2xl">
+					Start tracking your work time today. For free.
+				</h1>
+				<div className="">
+					<img src=""></img>
 				</div>
-				<SignIn text={"to start"} />
 			</div>
 		);
 	}

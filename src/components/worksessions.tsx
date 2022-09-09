@@ -252,7 +252,7 @@ const WorkSessions = (): JSX.Element => {
 										return x.finishTime ? (
 											<div
 												key={x.id}
-												className={`grid grid-cols-7 py-2 px-4 items-center bg-grey-500`}
+												className={`grid grid-cols-7 py-2 px-4 items-center bg-grey-500 group`}
 											>
 												<div className="col-span-1 text-grey-200 text-xs">
 													Finished
@@ -265,7 +265,7 @@ const WorkSessions = (): JSX.Element => {
 												</div>
 												<TrashIcon
 													onClick={() => deleteWorkSession({ id: x.id })}
-													className="w-4 h-4 place-self-end self-center cursor-pointer"
+													className="hidden group-hover:block hover:text-red-500 w-4 h-4 place-self-end self-center cursor-pointer text-red-400"
 												/>
 											</div>
 										) : (

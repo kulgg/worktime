@@ -8,13 +8,13 @@ const Header = (): JSX.Element => {
 	const { data: session } = useSession();
 
 	return (
-		<header className="sticky top-0 z-50 bg-grey-600 px-6 drop-shadow-lg h-14 flex flex-col justify-center">
+		<header className="sticky top-0 z-50 bg-grey-600 px-2 lg:px-6 drop-shadow-lg h-14 flex flex-col justify-center">
 			<div className="flex justify-between items-center w-full self-center">
 				<Link href="/">
 					<h1 className="text-2xl font-semibold">WTT</h1>
 				</Link>
 				<div className="text-sm leading-normal">
-					{session ? (
+					{session && (
 						<div className="flex flex-row gap-4 justify-center items-center">
 							{session.user?.image && (
 								<a href="/profile">
@@ -22,8 +22,6 @@ const Header = (): JSX.Element => {
 								</a>
 							)}
 						</div>
-					) : (
-						<Link href="/api/auth/signin">Sign In</Link>
 					)}
 				</div>
 			</div>

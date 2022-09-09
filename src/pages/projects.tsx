@@ -1,23 +1,19 @@
-import { GetServerSidePropsContext, NextPage } from "next";
-import { useSession } from "next-auth/react";
-import { trpc } from "../utils/trpc";
-import Link from "next/link";
-import Header from "../components/header";
-import Footer from "../components/footer";
+import { TrashIcon } from "@heroicons/react/outline";
 import { BriefcaseIcon } from "@heroicons/react/solid";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Prisma } from "@prisma/client";
+import { GetServerSidePropsContext } from "next";
+import { unstable_getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useQueryClient } from "react-query";
+import PageContainer from "../components/pagecontainer";
 import {
 	CreateWorkPhaseInputType,
 	createWorkPhaseValidator,
 } from "../shared/work-session-validator";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Prisma, WorkPhase } from "@prisma/client";
-import { useState } from "react";
-import { PencilIcon, PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
-import PageContainer from "../components/pagecontainer";
-import SignIn from "../components/signin";
-import { useQueryClient } from "react-query";
-import { Session, unstable_getServerSession } from "next-auth";
+import { trpc } from "../utils/trpc";
 import { authOptions } from "./api/auth/[...nextauth]";
 
 const Projects = () => {
@@ -138,7 +134,7 @@ const Projects = () => {
 													<div className="flex justify-end items-center text-red-400">
 														<TrashIcon
 															onClick={() => deleteWorkPhase({ id: x.id })}
-															className="w-4 h-4 cursor-pointer"
+															className="w-4 h-4 cursor-pointer hover:text-red-500"
 														/>
 													</div>
 												)}
