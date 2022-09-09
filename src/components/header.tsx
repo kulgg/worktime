@@ -1,6 +1,7 @@
 import { signOut, useSession } from "next-auth/react";
 import { Menu } from "@headlessui/react";
 import Link from "next/link";
+import Image from "next/image";
 import { BriefcaseIcon, HomeIcon } from "@heroicons/react/solid";
 
 const Header = (): JSX.Element => {
@@ -15,20 +16,11 @@ const Header = (): JSX.Element => {
 				<div className="text-sm leading-normal">
 					{session ? (
 						<div className="flex flex-row gap-4 justify-center items-center">
-							<Link href="/profile">
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									viewBox="0 0 24 24"
-									fill="currentColor"
-									className="w-5 h-5"
-								>
-									<path
-										fillRule="evenodd"
-										d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
-										clipRule="evenodd"
-									/>
-								</svg>
-							</Link>
+							{session.user?.image && (
+								<a href="/profile">
+									<img src={session.user.image} className="rounded-full w-8" />
+								</a>
+							)}
 						</div>
 					) : (
 						<Link href="/api/auth/signin">Sign In</Link>
@@ -38,5 +30,21 @@ const Header = (): JSX.Element => {
 		</header>
 	);
 };
+/*
+<Link href="/profile">
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		viewBox="0 0 24 24"
+		fill="currentColor"
+		className="w-5 h-5"
+	>
+		<path
+			fillRule="evenodd"
+			d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
+			clipRule="evenodd"
+		/>
+	</svg>
+</Link>
+*/
 
 export default Header;
