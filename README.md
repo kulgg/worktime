@@ -3,7 +3,7 @@
 ## Additional features
 
 - [x] Server Side Rendering (pass Auth)
-- [ ] Cleanup project
+- [x] Cleanup Home
 - [ ] Use optimistic update for mutations
 - [ ] Delete button on hover
 - [ ] Animations

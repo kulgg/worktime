@@ -166,7 +166,7 @@ const WorkSessions = (): JSX.Element => {
 					</div>
 				</div>
 			</div>
-			<div className="py-4"></div>
+			<div className="py-2"></div>
 			{!workPhasesIsLoading && (
 				<form
 					onSubmit={handleSubmit((data) => {

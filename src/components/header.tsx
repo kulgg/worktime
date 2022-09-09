@@ -13,13 +13,31 @@ const Header = (): JSX.Element => {
 				<Link href="/">
 					<h1 className="text-2xl font-semibold">WTT</h1>
 				</Link>
-				<div className="text-sm leading-normal">
+				<div className="text-sm leading-normal flex items-center gap-4">
+					<label className="swap swap-flip text-2xl">
+						<input type="checkbox" />
+
+						<div className="swap-on">😈</div>
+						<div className="swap-off">😇</div>
+					</label>
 					{session && (
 						<div className="flex flex-row gap-4 justify-center items-center">
 							{session.user?.image && (
-								<a href="/profile">
-									<img src={session.user.image} className="rounded-full w-8" />
-								</a>
+								<div className="dropdown dropdown-end cursor-pointer">
+									<img
+										src={session.user.image}
+										className="rounded-full w-8"
+										tabIndex={0}
+									/>
+									<ul
+										tabIndex={0}
+										className="dropdown-content bg-grey-800 menu p-2 shadow rounded-md w-32"
+									>
+										<li>
+											<a onClick={() => signOut()}>Sign Out</a>
+										</li>
+									</ul>
+								</div>
 							)}
 						</div>
 					)}
