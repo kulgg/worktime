@@ -195,6 +195,15 @@ export const getServerSideProps = async (
 		authOptions
 	);
 
+	if (!session) {
+		return {
+			redirect: {
+				destination: "/",
+				permanent: false,
+			},
+		};
+	}
+
 	return {
 		props: {
 			session: session,
