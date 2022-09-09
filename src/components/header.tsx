@@ -8,8 +8,8 @@ const Header = (): JSX.Element => {
 	const { data: session } = useSession();
 
 	return (
-		<header className="sticky top-0 z-50 bg-grey-600 px-3 drop-shadow-lg h-14 flex flex-col justify-center">
-			<div className="flex justify-between items-center container self-center">
+		<header className="sticky top-0 z-50 bg-grey-600 px-6 drop-shadow-lg h-14 flex flex-col justify-center">
+			<div className="flex justify-between items-center w-full self-center">
 				<Link href="/">
 					<h1 className="text-2xl font-semibold">WTT</h1>
 				</Link>

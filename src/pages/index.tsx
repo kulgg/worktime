@@ -29,28 +29,31 @@ import { authOptions } from "./api/auth/[...nextauth]";
 import dynamic from "next/dynamic";
 import WorkSessions from "../components/worksessions";
 
+const HomeContents = (): JSX.Element => {
+	const { data: session } = useSession();
+
+	if (!session) {
+		return (
+			<div>
+				<div className="flex gap-1 items-center justify-left">
+					<FireIcon className="w-5 h-5" />
+					<h2 className="text-lg">Free work time tracker</h2>
+				</div>
+				<SignIn text={"to start"} />
+			</div>
+		);
+	}
+
+	return <WorkSessions />;
+};
+
 const Home = () => {
 	console.log("rendering");
-	const { data: session } = useSession();
-	const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
 	return (
 		<PageContainer>
-			<main className="overflow-hidden px-3 mt-4">
-				{session ? (
-					<WorkSessions
-						currentDate={currentDate}
-						setCurrentDate={setCurrentDate}
-					/>
-				) : (
-					<div>
-						<div className="flex gap-1 items-center justify-left">
-							<FireIcon className="w-5 h-5" />
-							<h2 className="text-lg">Free work time tracker</h2>
-						</div>
-						<SignIn text={"to start"} />
-					</div>
-				)}
+			<main className="overflow-hidden">
+				<HomeContents />
 			</main>
 		</PageContainer>
 	);

@@ -20,6 +20,14 @@ module.exports = {
 				inter: ["Inter", "sans-serif"],
 			},
 		},
+		container: {
+			screens: {
+				sm: "100%",
+				md: "100%",
+				lg: "800px",
+				xl: "800px",
+			},
+		},
 	},
 	plugins: [],
 };

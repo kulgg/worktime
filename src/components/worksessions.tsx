@@ -32,10 +32,9 @@ export type WorkSessionWithWorkPhase = Prisma.WorkSessionGetPayload<
 	typeof workSessionWithWorkPhase
 >;
 
-const WorkSessions: React.FC<{
-	currentDate: Date;
-	setCurrentDate: Dispatch<SetStateAction<Date>>;
-}> = ({ currentDate, setCurrentDate }) => {
+const WorkSessions = (): JSX.Element => {
+	const [currentDate, setCurrentDate] = useState<Date>(new Date());
+
 	const {
 		register,
 		handleSubmit,
@@ -138,7 +137,8 @@ const WorkSessions: React.FC<{
 			<div className="block sm:flex flex-row justify-between items-center">
 				<div className="flex gap-1 items-center justify-left">
 					<FireIcon className="w-5 h-5" />
-					<h2 className="text-lg">Today&apos;s Work Sessions</h2>
+					<h2 className="text-lg">Today</h2>
+					<span className="text-grey-200 text-[10px] mt-1">Fri Sep 9</span>
 				</div>
 				<div className="text-center hidden sm:flex flex-row gap-2 items-center justify-center">
 					<span className="text-grey-200 text-xs">Total</span>
@@ -176,11 +176,11 @@ const WorkSessions: React.FC<{
 						}
 						createWorkSession({ ...data, startTime: getCurrentDate() });
 					})}
-					className="px-4 sm:px-0 flex justify-center items-center gap-2 mt-2"
+					className="flex justify-between items-center gap-2 mt-2"
 				>
 					<select
 						{...register("workPhaseId")}
-						className="input w-[300px] rounded-xl p-2 bg-grey-700 text-grey-100 text-sm"
+						className="input w-full rounded-xl p-2 bg-grey-700 text-grey-100 text-sm"
 						defaultValue={0}
 					>
 						{workPhases &&
@@ -195,7 +195,7 @@ const WorkSessions: React.FC<{
 					<div className="">
 						<button
 							type="submit"
-							className="w-24 h-8 bg-blue-500 rounded-md text-sm"
+							className="w-32 h-8 bg-blue-500 rounded-md text-sm"
 						>
 							Start
 						</button>
@@ -205,7 +205,7 @@ const WorkSessions: React.FC<{
 			{!activeWorkSessionsLoading &&
 				sessionsByProject &&
 				Object.keys(sessionsByProject).length > 0 && (
-					<div className="bg-grey-600 py-6 text-sm mt-4 grid grid-flow-row-dense grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 sm:gap-2 gap-4">
+					<div className="bg-grey-600 py-6 text-sm mt-4 grid grid-cols-1 gap-4">
 						{Object.keys(sessionsByProject).map((project: string, i) => {
 							return (
 								<div key={project} className="bg-grey-500 shadow-md">
