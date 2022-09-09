@@ -1,8 +1,8 @@
-import { FireIcon } from "@heroicons/react/solid";
 import type { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
-import { useSession } from "next-auth/react";
-import PageContainer from "../components/pagecontainer";
+import { signIn, useSession } from "next-auth/react";
+import GoogleButton from "react-google-button";
+import PageContainer from "../components/page-container";
 import WorkSessions from "../components/worksessions";
 import { authOptions } from "./api/auth/[...nextauth]";
 
@@ -11,12 +11,12 @@ const HomeContents = (): JSX.Element => {
 
 	if (!session) {
 		return (
-			<div className="px-2 text-center">
-				<h1 className="font-sans font-base text-2xl">
-					Start tracking your work time today. For free.
-				</h1>
-				<div className="">
-					<img src=""></img>
+			<div>
+				<div className="mt-24 px-2 text-center flex flex-col justify-start items-center gap-5">
+					<h1 className="font-sans font-base text-2xl">
+						Start tracking your work time today. For free.
+					</h1>
+					<GoogleButton onClick={() => signIn("google")} />
 				</div>
 			</div>
 		);

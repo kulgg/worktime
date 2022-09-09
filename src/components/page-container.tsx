@@ -1,13 +1,18 @@
 import { BriefcaseIcon, HomeIcon } from "@heroicons/react/solid";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 import Footer from "./footer";
 import Header from "./header";
 import Sidebar from "./sidebar";
 
-const PageContainer: React.FC<{
-	children?: React.ReactNode;
-}> = ({ children }) => {
+const PageContainer = ({
+	children,
+}: {
+	children: React.ReactNode;
+}): JSX.Element => {
+	const { data: session } = useSession();
+
 	return (
 		<div className="block sm:flex flex-row">
 			<Sidebar />
