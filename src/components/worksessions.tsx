@@ -138,7 +138,9 @@ const WorkSessions = (): JSX.Element => {
 				<div className="flex gap-1 items-center justify-left">
 					<FireIcon className="w-5 h-5" />
 					<h2 className="text-lg">Today</h2>
-					<span className="text-grey-200 text-[10px] mt-1">Fri Sep 9</span>
+					<span className="text-grey-200 text-[10px] mt-1">
+						{currentDate.toDateString()}
+					</span>
 				</div>
 				<div className="text-center hidden sm:flex flex-row gap-2 items-center justify-center">
 					<span className="text-grey-200 text-xs">Total</span>
@@ -180,7 +182,7 @@ const WorkSessions = (): JSX.Element => {
 				>
 					<select
 						{...register("workPhaseId")}
-						className="input w-full rounded-xl p-2 bg-grey-700 text-grey-100 text-sm"
+						className="input w-full h-9 rounded-xl bg-grey-700 text-grey-100 text-sm"
 						defaultValue={0}
 					>
 						{workPhases &&

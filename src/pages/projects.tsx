@@ -84,7 +84,7 @@ const Projects = () => {
 
 	return (
 		<PageContainer>
-			<main className="overflow-hidden mt-4 px-3">
+			<main className="overflow-hidden">
 				<div className="flex items-center justify-between">
 					<div className="flex gap-2 items-center">
 						<BriefcaseIcon className="w-5 h-5" />

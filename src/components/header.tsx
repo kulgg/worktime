@@ -13,13 +13,7 @@ const Header = (): JSX.Element => {
 				<Link href="/">
 					<h1 className="text-2xl font-semibold">WTT</h1>
 				</Link>
-				<div className="text-sm leading-normal flex items-center gap-4">
-					<label className="swap swap-flip text-2xl">
-						<input type="checkbox" />
-
-						<div className="swap-on">😈</div>
-						<div className="swap-off">😇</div>
-					</label>
+				<div className="text-sm leading-normal">
 					{session && (
 						<div className="flex flex-row gap-4 justify-center items-center">
 							{session.user?.image && (
@@ -31,9 +25,9 @@ const Header = (): JSX.Element => {
 									/>
 									<ul
 										tabIndex={0}
-										className="dropdown-content bg-grey-800 menu p-2 shadow rounded-md w-32"
+										className="dropdown-content bg-grey-800 menu shadow mt-2 rounded-md w-32"
 									>
-										<li>
+										<li className="hover:bg-grey-700 focus:bg-grey-900">
 											<a onClick={() => signOut()}>Sign Out</a>
 										</li>
 									</ul>
