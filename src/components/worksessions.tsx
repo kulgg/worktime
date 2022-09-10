@@ -9,22 +9,22 @@ import {
 
 import { useEffect, useMemo, useState } from "react";
 
-import { Prisma, WorkPhase, WorkSession } from "@prisma/client";
+import { Prisma, WorkSession } from "@prisma/client";
 import {
 	getClockFromMilliseconds,
 	getCurrentDate,
 	getMillisecondsDifference,
 } from "../utils/timespan";
 
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { TrashIcon } from "@heroicons/react/outline";
 import { FireIcon, StopIcon } from "@heroicons/react/solid";
+import Image from "next/image";
 import { useQueryClient } from "react-query";
+import LoadingSVG from "../assets/puff.svg";
 import { groupBy } from "../utils/arrays";
 import { copyWorkTimeToClipboard } from "../utils/clipboard";
 import { totalMilliseconds } from "../utils/worksessions";
-import LoadingSVG from "../assets/puff.svg";
-import Image from "next/image";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 const workSessionWithWorkPhase = Prisma.validator<Prisma.WorkSessionArgs>()({
 	include: { workPhase: true },
@@ -80,38 +80,36 @@ const SessionElement = ({
 
 	return (
 		<div>
-			{isMutating ? (
-				<div className="flex animate-fade-in-delay justify-center py-2">
-					<Image src={LoadingSVG} alt="loading..." width={20} height={20} />
-				</div>
-			) : (
-				<div
-					className={`grid grid-cols-7 py-2 px-4 items-center bg-grey-500 group`}
-				>
-					{finished ? (
-						<div className="col-span-1 text-grey-200 text-xs">Finished</div>
-					) : (
-						<div className="col-span-1 flex justify-center items-center text-white bg-green-600 text-xs rounded-sm">
-							<span className="py-[2px]">Active</span>
-						</div>
-					)}
-					<div className="col-span-3"></div>
-					<div className="col-span-2 font-sans">
-						{getClockFromMilliseconds(milliseconds)}
+			<div
+				className={`grid grid-cols-7 py-2 px-4 items-center bg-grey-500 group`}
+			>
+				{finished ? (
+					<div className="col-span-1 text-grey-200 text-xs">Finished</div>
+				) : (
+					<div className="col-span-1 flex justify-center items-center text-white bg-green-600 text-xs rounded-sm">
+						<span className="py-[2px]">Active</span>
 					</div>
-					{finished ? (
-						<TrashIcon
-							onClick={() => deleteWorkSession({ id: sessionId })}
-							className="hidden group-hover:block hover:text-red-500 w-4 h-4 place-self-end self-center cursor-pointer text-red-400"
-						/>
-					) : (
-						<StopIcon
-							onClick={() => finishWorkSession({ id: sessionId })}
-							className="w-4 h-4 place-self-end self-center cursor-pointer"
-						/>
-					)}
+				)}
+				<div className="col-span-3"></div>
+				<div className="col-span-2 font-sans">
+					{getClockFromMilliseconds(milliseconds)}
 				</div>
-			)}
+				{isMutating ? (
+					<div className="flex animate-fade-in-delay justify-end">
+						<Image src={LoadingSVG} alt="loading..." width={15} height={15} />
+					</div>
+				) : finished ? (
+					<TrashIcon
+						onClick={() => deleteWorkSession({ id: sessionId })}
+						className="hidden group-hover:block hover:text-red-500 w-4 h-4 place-self-end self-center cursor-pointer text-red-400"
+					/>
+				) : (
+					<StopIcon
+						onClick={() => finishWorkSession({ id: sessionId })}
+						className="w-4 h-4 place-self-end self-center cursor-pointer"
+					/>
+				)}
+			</div>
 		</div>
 	);
 };
@@ -279,7 +277,7 @@ const CreateSessionForm = (): JSX.Element => {
 				</div>
 			</form>
 			{isLoading && (
-				<div className="flex animate-fade-in-delay justify-center mt-2">
+				<div className="flex animate-fade-in-delay justify-center">
 					<Image src={LoadingSVG} alt="loading..." width={30} height={30} />
 				</div>
 			)}

@@ -60,27 +60,32 @@ const ProjectEntry = ({
 
 	return (
 		<div>
-			{deleteWorkPhaseIsLoading ? (
-				<div className="flex animate-fade-in-delay justify-center">
-					<Image src={LoadingSVG} alt="loading..." width={35} height={35} />
-				</div>
-			) : (
-				<div
-					key={x.id}
-					className={`grid grid-cols-6 text-sm py-2 px-2 ${backgroundColor}`}
-				>
-					<div className="col-span-4">{x.name}</div>
-					<div className="col-span-1 px-2">{x._count.workSessions}</div>
-					{editMode && (
-						<div className="flex justify-end items-center text-red-400">
+			<div
+				key={x.id}
+				className={`grid grid-cols-6 text-sm py-2 px-2 h-9 ${backgroundColor}`}
+			>
+				<div className="col-span-4">{x.name}</div>
+				<div className="col-span-1 px-2">{x._count.workSessions}</div>
+				{editMode && (
+					<div className="flex justify-end items-center text-red-400">
+						{deleteWorkPhaseIsLoading ? (
+							<div className="flex animate-fade-in-delay justify-end">
+								<Image
+									src={LoadingSVG}
+									alt="loading..."
+									width={15}
+									height={15}
+								/>
+							</div>
+						) : (
 							<TrashIcon
 								onClick={() => deleteWorkPhase({ id: x.id })}
 								className="w-4 h-4 cursor-pointer hover:text-red-500"
 							/>
-						</div>
-					)}
-				</div>
-			)}
+						)}
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };
