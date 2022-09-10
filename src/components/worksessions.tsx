@@ -312,14 +312,14 @@ const WorkSessions = (): JSX.Element => {
 			</div>
 			<div className="py-2"></div>
 			{workPhasesIsLoading ? (
-				<div className="flex animate-fade-in-delay justify-center">
+				<div className="flex animate-fade-in-delay justify-center mt-2">
 					<Image src={LoadingSVG} alt="loading..." width={50} height={50} />
 				</div>
 			) : (
 				<CreateSessionForm workPhases={workPhases} />
 			)}
 			{workSessionsIsLoading ? (
-				<div className="flex animate-fade-in-delay justify-center">
+				<div className="flex animate-fade-in-delay justify-center mt-12">
 					<Image src={LoadingSVG} alt="loading..." width={50} height={50} />
 				</div>
 			) : (
