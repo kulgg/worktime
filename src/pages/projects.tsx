@@ -78,7 +78,7 @@ const Projects = () => {
 	} = useForm<CreateWorkPhaseInputType>({
 		resolver: zodResolver(createWorkPhaseValidator),
 		defaultValues: {
-			name: "Untitled",
+			name: "",
 		},
 	});
 
@@ -141,7 +141,7 @@ const Projects = () => {
 								})}
 							</div>
 							<div className="flex items-center justify-center">
-								<div className="py-4 w-96 bg-grey-600">
+								<div className="py-4 w-full bg-grey-600">
 									{!createWorkPhaseIsLoading && (
 										<div>
 											<form
@@ -152,16 +152,17 @@ const Projects = () => {
 											>
 												<input
 													{...register("name")}
-													className="input w-full rounded-xl p-2 bg-grey-700 text-grey-100 text-sm"
+													className="input w-full rounded-xl h-9 bg-grey-700 text-grey-100 text-sm"
 													defaultValue={0}
 													type="text"
+													placeholder="Secret Project"
 												/>
 												<div className="">
 													<button
 														type="submit"
 														className="w-24 h-8 bg-blue-500 rounded-md text-sm"
 													>
-														Add Project
+														Add
 													</button>
 												</div>
 											</form>
