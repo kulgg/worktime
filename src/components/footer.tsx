@@ -1,9 +1,8 @@
 import {
-	HomeIcon,
 	BriefcaseIcon,
-	ArrowRightIcon,
 	CalendarIcon,
 	CogIcon,
+	HomeIcon,
 } from "@heroicons/react/solid";
 import Link from "next/link";
 
@@ -21,7 +20,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 				<Link className="flex flex-col items-center gap-[2px]" href="/calendar">
 					<CalendarIcon className="w-6 h-6 text-grey-200" />
 				</Link>
-				<Link className="flex flex-col items-center gap-[2px]" href="/settings">
+				<Link className="flex flex-col items-center gap-[2px]" href="/">
 					<CogIcon className="w-6 h-6 text-grey-200" />
 				</Link>
 			</nav>

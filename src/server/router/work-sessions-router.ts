@@ -1,9 +1,9 @@
-import { createProtectedRouter } from "./protected-router";
 import { z } from "zod";
 import {
 	finishSessionValidator,
 	startSessionValidator,
 } from "../../shared/work-session-validator";
+import { createProtectedRouter } from "./protected-router";
 
 // Example router with queries that can only be hit if the user requesting is signed in
 export const workSessionsRouter = createProtectedRouter()
@@ -62,6 +62,24 @@ export const workSessionsRouter = createProtectedRouter()
 					userId: ctx.session.user.id,
 					startTime: {
 						gte: midnight,
+					},
+				},
+				include: {
+					workPhase: true,
+				},
+			});
+		},
+	})
+	.query("get-sessions-after", {
+		input: z.object({
+			after: z.date(),
+		}),
+		async resolve({ ctx, input }) {
+			return await ctx.prisma.workSession.findMany({
+				where: {
+					userId: ctx.session.user.id,
+					startTime: {
+						gte: input.after,
 					},
 				},
 				include: {

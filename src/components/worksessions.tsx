@@ -304,7 +304,7 @@ const WorkSessions = (): JSX.Element => {
 	let sessionsByProject: Record<string, WorkSessionWithWorkPhase[]> =
 		useMemo(() => {
 			return workSessions && workSessions.length > 0
-				? (sessionsByProject = groupBy(workSessions, (x) => x.workPhaseId))
+				? groupBy(workSessions, (x) => x.workPhaseId)
 				: {};
 		}, [workSessions]);
 
