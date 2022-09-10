@@ -14,9 +14,9 @@ const PageContainer = ({
 	const { data: session } = useSession();
 
 	return (
-		<div className="block sm:flex flex-row">
+		<div className="block sm:flex flex-row absolute inset-0 bg-grey-600">
 			<Sidebar />
-			<div className="text-white flex flex-col h-screen w-full">
+			<div className="text-white flex flex-col h-full w-full">
 				<Header />
 				<div className="mt-9 mb-auto container mx-auto lg:px-0 px-4">
 					{children}
