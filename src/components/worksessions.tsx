@@ -24,6 +24,7 @@ import { copyWorkTimeToClipboard } from "../utils/clipboard";
 import { totalMilliseconds } from "../utils/worksessions";
 import LoadingSVG from "../assets/puff.svg";
 import Image from "next/image";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 const workSessionWithWorkPhase = Prisma.validator<Prisma.WorkSessionArgs>()({
 	include: { workPhase: true },
@@ -32,12 +33,14 @@ export type WorkSessionWithWorkPhase = Prisma.WorkSessionGetPayload<
 	typeof workSessionWithWorkPhase
 >;
 
-const SessionsGrid = ({
-	sessionsByProject,
-	currentDate,
+const SessionElement = ({
+	milliseconds,
+	finished,
+	sessionId,
 }: {
-	sessionsByProject: Record<string, WorkSessionWithWorkPhase[]>;
-	currentDate: Date;
+	milliseconds: number;
+	finished: boolean;
+	sessionId: string;
 }): JSX.Element => {
 	const qc = useQueryClient();
 
@@ -76,8 +79,83 @@ const SessionsGrid = ({
 			},
 		}
 	);
+
 	return (
-		<div className="bg-grey-600 py-6 text-sm mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+		<div
+			className={`grid grid-cols-7 py-2 px-4 items-center bg-grey-500 group`}
+		>
+			{finished ? (
+				<div className="col-span-1 text-grey-200 text-xs">Finished</div>
+			) : (
+				<div className="col-span-1 flex justify-center items-center text-white bg-green-600 text-xs rounded-sm">
+					<span className="py-[2px]">Active</span>
+				</div>
+			)}
+			<div className="col-span-3"></div>
+			<div className="col-span-2 font-sans">
+				{getClockFromMilliseconds(milliseconds)}
+			</div>
+			{finished ? (
+				<TrashIcon
+					onClick={() => deleteWorkSession({ id: sessionId })}
+					className="hidden group-hover:block hover:text-red-500 w-4 h-4 place-self-end self-center cursor-pointer text-red-400"
+				/>
+			) : (
+				<StopIcon
+					onClick={() => finishWorkSession({ id: sessionId })}
+					className="w-4 h-4 place-self-end self-center cursor-pointer"
+				/>
+			)}
+		</div>
+	);
+};
+
+const SessionsContainer = ({
+	projectSessions,
+	currentDate,
+}: {
+	projectSessions: WorkSessionWithWorkPhase[];
+	currentDate: Date;
+}): JSX.Element => {
+	const [sessionsContainer] = useAutoAnimate<HTMLDivElement>();
+
+	return (
+		<div ref={sessionsContainer}>
+			{projectSessions.map((x, i) => {
+				return x.finishTime ? (
+					<SessionElement
+						key={x.id}
+						milliseconds={getMillisecondsDifference(x.finishTime, x.startTime)}
+						sessionId={x.id}
+						finished={true}
+					/>
+				) : (
+					<SessionElement
+						key={x.id}
+						milliseconds={getMillisecondsDifference(currentDate, x.startTime)}
+						sessionId={x.id}
+						finished={false}
+					/>
+				);
+			})}
+		</div>
+	);
+};
+
+const SessionsGrid = ({
+	sessionsByProject,
+	currentDate,
+}: {
+	sessionsByProject: Record<string, WorkSessionWithWorkPhase[]>;
+	currentDate: Date;
+}): JSX.Element => {
+	const [parent] = useAutoAnimate<HTMLDivElement>();
+
+	return (
+		<div
+			className="bg-grey-600 py-6 text-sm mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"
+			ref={parent}
+		>
 			{Object.keys(sessionsByProject).map((project: string, i) => {
 				return (
 					<div key={project} className="bg-grey-500 shadow-md">
@@ -112,47 +190,11 @@ const SessionsGrid = ({
 								</svg>
 							</div>
 						</div>
-						{sessionsByProject[project]?.map((x, i) => {
-							return x.finishTime ? (
-								<div
-									key={x.id}
-									className={`grid grid-cols-7 py-2 px-4 items-center bg-grey-500 group`}
-								>
-									<div className="col-span-1 text-grey-200 text-xs">
-										Finished
-									</div>
-									<div className="col-span-3"></div>
-									<div className="col-span-2 font-sans">
-										{getClockFromMilliseconds(
-											getMillisecondsDifference(x.finishTime, x.startTime)
-										)}
-									</div>
-									<TrashIcon
-										onClick={() => deleteWorkSession({ id: x.id })}
-										className="hidden group-hover:block hover:text-red-500 w-4 h-4 place-self-end self-center cursor-pointer text-red-400"
-									/>
-								</div>
-							) : (
-								<div
-									key={x.id}
-									className={`grid grid-cols-7 py-2 px-4 items-center bg-grey-500`}
-								>
-									<div className="col-span-1 flex justify-center items-center text-white bg-green-600 text-xs rounded-sm">
-										<span className="py-[2px]">Active</span>
-									</div>
-									<div className="col-span-3"></div>
-									<div className="col-span-2 font-sans">
-										{getClockFromMilliseconds(
-											getMillisecondsDifference(currentDate, x.startTime)
-										)}
-									</div>
-									<StopIcon
-										onClick={() => finishWorkSession({ id: x.id })}
-										className="w-4 h-4 place-self-end self-center cursor-pointer"
-									/>
-								</div>
-							);
-						})}
+
+						<SessionsContainer
+							projectSessions={sessionsByProject[project]!}
+							currentDate={currentDate}
+						/>
 					</div>
 				);
 			})}
@@ -199,7 +241,6 @@ const CreateSessionForm = ({
 	return (
 		<form
 			onSubmit={handleSubmit((data) => {
-				console.log(data);
 				if (data.workPhaseId === "" && workPhases && workPhases[0]) {
 					data.workPhaseId = workPhases[0].id;
 				}

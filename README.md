@@ -6,7 +6,7 @@
 - [x] Cleanup Home
 - [ ] Use optimistic update for mutations
 - [x] Delete button on hover
-- [ ] Animations
+- [x] Animations
 - [ ] More fluid UX / Button interaction
 - [x] Sign Out Menu
 - [ ] Calendar Page
