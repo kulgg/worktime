@@ -202,7 +202,7 @@ const SessionsGrid = ({
 	);
 };
 
-const CreateSessionForm = ({}: {}): JSX.Element => {
+const CreateSessionForm = (): JSX.Element => {
 	const {
 		register,
 		handleSubmit,
