@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { HomeIcon, BriefcaseIcon } from "@heroicons/react/solid";
+import { HomeIcon, BriefcaseIcon, CalendarIcon } from "@heroicons/react/solid";
 
 const SidebarEntry = ({
 	text,
@@ -31,6 +31,11 @@ const Sidebar = (): JSX.Element => {
 					text="Projects"
 					icon={<BriefcaseIcon />}
 					page="/projects"
+				/>
+				<SidebarEntry
+					text="Calendar"
+					icon={<CalendarIcon />}
+					page="/calendar"
 				/>
 			</nav>
 		</div>
