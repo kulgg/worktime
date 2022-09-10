@@ -37,15 +37,7 @@ const Calendar = (): JSX.Element => {
 					<div className="stat">
 						<div className="stat-title text-grey-100 text-sm">Week</div>
 						<div className="stat-value font-medium text-grey-100 text-xl">
-							{Object.keys(sessionsByProject).map((project: string, i) => {
-								return (
-									<div>
-										{sessionsByProject[project]?.map((x) => (
-											<div>{x.startTime.toDateString()}</div>
-										))}
-									</div>
-								);
-							})}
+							20 h
 						</div>
 					</div>
 					<div className="stat">
