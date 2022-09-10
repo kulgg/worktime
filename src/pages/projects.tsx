@@ -127,6 +127,7 @@ const Projects = () => {
 		handleSubmit,
 		control,
 		formState: { errors },
+		reset,
 	} = useForm<CreateWorkPhaseInputType>({
 		resolver: zodResolver(createWorkPhaseValidator),
 		defaultValues: {
@@ -163,6 +164,7 @@ const Projects = () => {
 								<div>
 									<form
 										onSubmit={handleSubmit((data) => {
+											reset();
 											createWorkPhase(data);
 										})}
 										className="flex items-center gap-2"
