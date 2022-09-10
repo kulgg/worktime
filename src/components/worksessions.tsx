@@ -202,16 +202,13 @@ const SessionsGrid = ({
 	);
 };
 
-const CreateSessionForm = ({
-	workPhases,
-}: {
-	workPhases: WorkPhase[] | undefined;
-}): JSX.Element => {
+const CreateSessionForm = ({}: {}): JSX.Element => {
 	const {
 		register,
 		handleSubmit,
 		control,
 		formState: { errors },
+		reset,
 	} = useForm<StartSessionInputType>({
 		resolver: zodResolver(startSessionValidator),
 		defaultValues: {
@@ -238,12 +235,15 @@ const CreateSessionForm = ({
 		}
 	);
 
+	const { data: workPhases } = trpc.useQuery(["workphases.get-all"], {
+		onSuccess: () => {
+			reset();
+		},
+	});
+
 	return (
 		<form
 			onSubmit={handleSubmit((data) => {
-				if (data.workPhaseId === "" && workPhases && workPhases[0]) {
-					data.workPhaseId = workPhases[0].id;
-				}
 				createWorkSession({ ...data, startTime: getCurrentDate() });
 			})}
 			className="flex justify-between items-center gap-2 mt-2"
@@ -282,10 +282,6 @@ const WorkSessions = (): JSX.Element => {
 		isLoading: workSessionsIsLoading,
 		refetch: refetchWorkSessions,
 	} = trpc.useQuery(["worksessions.get-todays-sessions"], {});
-
-	const { data: workPhases, isLoading: workPhasesIsLoading } = trpc.useQuery([
-		"workphases.get-all",
-	]);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -352,7 +348,7 @@ const WorkSessions = (): JSX.Element => {
 				</div>
 			</div>
 			<div className="py-2"></div>
-			<CreateSessionForm workPhases={workPhases} />
+			<CreateSessionForm />
 			{workSessionsIsLoading ? (
 				<div className="flex animate-fade-in-delay justify-center mt-12">
 					<Image src={LoadingSVG} alt="loading..." width={50} height={50} />
