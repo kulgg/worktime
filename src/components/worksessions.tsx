@@ -224,7 +224,7 @@ const CreateSessionForm = ({
 			<div className="">
 				<button
 					type="submit"
-					className="w-32 h-8 bg-blue-500 rounded-md text-sm"
+					className="w-24 sm:w-32 h-8 bg-blue-500 rounded-md text-sm"
 				>
 					Start
 				</button>
@@ -276,7 +276,7 @@ const WorkSessions = (): JSX.Element => {
 
 	return (
 		<div>
-			<div className="block sm:flex flex-row justify-between items-center">
+			<div className="flex flex-row justify-between items-center">
 				<div className="flex gap-1 items-center justify-left">
 					<FireIcon className="w-5 h-5" />
 					<h2 className="text-lg">Today</h2>
@@ -284,13 +284,13 @@ const WorkSessions = (): JSX.Element => {
 						{currentDate.toDateString()}
 					</span>
 				</div>
-				<div className="text-center hidden sm:flex flex-row gap-2 items-center justify-center">
-					<span className="text-grey-200 text-xs">Total</span>
+				<div className="text-center flex flex-row gap-1 sm:gap-2 items-center justify-center">
+					<span className="text-grey-200 text-[10px] sm:text-xs">Total</span>
 					<div
 						className="flex flex-row justify-center gap-1 items-center cursor-pointer"
 						onClick={() => copyWorkTimeToClipboard(totalMillisecondsToday)}
 					>
-						<span className="text-grey-100 font-sans">
+						<span className="text-grey-100 font-sans text-sm sm:text-base">
 							{getClockFromMilliseconds(totalMillisecondsToday)}
 						</span>
 						<svg

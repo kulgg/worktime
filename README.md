@@ -5,8 +5,8 @@
 - [x] Server Side Rendering (pass Auth)
 - [x] Cleanup Home
 - [ ] Use optimistic update for mutations
-- [ ] Delete button on hover
+- [x] Delete button on hover
 - [ ] Animations
 - [ ] More fluid UX / Button interaction
-- [ ] Sign Out Menu
+- [x] Sign Out Menu
 - [ ] Calendar Page
