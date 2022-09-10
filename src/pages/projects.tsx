@@ -17,6 +17,7 @@ import { trpc } from "../utils/trpc";
 import { authOptions } from "./api/auth/[...nextauth]";
 import LoadingSVG from "../assets/puff.svg";
 import Image from "next/image";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 const workPhaseWithSessionCounts = Prisma.validator<Prisma.WorkPhaseArgs>()({
 	include: {
@@ -31,7 +32,58 @@ type WorkPhaseWithSessionCounts = Prisma.WorkPhaseGetPayload<
 	typeof workPhaseWithSessionCounts
 >;
 
-const ProjectList = ({
+const ProjectGrid = ({
+	workPhases,
+	editMode,
+}: {
+	workPhases: WorkPhaseWithSessionCounts[];
+	editMode: boolean;
+}): JSX.Element => {
+	const qc = useQueryClient();
+
+	const { mutate: deleteWorkPhase } = trpc.useMutation(["workphases.delete"], {
+		onSuccess: (deletedWorkPhase) => {
+			qc.setQueryData(
+				["workphases.get-all-with-session-counts"],
+				(old: WorkPhaseWithSessionCounts[] | undefined) => {
+					if (!old) {
+						return [];
+					}
+					return old.filter((x) => x.id !== deletedWorkPhase.id);
+				}
+			);
+		},
+	});
+
+	const [workPhasesDiv] = useAutoAnimate<HTMLDivElement>();
+
+	return (
+		<div ref={workPhasesDiv}>
+			{workPhases.map((x, i) => {
+				const backgroundColor = i % 2 === 0 ? "bg-grey-500" : "bg-grey-600";
+				return (
+					<div
+						key={x.id}
+						className={`grid grid-cols-6 text-sm py-2 px-2 ${backgroundColor}`}
+					>
+						<div className="col-span-4">{x.name}</div>
+						<div className="col-span-1 px-2">{x._count.workSessions}</div>
+						{editMode && (
+							<div className="flex justify-end items-center text-red-400">
+								<TrashIcon
+									onClick={() => deleteWorkPhase({ id: x.id })}
+									className="w-4 h-4 cursor-pointer hover:text-red-500"
+								/>
+							</div>
+						)}
+					</div>
+				);
+			})}
+		</div>
+	);
+};
+
+const ProjectContainer = ({
 	workPhases,
 }: {
 	workPhases: WorkPhaseWithSessionCounts[];
@@ -39,21 +91,6 @@ const ProjectList = ({
 	const [editMode, setEditMode] = useState<boolean>(false);
 
 	const qc = useQueryClient();
-
-	const { mutate: deleteWorkPhase, isLoading: deleteWorkPhaseIsLoading } =
-		trpc.useMutation(["workphases.delete"], {
-			onSuccess: (deletedWorkPhase) => {
-				qc.setQueryData(
-					["workphases.get-all-with-session-counts"],
-					(old: WorkPhaseWithSessionCounts[] | undefined) => {
-						if (!old) {
-							return [];
-						}
-						return old.filter((x) => x.id !== deletedWorkPhase.id);
-					}
-				);
-			},
-		});
 
 	return (
 		<div>
@@ -77,26 +114,7 @@ const ProjectList = ({
 				<div className="col-span-4">Name</div>
 				<div className="col-span-1">Sessions</div>
 			</div>
-			{workPhases.map((x, i) => {
-				const backgroundColor = i % 2 === 0 ? "bg-grey-500" : "bg-grey-600";
-				return (
-					<div
-						key={x.id}
-						className={`grid grid-cols-6 text-sm py-2 px-2 ${backgroundColor}`}
-					>
-						<div className="col-span-4">{x.name}</div>
-						<div className="col-span-1 px-2">{x._count.workSessions}</div>
-						{editMode && (
-							<div className="flex justify-end items-center text-red-400">
-								<TrashIcon
-									onClick={() => deleteWorkPhase({ id: x.id })}
-									className="w-4 h-4 cursor-pointer hover:text-red-500"
-								/>
-							</div>
-						)}
-					</div>
-				);
-			})}
+			<ProjectGrid workPhases={workPhases} editMode={editMode} />
 		</div>
 	);
 };
@@ -157,7 +175,7 @@ const Projects = () => {
 								/>
 							</div>
 						) : (
-							workPhases && <ProjectList workPhases={workPhases} />
+							workPhases && <ProjectContainer workPhases={workPhases} />
 						)}
 						<div className="flex items-center justify-center">
 							<div className="py-4 w-full bg-grey-600">
