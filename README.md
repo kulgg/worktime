@@ -4,7 +4,7 @@
 
 - [x] Server Side Rendering (pass Auth)
 - [x] Cleanup Home
-- [ ] Improve Landing Page
+- [x] Improve Landing Page
 - [ ] Use only icons in mobile menu
 - [ ] Use optimistic update for mutations
 - [ ] Use optimistic update for mutations
