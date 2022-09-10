@@ -1,13 +1,15 @@
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { TrashIcon } from "@heroicons/react/outline";
 import { BriefcaseIcon } from "@heroicons/react/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Prisma } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
-import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
+import LoadingSVG from "../assets/puff.svg";
 import PageContainer from "../components/page-container";
 import {
 	CreateWorkPhaseInputType,
@@ -15,9 +17,6 @@ import {
 } from "../shared/work-session-validator";
 import { trpc } from "../utils/trpc";
 import { authOptions } from "./api/auth/[...nextauth]";
-import LoadingSVG from "../assets/puff.svg";
-import Image from "next/image";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 const workPhaseWithSessionCounts = Prisma.validator<Prisma.WorkPhaseArgs>()({
 	include: {
@@ -105,6 +104,7 @@ const ProjectGrid = ({
 				const backgroundColor = i % 2 === 0 ? "bg-grey-500" : "bg-grey-600";
 				return (
 					<ProjectEntry
+						key={i}
 						x={x}
 						backgroundColor={backgroundColor}
 						editMode={editMode}

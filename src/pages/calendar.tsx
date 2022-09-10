@@ -57,7 +57,7 @@ const Calendar = (): JSX.Element => {
 										: "cursor-pointer text-base inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300";
 
 								return (
-									<li className="mr-2">
+									<li key={i} className="mr-2">
 										<a
 											onClick={() => setActiveTimeFrame(i)}
 											className={classString}
