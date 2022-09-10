@@ -22,6 +22,8 @@ import { useQueryClient } from "react-query";
 import { groupBy } from "../utils/arrays";
 import { copyWorkTimeToClipboard } from "../utils/clipboard";
 import { totalMilliseconds } from "../utils/worksessions";
+import LoadingSVG from "../assets/puff.svg";
+import Image from "next/image";
 
 const workSessionWithWorkPhase = Prisma.validator<Prisma.WorkSessionArgs>()({
 	include: { workPhase: true },
@@ -236,7 +238,7 @@ const WorkSessions = (): JSX.Element => {
 
 	const {
 		data: workSessions,
-		isLoading: activeWorkSessionsLoading,
+		isLoading: workSessionsIsLoading,
 		refetch: refetchWorkSessions,
 	} = trpc.useQuery(["worksessions.get-todays-sessions"], {});
 
@@ -309,11 +311,23 @@ const WorkSessions = (): JSX.Element => {
 				</div>
 			</div>
 			<div className="py-2"></div>
-			<CreateSessionForm workPhases={workPhases} />
-			<SessionsGrid
-				currentDate={currentDate}
-				sessionsByProject={sessionsByProject}
-			/>
+			{workPhasesIsLoading ? (
+				<div className="flex animate-fade-in-delay justify-center">
+					<Image src={LoadingSVG} alt="loading..." width={50} height={50} />
+				</div>
+			) : (
+				<CreateSessionForm workPhases={workPhases} />
+			)}
+			{workSessionsIsLoading ? (
+				<div className="flex animate-fade-in-delay justify-center">
+					<Image src={LoadingSVG} alt="loading..." width={50} height={50} />
+				</div>
+			) : (
+				<SessionsGrid
+					currentDate={currentDate}
+					sessionsByProject={sessionsByProject}
+				/>
+			)}
 		</div>
 	);
 };
