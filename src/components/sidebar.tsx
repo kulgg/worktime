@@ -1,6 +1,11 @@
 import Link from "next/link";
 
-import { HomeIcon, BriefcaseIcon, CalendarIcon } from "@heroicons/react/solid";
+import {
+	HomeIcon,
+	BriefcaseIcon,
+	CalendarIcon,
+	CogIcon,
+} from "@heroicons/react/solid";
 
 const SidebarEntry = ({
 	text,
@@ -25,7 +30,7 @@ const SidebarEntry = ({
 const Sidebar = (): JSX.Element => {
 	return (
 		<div className="bg-grey-700 w-40 hidden md:block pt-16 pl-1">
-			<nav className="flex flex-col items-center text-white">
+			<nav className="flex flex-col items-center text-white gap-4">
 				<SidebarEntry text="Home" icon={<HomeIcon />} page="/" />
 				<SidebarEntry
 					text="Projects"
@@ -37,6 +42,7 @@ const Sidebar = (): JSX.Element => {
 					icon={<CalendarIcon />}
 					page="/calendar"
 				/>
+				<SidebarEntry text="Settings" icon={<CogIcon />} page="/settings" />
 			</nav>
 		</div>
 	);
