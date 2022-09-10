@@ -7,7 +7,7 @@ import {
 	startSessionValidator,
 } from "../shared/work-session-validator";
 
-import { useState, useEffect, SetStateAction, Dispatch } from "react";
+import { useState, useEffect, SetStateAction, Dispatch, useMemo } from "react";
 
 import {
 	getMillisecondsDifference,
@@ -59,8 +59,9 @@ const WorkSessions = (): JSX.Element => {
 
 	const qc = useQueryClient();
 
-	const { mutate: createWorkSession, isLoading: createWorkSessionIsLoading } =
-		trpc.useMutation(["worksessions.create"], {
+	const { mutate: createWorkSession } = trpc.useMutation(
+		["worksessions.create"],
+		{
 			onSuccess: (data: WorkSessionWithWorkPhase) => {
 				qc.setQueryData(
 					["worksessions.get-todays-sessions"],
@@ -72,10 +73,12 @@ const WorkSessions = (): JSX.Element => {
 					}
 				);
 			},
-		});
+		}
+	);
 
-	const { mutate: finishWorkSession, isLoading: finishWorkSessionIsLoading } =
-		trpc.useMutation(["worksessions.finish"], {
+	const { mutate: finishWorkSession } = trpc.useMutation(
+		["worksessions.finish"],
+		{
 			onSuccess: (data: WorkSessionWithWorkPhase) => {
 				qc.setQueryData(
 					["worksessions.get-todays-sessions"],
@@ -89,10 +92,12 @@ const WorkSessions = (): JSX.Element => {
 					}
 				);
 			},
-		});
+		}
+	);
 
-	const { mutate: deleteWorkSession, isLoading: deleteWorkSessionIsLoading } =
-		trpc.useMutation(["worksessions.delete"], {
+	const { mutate: deleteWorkSession } = trpc.useMutation(
+		["worksessions.delete"],
+		{
 			onSuccess: (data: WorkSession) => {
 				qc.setQueryData(
 					["worksessions.get-todays-sessions"],
@@ -104,7 +109,8 @@ const WorkSessions = (): JSX.Element => {
 					}
 				);
 			},
-		});
+		}
+	);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -116,10 +122,12 @@ const WorkSessions = (): JSX.Element => {
 		};
 	}, []);
 
-	let sessionsByProject: Record<string, WorkSessionWithWorkPhase[]> = {};
-	if (workSessions && workSessions.length > 0) {
-		sessionsByProject = groupBy(workSessions, (x) => x.workPhaseId);
-	}
+	let sessionsByProject: Record<string, WorkSessionWithWorkPhase[]> =
+		useMemo(() => {
+			return workSessions && workSessions.length > 0
+				? (sessionsByProject = groupBy(workSessions, (x) => x.workPhaseId))
+				: {};
+		}, [workSessions]);
 
 	const totalMillisecondsToday =
 		workSessions && workSessions.length > 0
