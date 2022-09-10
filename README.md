@@ -10,5 +10,5 @@
 - [x] Animations
 - [x] Sign Out Menu
 - [x] More fluid UX / Button interaction
-- [ ] Use optimistic update for mutations
+- [x] Show load animation for mutations
 - [ ] Calendar Page

@@ -32,6 +32,59 @@ type WorkPhaseWithSessionCounts = Prisma.WorkPhaseGetPayload<
 	typeof workPhaseWithSessionCounts
 >;
 
+const ProjectEntry = ({
+	x,
+	backgroundColor,
+	editMode,
+}: {
+	x: WorkPhaseWithSessionCounts;
+	backgroundColor: string;
+	editMode: boolean;
+}): JSX.Element => {
+	const qc = useQueryClient();
+
+	const { mutate: deleteWorkPhase, isLoading: deleteWorkPhaseIsLoading } =
+		trpc.useMutation(["workphases.delete"], {
+			onSuccess: (deletedWorkPhase) => {
+				qc.setQueryData(
+					["workphases.get-all-with-session-counts"],
+					(old: WorkPhaseWithSessionCounts[] | undefined) => {
+						if (!old) {
+							return [];
+						}
+						return old.filter((x) => x.id !== deletedWorkPhase.id);
+					}
+				);
+			},
+		});
+
+	return (
+		<div>
+			{deleteWorkPhaseIsLoading ? (
+				<div className="flex animate-fade-in-delay justify-center">
+					<Image src={LoadingSVG} alt="loading..." width={35} height={35} />
+				</div>
+			) : (
+				<div
+					key={x.id}
+					className={`grid grid-cols-6 text-sm py-2 px-2 ${backgroundColor}`}
+				>
+					<div className="col-span-4">{x.name}</div>
+					<div className="col-span-1 px-2">{x._count.workSessions}</div>
+					{editMode && (
+						<div className="flex justify-end items-center text-red-400">
+							<TrashIcon
+								onClick={() => deleteWorkPhase({ id: x.id })}
+								className="w-4 h-4 cursor-pointer hover:text-red-500"
+							/>
+						</div>
+					)}
+				</div>
+			)}
+		</div>
+	);
+};
+
 const ProjectGrid = ({
 	workPhases,
 	editMode,
@@ -39,22 +92,6 @@ const ProjectGrid = ({
 	workPhases: WorkPhaseWithSessionCounts[];
 	editMode: boolean;
 }): JSX.Element => {
-	const qc = useQueryClient();
-
-	const { mutate: deleteWorkPhase } = trpc.useMutation(["workphases.delete"], {
-		onSuccess: (deletedWorkPhase) => {
-			qc.setQueryData(
-				["workphases.get-all-with-session-counts"],
-				(old: WorkPhaseWithSessionCounts[] | undefined) => {
-					if (!old) {
-						return [];
-					}
-					return old.filter((x) => x.id !== deletedWorkPhase.id);
-				}
-			);
-		},
-	});
-
 	const [workPhasesDiv] = useAutoAnimate<HTMLDivElement>();
 
 	return (
@@ -62,21 +99,11 @@ const ProjectGrid = ({
 			{workPhases.map((x, i) => {
 				const backgroundColor = i % 2 === 0 ? "bg-grey-500" : "bg-grey-600";
 				return (
-					<div
-						key={x.id}
-						className={`grid grid-cols-6 text-sm py-2 px-2 ${backgroundColor}`}
-					>
-						<div className="col-span-4">{x.name}</div>
-						<div className="col-span-1 px-2">{x._count.workSessions}</div>
-						{editMode && (
-							<div className="flex justify-end items-center text-red-400">
-								<TrashIcon
-									onClick={() => deleteWorkPhase({ id: x.id })}
-									className="w-4 h-4 cursor-pointer hover:text-red-500"
-								/>
-							</div>
-						)}
-					</div>
+					<ProjectEntry
+						x={x}
+						backgroundColor={backgroundColor}
+						editMode={editMode}
+					/>
 				);
 			})}
 		</div>

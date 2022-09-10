@@ -44,9 +44,8 @@ const SessionElement = ({
 }): JSX.Element => {
 	const qc = useQueryClient();
 
-	const { mutate: finishWorkSession } = trpc.useMutation(
-		["worksessions.finish"],
-		{
+	const { mutate: finishWorkSession, isLoading: finishWorkSessionIsLoading } =
+		trpc.useMutation(["worksessions.finish"], {
 			onSuccess: (data: WorkSessionWithWorkPhase) => {
 				qc.setQueryData(
 					["worksessions.get-todays-sessions"],
@@ -60,12 +59,10 @@ const SessionElement = ({
 					}
 				);
 			},
-		}
-	);
+		});
 
-	const { mutate: deleteWorkSession } = trpc.useMutation(
-		["worksessions.delete"],
-		{
+	const { mutate: deleteWorkSession, isLoading: deleteWorkSessionIsLoading } =
+		trpc.useMutation(["worksessions.delete"], {
 			onSuccess: (data: WorkSession) => {
 				qc.setQueryData(
 					["worksessions.get-todays-sessions"],
@@ -77,34 +74,43 @@ const SessionElement = ({
 					}
 				);
 			},
-		}
-	);
+		});
+
+	const isMutating = finishWorkSessionIsLoading || deleteWorkSessionIsLoading;
 
 	return (
-		<div
-			className={`grid grid-cols-7 py-2 px-4 items-center bg-grey-500 group`}
-		>
-			{finished ? (
-				<div className="col-span-1 text-grey-200 text-xs">Finished</div>
-			) : (
-				<div className="col-span-1 flex justify-center items-center text-white bg-green-600 text-xs rounded-sm">
-					<span className="py-[2px]">Active</span>
+		<div>
+			{isMutating ? (
+				<div className="flex animate-fade-in-delay justify-center py-2">
+					<Image src={LoadingSVG} alt="loading..." width={20} height={20} />
 				</div>
-			)}
-			<div className="col-span-3"></div>
-			<div className="col-span-2 font-sans">
-				{getClockFromMilliseconds(milliseconds)}
-			</div>
-			{finished ? (
-				<TrashIcon
-					onClick={() => deleteWorkSession({ id: sessionId })}
-					className="hidden group-hover:block hover:text-red-500 w-4 h-4 place-self-end self-center cursor-pointer text-red-400"
-				/>
 			) : (
-				<StopIcon
-					onClick={() => finishWorkSession({ id: sessionId })}
-					className="w-4 h-4 place-self-end self-center cursor-pointer"
-				/>
+				<div
+					className={`grid grid-cols-7 py-2 px-4 items-center bg-grey-500 group`}
+				>
+					{finished ? (
+						<div className="col-span-1 text-grey-200 text-xs">Finished</div>
+					) : (
+						<div className="col-span-1 flex justify-center items-center text-white bg-green-600 text-xs rounded-sm">
+							<span className="py-[2px]">Active</span>
+						</div>
+					)}
+					<div className="col-span-3"></div>
+					<div className="col-span-2 font-sans">
+						{getClockFromMilliseconds(milliseconds)}
+					</div>
+					{finished ? (
+						<TrashIcon
+							onClick={() => deleteWorkSession({ id: sessionId })}
+							className="hidden group-hover:block hover:text-red-500 w-4 h-4 place-self-end self-center cursor-pointer text-red-400"
+						/>
+					) : (
+						<StopIcon
+							onClick={() => finishWorkSession({ id: sessionId })}
+							className="w-4 h-4 place-self-end self-center cursor-pointer"
+						/>
+					)}
+				</div>
 			)}
 		</div>
 	);
@@ -213,7 +219,7 @@ const CreateSessionForm = (): JSX.Element => {
 
 	const qc = useQueryClient();
 
-	const { mutate: createWorkSession } = trpc.useMutation(
+	const { mutate: createWorkSession, isLoading } = trpc.useMutation(
 		["worksessions.create"],
 		{
 			onSuccess: (data: WorkSessionWithWorkPhase) => {
@@ -239,38 +245,45 @@ const CreateSessionForm = (): JSX.Element => {
 	const submitDisabled = !formState.isValid || formState.isSubmitting;
 
 	return (
-		<form
-			onSubmit={handleSubmit((data) => {
-				createWorkSession({ ...data, startTime: getCurrentDate() });
-			})}
-			className="flex justify-between items-center gap-2 mt-2"
-		>
-			<select
-				{...register("workPhaseId")}
-				className="input w-full h-9 rounded-xl bg-grey-700 text-grey-100 text-sm"
-				defaultValue={0}
+		<div>
+			<form
+				onSubmit={handleSubmit((data) => {
+					createWorkSession({ ...data, startTime: getCurrentDate() });
+				})}
+				className="flex justify-between items-center gap-2 mt-2"
 			>
-				{workPhases &&
-					workPhases.map((x) => {
-						return (
-							<option value={x.id} key={x.id}>
-								{x.name}
-							</option>
-						);
-					})}
-			</select>
-			<div className="">
-				<button
-					type="submit"
-					disabled={submitDisabled}
-					className={`w-24 sm:w-32 h-8 bg-blue-500 rounded-md text-sm ${
-						submitDisabled && "opacity-60"
-					}`}
+				<select
+					{...register("workPhaseId")}
+					className="input w-full h-9 rounded-xl bg-grey-700 text-grey-100 text-sm"
+					defaultValue={0}
 				>
-					Start
-				</button>
-			</div>
-		</form>
+					{workPhases &&
+						workPhases.map((x) => {
+							return (
+								<option value={x.id} key={x.id}>
+									{x.name}
+								</option>
+							);
+						})}
+				</select>
+				<div className="">
+					<button
+						type="submit"
+						disabled={submitDisabled}
+						className={`w-24 sm:w-32 h-8 bg-blue-500 rounded-md text-sm ${
+							submitDisabled && "opacity-60"
+						}`}
+					>
+						Start
+					</button>
+				</div>
+			</form>
+			{isLoading && (
+				<div className="flex animate-fade-in-delay justify-center mt-2">
+					<Image src={LoadingSVG} alt="loading..." width={30} height={30} />
+				</div>
+			)}
+		</div>
 	);
 };
 
