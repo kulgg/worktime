@@ -203,18 +203,13 @@ const SessionsGrid = ({
 };
 
 const CreateSessionForm = (): JSX.Element => {
-	const {
-		register,
-		handleSubmit,
-		control,
-		formState: { errors },
-		reset,
-	} = useForm<StartSessionInputType>({
-		resolver: zodResolver(startSessionValidator),
-		defaultValues: {
-			startTime: new Date(),
-		},
-	});
+	const { register, handleSubmit, control, formState, reset } =
+		useForm<StartSessionInputType>({
+			resolver: zodResolver(startSessionValidator),
+			defaultValues: {
+				startTime: new Date(),
+			},
+		});
 
 	const qc = useQueryClient();
 
@@ -241,6 +236,8 @@ const CreateSessionForm = (): JSX.Element => {
 		},
 	});
 
+	const submitDisabled = !formState.isValid || formState.isSubmitting;
+
 	return (
 		<form
 			onSubmit={handleSubmit((data) => {
@@ -265,7 +262,10 @@ const CreateSessionForm = (): JSX.Element => {
 			<div className="">
 				<button
 					type="submit"
-					className="w-24 sm:w-32 h-8 bg-blue-500 rounded-md text-sm"
+					disabled={submitDisabled}
+					className={`w-24 sm:w-32 h-8 bg-blue-500 rounded-md text-sm ${
+						submitDisabled && "opacity-60"
+					}`}
 				>
 					Start
 				</button>
@@ -277,11 +277,8 @@ const CreateSessionForm = (): JSX.Element => {
 const WorkSessions = (): JSX.Element => {
 	const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
-	const {
-		data: workSessions,
-		isLoading: workSessionsIsLoading,
-		refetch: refetchWorkSessions,
-	} = trpc.useQuery(["worksessions.get-todays-sessions"], {});
+	const { data: workSessions, isLoading: workSessionsIsLoading } =
+		trpc.useQuery(["worksessions.get-todays-sessions"], {});
 
 	useEffect(() => {
 		const interval = setInterval(() => {

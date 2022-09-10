@@ -6,10 +6,9 @@
 - [x] Cleanup Home
 - [x] Improve Landing Page
 - [x] Use only icons in mobile menu
-- [ ] Use optimistic update for mutations
-- [ ] Use optimistic update for mutations
 - [x] Delete button on hover
 - [x] Animations
-- [ ] More fluid UX / Button interaction
 - [x] Sign Out Menu
+- [x] More fluid UX / Button interaction
+- [ ] Use optimistic update for mutations
 - [ ] Calendar Page

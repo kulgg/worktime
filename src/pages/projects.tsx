@@ -140,18 +140,13 @@ const Projects = () => {
 		},
 	});
 
-	const {
-		register,
-		handleSubmit,
-		control,
-		formState: { errors },
-		reset,
-	} = useForm<CreateWorkPhaseInputType>({
-		resolver: zodResolver(createWorkPhaseValidator),
-		defaultValues: {
-			name: "",
-		},
-	});
+	const { register, handleSubmit, formState, reset } =
+		useForm<CreateWorkPhaseInputType>({
+			resolver: zodResolver(createWorkPhaseValidator),
+			mode: "onChange",
+		});
+
+	const submitDisabled = !formState.isValid || formState.isSubmitting;
 
 	return (
 		<PageContainer>
@@ -190,14 +185,16 @@ const Projects = () => {
 										<input
 											{...register("name")}
 											className="input w-full rounded-xl h-9 bg-grey-700 text-grey-100 text-sm"
-											defaultValue={0}
 											type="text"
 											placeholder="Secret Project"
 										/>
 										<div className="">
 											<button
 												type="submit"
-												className="w-24 h-8 bg-blue-500 rounded-md text-sm"
+												className={`w-24 h-8 bg-blue-500 rounded-md text-sm ${
+													submitDisabled && "opacity-60"
+												}`}
+												disabled={submitDisabled}
 											>
 												Add
 											</button>
