@@ -4,6 +4,9 @@
 
 - [x] Server Side Rendering (pass Auth)
 - [x] Cleanup Home
+- [ ] Improve Landing Page
+- [ ] Use only icons in mobile menu
+- [ ] Use optimistic update for mutations
 - [ ] Use optimistic update for mutations
 - [x] Delete button on hover
 - [x] Animations
