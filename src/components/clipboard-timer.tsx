@@ -11,7 +11,7 @@ const ClipboardTimer = ({
 
 	return (
 		<div
-			className="flex flex-row gap-1 items-center cursor-pointer"
+			className="flex flex-row gap-1 items-center cursor-pointer select-none"
 			onClick={() => copyToClipboard(clock)}
 		>
 			<span className={clockClassName}>{clock}</span>

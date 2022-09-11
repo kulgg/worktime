@@ -108,10 +108,10 @@ const Calendar = (): JSX.Element => {
 									clockClassName="stat-value font-medium text-grey-100 text-xl"
 								/>
 							</div>
-							<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+							<div className="my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
 								{projectList.map((x) => {
 									return (
-										<div key={x.workPhase?.id}>
+										<div key={x.workPhase?.id} className="shadow-md">
 											<div className="bg-grey-400 text-grey-100 flex items-center text-sm h-10 px-2">
 												{x.workPhase?.name}
 											</div>
