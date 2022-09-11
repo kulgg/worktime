@@ -107,7 +107,9 @@ const SessionElement = ({
 				) : finished ? (
 					<TrashIcon
 						onClick={() => deleteWorkSession({ id: sessionId })}
-						className={trashIconClassName}
+						className={`${
+							editMode ? "block" : "hidden"
+						} sm:hidden sm:group-hover:block hover:text-red-500 w-4 h-4 place-self-end self-center cursor-pointer text-red-400`}
 					/>
 				) : (
 					<StopIcon
@@ -173,11 +175,17 @@ const SessionsGrid = ({
 			ref={parent}
 		>
 			<div
-				className="sm:hidden my-0 py-0"
+				className="sm:hidden my-0 py-0 pr-1"
 				onClick={() => setEditMode((x) => !x)}
 			>
 				<label className="label flex justify-end items-center gap-2 my-0 py-0">
-					<span className="label-text">Edit</span>
+					<span
+						className={`label-text text-sm ${
+							editMode ? "text-grey-100" : "text-grey-200"
+						}`}
+					>
+						Edit
+					</span>
 					<input
 						type="checkbox"
 						className="toggle toggle-sm"
