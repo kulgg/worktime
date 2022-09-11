@@ -99,7 +99,7 @@ const Calendar = (): JSX.Element => {
 						</div>
 					) : (
 						<div>
-							<div className="stat bg-grey-700 mt-3">
+							<div className="stat bg-grey-700">
 								<div className="stat-title text-grey-100 text-sm">
 									Total Work Time
 								</div>
@@ -108,7 +108,7 @@ const Calendar = (): JSX.Element => {
 									clockClassName="stat-value font-medium text-grey-100 text-xl"
 								/>
 							</div>
-							<div className="my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+							<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 								{projectList.map((x) => {
 									return (
 										<div key={x.workPhase?.id} className="shadow-md">
