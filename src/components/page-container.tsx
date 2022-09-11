@@ -14,9 +14,9 @@ const PageContainer = ({
 	return (
 		<div className="block sm:flex flex-row bg-grey-600">
 			<Sidebar />
-			<div className="text-white flex flex-col h-full w-full">
+			<div className="text-white flex flex-col h-screen w-full">
 				<Header />
-				<div className="mt-9 mb-auto container mx-auto lg:px-0 px-4">
+				<div className="bg-grey-600 mt-9 mb-auto container mx-auto lg:px-0 px-4">
 					{children}
 				</div>
 				<div className="md:hidden">

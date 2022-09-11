@@ -1,14 +1,11 @@
 import { signOut, useSession } from "next-auth/react";
-import { Menu } from "@headlessui/react";
 import Link from "next/link";
-import Image from "next/image";
-import { BriefcaseIcon, HomeIcon } from "@heroicons/react/solid";
 
 const Header = (): JSX.Element => {
 	const { data: session } = useSession();
 
 	return (
-		<header className="sticky top-0 z-50 bg-grey-600 px-2 lg:px-6 drop-shadow-lg h-14 flex flex-col justify-center">
+		<header className="sticky top-0 z-50 py-4 bg-grey-600 px-2 lg:px-6 drop-shadow-lg h-14 flex flex-col justify-center">
 			<div className="flex justify-between items-center w-full self-center">
 				<Link href="/">
 					<h1 className="text-2xl font-semibold">WTT</h1>
