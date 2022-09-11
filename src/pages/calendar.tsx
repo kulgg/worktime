@@ -24,13 +24,12 @@ import { authOptions } from "./api/auth/[...nextauth]";
 interface TimeFrameStats {
 	name: string;
 	afterDate: Date;
-	projects: [{}];
 }
 
 const timeFrames: TimeFrameStats[] = [
-	{ name: "Week", afterDate: getStartOfWeek(), projects: [{}] },
-	{ name: "Month", afterDate: getStartOfMonth(), projects: [{}] },
-	{ name: "Year", afterDate: getStartOfYear(), projects: [{}] },
+	{ name: "Week", afterDate: getStartOfWeek() },
+	{ name: "Month", afterDate: getStartOfMonth() },
+	{ name: "Year", afterDate: getStartOfYear() },
 ];
 
 const Calendar = (): JSX.Element => {
@@ -99,7 +98,7 @@ const Calendar = (): JSX.Element => {
 						</div>
 					) : (
 						<div>
-							<div className="stat bg-grey-700">
+							<div className="stat bg-grey-700 mt-3">
 								<div className="stat-title text-grey-100 text-sm">
 									Total Work Time
 								</div>
@@ -110,7 +109,7 @@ const Calendar = (): JSX.Element => {
 							<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
 								{projectList.map((x) => {
 									return (
-										<div>
+										<div key={x.workPhase?.id}>
 											<div className="bg-grey-400 text-grey-100 flex items-center text-sm h-10 px-2">
 												{x.workPhase?.name}
 											</div>

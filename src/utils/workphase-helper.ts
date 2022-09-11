@@ -11,9 +11,9 @@ interface WorkphaseWithTotalTime {
 const getListOfWorkPhasesWithSessions = (
 	x: Record<string, WorkSessionWithWorkPhase[]>
 ): WorkphaseWithTotalTime[] => {
-	let results: WorkphaseWithTotalTime[] = [];
+	const results: WorkphaseWithTotalTime[] = [];
 	Object.keys(x).forEach((project, i) => {
-		let entry: WorkphaseWithTotalTime = {
+		const entry: WorkphaseWithTotalTime = {
 			milliseconds: 0,
 			sessions: 0,
 			workPhase: undefined,
