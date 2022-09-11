@@ -24,7 +24,7 @@ import { useQueryClient } from "react-query";
 import LoadingSVG from "../assets/puff.svg";
 import { groupBy } from "../utils/arrays";
 import { copyWorkTimeToClipboard } from "../utils/clipboard";
-import { totalMilliseconds } from "../utils/worksessions";
+import { getTotalMilliseconds } from "../utils/worksessions";
 
 const workSessionWithWorkPhase = Prisma.validator<Prisma.WorkSessionArgs>()({
 	include: { workPhase: true },
@@ -169,13 +169,19 @@ const SessionsGrid = ({
 								className="flex flex-row justify-center gap-1 items-center cursor-pointer"
 								onClick={() =>
 									copyWorkTimeToClipboard(
-										totalMilliseconds(currentDate, sessionsByProject[project])
+										getTotalMilliseconds(
+											currentDate,
+											sessionsByProject[project]
+										)
 									)
 								}
 							>
 								<span className="text-blue-400 font-sans font-medium">
 									{getClockFromMilliseconds(
-										totalMilliseconds(currentDate, sessionsByProject[project])
+										getTotalMilliseconds(
+											currentDate,
+											sessionsByProject[project]
+										)
 									)}
 								</span>
 								<svg
