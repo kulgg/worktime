@@ -99,7 +99,7 @@ const Calendar = (): JSX.Element => {
 						</div>
 					) : (
 						<div>
-							<div className="stat bg-grey-700">
+							<div className="mt-2 stat bg-grey-700">
 								<div className="stat-title text-grey-100 text-sm">
 									Total Work Time
 								</div>

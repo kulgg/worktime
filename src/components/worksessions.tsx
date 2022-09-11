@@ -157,7 +157,7 @@ const SessionsGrid = ({
 
 	return (
 		<div
-			className="bg-grey-600 py-6 text-sm mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"
+			className="bg-grey-600 pt-2 text-sm mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"
 			ref={parent}
 		>
 			{Object.keys(sessionsByProject).map((project: string, i) => {
