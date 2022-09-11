@@ -5,6 +5,7 @@ import { unstable_getServerSession } from "next-auth";
 import Image from "next/image";
 import { useState } from "react";
 import LoadingSVG from "../assets/puff.svg";
+import ClipboardTimer from "../components/clipboard-timer";
 import PageContainer from "../components/page-container";
 import { WorkSessionWithWorkPhase } from "../components/worksessions";
 import { groupBy } from "../utils/arrays";
@@ -102,9 +103,10 @@ const Calendar = (): JSX.Element => {
 								<div className="stat-title text-grey-100 text-sm">
 									Total Work Time
 								</div>
-								<div className="stat-value font-medium text-grey-100 text-xl">
-									{getHoursClockFromMilliseconds(totalMilliseconds)} h
-								</div>
+								<ClipboardTimer
+									clock={getHoursClockFromMilliseconds(totalMilliseconds)}
+									clockClassName="stat-value font-medium text-grey-100 text-xl"
+								/>
 							</div>
 							<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
 								{projectList.map((x) => {
@@ -117,9 +119,10 @@ const Calendar = (): JSX.Element => {
 												<div className="text-grey-200 text-xs">
 													{x.sessions} Session{x.sessions > 1 ? "s" : ""}
 												</div>
-												<div className="font-semibold text-blue-400 flex items-center justify-center h-8">
-													{getHoursClockFromMilliseconds(x.milliseconds)} h
-												</div>
+												<ClipboardTimer
+													clock={getHoursClockFromMilliseconds(x.milliseconds)}
+													clockClassName="font-semibold text-blue-400 flex items-center justify-center h-8"
+												/>
 											</div>
 										</div>
 									);

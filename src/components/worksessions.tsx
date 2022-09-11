@@ -23,8 +23,8 @@ import Image from "next/image";
 import { useQueryClient } from "react-query";
 import LoadingSVG from "../assets/puff.svg";
 import { groupBy } from "../utils/arrays";
-import { copyWorkTimeToClipboard } from "../utils/clipboard";
 import { getTotalMilliseconds } from "../utils/worksessions";
+import ClipboardTimer from "./clipboard-timer";
 
 const workSessionWithWorkPhase = Prisma.validator<Prisma.WorkSessionArgs>()({
 	include: { workPhase: true },
@@ -165,40 +165,12 @@ const SessionsGrid = ({
 					<div key={project} className="bg-grey-500 shadow-md">
 						<div className="px-4 py-2 bg-grey-400 text-grey-100 flex justify-between items-center">
 							<span>{sessionsByProject[project]?.at(0)?.workPhase.name}</span>
-							<div
-								className="flex flex-row justify-center gap-1 items-center cursor-pointer"
-								onClick={() =>
-									copyWorkTimeToClipboard(
-										getTotalMilliseconds(
-											currentDate,
-											sessionsByProject[project]
-										)
-									)
-								}
-							>
-								<span className="text-blue-400 font-sans font-medium">
-									{getClockFromMilliseconds(
-										getTotalMilliseconds(
-											currentDate,
-											sessionsByProject[project]
-										)
-									)}
-								</span>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									strokeWidth={1.2}
-									stroke="currentColor"
-									className="w-4 h-4"
-								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"
-									/>
-								</svg>
-							</div>
+							<ClipboardTimer
+								clock={getClockFromMilliseconds(
+									getTotalMilliseconds(currentDate, sessionsByProject[project])
+								)}
+								clockClassName="text-blue-400 font-sans font-medium"
+							/>
 						</div>
 
 						<SessionsContainer
@@ -337,28 +309,10 @@ const WorkSessions = (): JSX.Element => {
 				</div>
 				<div className="text-center flex flex-row gap-1 sm:gap-2 items-center justify-center">
 					<span className="text-grey-200 text-[10px] sm:text-xs">Total</span>
-					<div
-						className="flex flex-row justify-center gap-1 items-center cursor-pointer"
-						onClick={() => copyWorkTimeToClipboard(totalMillisecondsToday)}
-					>
-						<span className="text-grey-100 font-sans text-sm sm:text-base">
-							{getClockFromMilliseconds(totalMillisecondsToday)}
-						</span>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							strokeWidth={1.2}
-							stroke="currentColor"
-							className="w-4 h-4"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"
-							/>
-						</svg>
-					</div>
+					<ClipboardTimer
+						clock={getClockFromMilliseconds(totalMillisecondsToday)}
+						clockClassName="text-grey-100 font-sans text-sm sm:text-base"
+					/>
 				</div>
 			</div>
 			<div className="py-2"></div>
