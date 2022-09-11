@@ -12,7 +12,6 @@ const HomeContents = (): JSX.Element => {
 };
 
 const Home = () => {
-	console.log("rendering");
 	const { data: session } = useSession();
 
 	if (!session) {

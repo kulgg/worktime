@@ -37,10 +37,12 @@ const SessionElement = ({
 	milliseconds,
 	finished,
 	sessionId,
+	editMode,
 }: {
 	milliseconds: number;
 	finished: boolean;
 	sessionId: string;
+	editMode: boolean;
 }): JSX.Element => {
 	const qc = useQueryClient();
 
@@ -78,10 +80,14 @@ const SessionElement = ({
 
 	const isMutating = finishWorkSessionIsLoading || deleteWorkSessionIsLoading;
 
+	const trashIconClassName = `${
+		editMode ? "block" : "hidden"
+	} sm:hidden sm:group-hover:block hover:text-red-500 w-5 h-5 place-self-end self-center cursor-pointer text-red-400`;
+
 	return (
 		<div>
 			<div
-				className={`grid grid-cols-7 py-2 px-4 items-center bg-grey-500 group`}
+				className={`grid grid-cols-7 py-3 px-4 items-center bg-grey-500 group`}
 			>
 				{finished ? (
 					<div className="col-span-1 text-grey-200 text-xs">Finished</div>
@@ -101,12 +107,12 @@ const SessionElement = ({
 				) : finished ? (
 					<TrashIcon
 						onClick={() => deleteWorkSession({ id: sessionId })}
-						className="hidden group-hover:block hover:text-red-500 w-4 h-4 place-self-end self-center cursor-pointer text-red-400"
+						className={trashIconClassName}
 					/>
 				) : (
 					<StopIcon
 						onClick={() => finishWorkSession({ id: sessionId })}
-						className="w-4 h-4 place-self-end self-center cursor-pointer"
+						className="w-5 h-5 place-self-end self-center cursor-pointer"
 					/>
 				)}
 			</div>
@@ -117,9 +123,11 @@ const SessionElement = ({
 const SessionsContainer = ({
 	projectSessions,
 	currentDate,
+	editMode,
 }: {
 	projectSessions: WorkSessionWithWorkPhase[];
 	currentDate: Date;
+	editMode: boolean;
 }): JSX.Element => {
 	const [sessionsContainer] = useAutoAnimate<HTMLDivElement>();
 
@@ -132,6 +140,7 @@ const SessionsContainer = ({
 						milliseconds={getMillisecondsDifference(x.finishTime, x.startTime)}
 						sessionId={x.id}
 						finished={true}
+						editMode={editMode}
 					/>
 				) : (
 					<SessionElement
@@ -139,6 +148,7 @@ const SessionsContainer = ({
 						milliseconds={getMillisecondsDifference(currentDate, x.startTime)}
 						sessionId={x.id}
 						finished={false}
+						editMode={editMode}
 					/>
 				);
 			})}
@@ -155,11 +165,26 @@ const SessionsGrid = ({
 }): JSX.Element => {
 	const [parent] = useAutoAnimate<HTMLDivElement>();
 
+	const [editMode, setEditMode] = useState<boolean>(false);
+
 	return (
 		<div
 			className="bg-grey-600 pt-2 text-sm mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"
 			ref={parent}
 		>
+			<div
+				className="sm:hidden my-0 py-0"
+				onClick={() => setEditMode((x) => !x)}
+			>
+				<label className="label flex justify-end items-center gap-2 my-0 py-0">
+					<span className="label-text">Edit</span>
+					<input
+						type="checkbox"
+						className="toggle toggle-sm"
+						checked={editMode}
+					/>
+				</label>
+			</div>
 			{Object.keys(sessionsByProject).map((project: string, i) => {
 				return (
 					<div key={project} className="bg-grey-500 shadow-md">
@@ -176,6 +201,7 @@ const SessionsGrid = ({
 						<SessionsContainer
 							projectSessions={sessionsByProject[project]!}
 							currentDate={currentDate}
+							editMode={editMode}
 						/>
 					</div>
 				);
@@ -242,7 +268,7 @@ const CreateSessionForm = (): JSX.Element => {
 							);
 						})}
 				</select>
-				<div className="">
+				<div className="flex items-center gap-4">
 					<button
 						type="submit"
 						disabled={submitDisabled}
