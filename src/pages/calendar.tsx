@@ -114,8 +114,13 @@ const Calendar = (): JSX.Element => {
 											<div className="bg-grey-400 text-grey-100 flex items-center text-sm h-10 px-2">
 												{x.workPhase?.name}
 											</div>
-											<div className="bg-grey-500 font-semibold text-blue-400 flex items-center justify-center h-8">
-												{getHoursClockFromMilliseconds(x.milliseconds)} h
+											<div className="flex items-center justify-between px-3 bg-grey-500">
+												<div className="text-grey-200 text-xs">
+													{x.sessions} Session{x.sessions > 1 ? "s" : ""}
+												</div>
+												<div className="font-semibold text-blue-400 flex items-center justify-center h-8">
+													{getHoursClockFromMilliseconds(x.milliseconds)} h
+												</div>
 											</div>
 										</div>
 									);

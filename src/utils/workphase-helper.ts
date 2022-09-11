@@ -5,6 +5,7 @@ import { getSessionMilliseconds } from "./worksessions";
 interface WorkphaseWithTotalTime {
 	workPhase: WorkPhase | undefined;
 	milliseconds: number;
+	sessions: number;
 }
 
 const getListOfWorkPhasesWithSessions = (
@@ -14,10 +15,12 @@ const getListOfWorkPhasesWithSessions = (
 	Object.keys(x).forEach((project, i) => {
 		let entry: WorkphaseWithTotalTime = {
 			milliseconds: 0,
+			sessions: 0,
 			workPhase: undefined,
 		};
 		x[project]?.forEach((session) => {
 			entry.milliseconds += getSessionMilliseconds(new Date(), session);
+			entry.sessions += 1;
 		});
 
 		if (entry && entry.milliseconds > 0) {

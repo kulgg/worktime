@@ -3,7 +3,9 @@ const getHoursFromMilliseconds = (x: number): number => {
 };
 
 const getHoursClockFromMilliseconds = (x: number): string => {
-	return getHoursFromMilliseconds(x).toFixed(2).replace(".", ":");
+	let hoursDecimal = getHoursFromMilliseconds(x);
+	hoursDecimal = Math.floor(hoursDecimal) + ((hoursDecimal % 1) / 100) * 60;
+	return hoursDecimal.toFixed(2).replace(".", ":");
 };
 
 export { getHoursFromMilliseconds, getHoursClockFromMilliseconds };
