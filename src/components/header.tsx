@@ -4,6 +4,7 @@ import Link from "next/link";
 const Header = (): JSX.Element => {
 	const { data: session } = useSession();
 
+	console.log(session?.user);
 	return (
 		<header className="sticky top-0 z-50 py-4 bg-grey-600 px-2 lg:px-6 drop-shadow-lg h-14 flex flex-col justify-center">
 			<div className="flex justify-between items-center w-full self-center">

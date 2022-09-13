@@ -1,7 +1,7 @@
 import type { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
-import GoogleButton from "react-google-button";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import Header from "../components/header";
 import PageContainer from "../components/page-container";
 import WorkSessions from "../components/worksessions";
@@ -23,7 +23,22 @@ const Home = () => {
 						Start tracking your work time today.
 					</h1>
 					<h2 className="text-grey-200">Free forever.</h2>
-					<GoogleButton onClick={() => signIn("google")} />
+					<button
+						type="button"
+						className="flex items-center gap-2 rounded-lg bg-blue-500 hover:bg-blue-600 px-6 py-2.5 text-center text-md font-medium text-white"
+						onClick={() => signIn("google")}
+					>
+						<FaGoogle size={18} />
+						Sign in with Google
+					</button>
+					<button
+						type="button"
+						className="flex items-center gap-2 rounded-lg bg-blue-500 hover:bg-blue-600 px-6 py-2.5 text-center text-md font-medium text-white"
+						onClick={() => signIn("github")}
+					>
+						<FaGithub size={18} />
+						Sign in with Github
+					</button>
 				</div>
 			</div>
 		);

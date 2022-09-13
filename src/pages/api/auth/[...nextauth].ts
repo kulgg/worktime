@@ -1,10 +1,11 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
+import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "../../../server/db/client";
 import { env } from "../../../env/server.mjs";
+import { prisma } from "../../../server/db/client";
 
 export const authOptions: NextAuthOptions = {
 	// Include user.id on session
@@ -36,6 +37,10 @@ export const authOptions: NextAuthOptions = {
 					access_type: "offline",
 				},
 			},
+		}),
+		GithubProvider({
+			clientId: env.GITHUB_CLIENT_ID,
+			clientSecret: env.GITHUB_CLIENT_SECRET,
 		}),
 	],
 };
