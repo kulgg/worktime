@@ -2,7 +2,7 @@
 
 ## Additional features
 
-- [x] Server Side Rendering (pass Auth)
+- [x] Server Side Rendering
 - [x] Cleanup Home
 - [x] Improve Landing Page
 - [x] Use only icons in mobile menu
@@ -11,4 +11,6 @@
 - [x] Sign Out Menu
 - [x] More fluid UX / Button interaction
 - [x] Show load animation for mutations
-- [ ] Calendar Page
+- [x] Calendar Page
+- [ ] Optimize production bundle
+- [ ] Optimize production css
