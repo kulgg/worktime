@@ -6,16 +6,13 @@
  * @param {T} config - A generic parameter that flows through to the return type
  * @constraint {{import('next').NextConfig}}
  */
-import withBundleAnalyzer from "@next/bundle-analyzer";
 
 function defineNextConfig(config) {
 	return config;
 }
 
-export default withBundleAnalyzer(
-	defineNextConfig({
-		reactStrictMode: true,
-		swcMinify: true,
-		experimental: { newNextLinkBehavior: true },
-	})
-);
+export default defineNextConfig({
+	reactStrictMode: true,
+	swcMinify: true,
+	experimental: { newNextLinkBehavior: true },
+});
