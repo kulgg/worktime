@@ -1,3 +1,7 @@
+function copyToClipboard(content: string) {
+	navigator.clipboard.writeText(content);
+}
+
 const ClipboardTimer = ({
 	clock,
 	clockClassName,
@@ -5,10 +9,6 @@ const ClipboardTimer = ({
 	clock: string;
 	clockClassName: string;
 }): JSX.Element => {
-	function copyToClipboard(content: string) {
-		navigator.clipboard.writeText(content);
-	}
-
 	return (
 		<div
 			className="flex flex-row gap-1 items-center cursor-pointer select-none"

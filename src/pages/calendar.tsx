@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import LoadingSVG from "../assets/puff.svg";
 import ClipboardTimer from "../components/clipboard-timer";
-import PageContainer from "../components/page-container";
+import PageContainer from "../components/layout/page-container";
 import { WorkSessionWithWorkPhase } from "../components/worksessions";
 import { groupBy } from "../utils/arrays";
 import {
@@ -33,7 +33,7 @@ const timeFrames: TimeFrameStats[] = [
 ];
 
 const Calendar = (): JSX.Element => {
-	const [activeTimeFrameIndex, setActiveTimeFrameIndex] = useState<number>(1);
+	const [activeTimeFrameIndex, setActiveTimeFrameIndex] = useState(1);
 	const activeTimeFrame = timeFrames[activeTimeFrameIndex];
 
 	if (!activeTimeFrame) {

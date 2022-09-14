@@ -2,13 +2,30 @@ import type { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
-import Header from "../components/header";
-import PageContainer from "../components/page-container";
+import Header from "../components/layout/header";
+import PageContainer from "../components/layout/page-container";
 import WorkSessions from "../components/worksessions";
 import { authOptions } from "./api/auth/[...nextauth]";
 
-const HomeContents = (): JSX.Element => {
-	return <WorkSessions />;
+const SignInWithButton = ({
+	icon,
+	provider_name,
+	displayed_name,
+}: {
+	icon: JSX.Element;
+	provider_name: string;
+	displayed_name: string;
+}): JSX.Element => {
+	return (
+		<button
+			type="button"
+			className="flex items-center gap-2 rounded-lg bg-blue-500 hover:bg-blue-600 px-6 py-2.5 text-center text-md font-medium text-white"
+			onClick={() => signIn(provider_name)}
+		>
+			{icon}
+			Sign in with {displayed_name}
+		</button>
+	);
 };
 
 const Home = () => {
@@ -23,22 +40,16 @@ const Home = () => {
 						Start tracking your work time today.
 					</h1>
 					<h2 className="text-grey-200">Free forever.</h2>
-					<button
-						type="button"
-						className="flex items-center gap-2 rounded-lg bg-blue-500 hover:bg-blue-600 px-6 py-2.5 text-center text-md font-medium text-white"
-						onClick={() => signIn("google")}
-					>
-						<FaGoogle size={18} />
-						Sign in with Google
-					</button>
-					<button
-						type="button"
-						className="flex items-center gap-2 rounded-lg bg-blue-500 hover:bg-blue-600 px-6 py-2.5 text-center text-md font-medium text-white"
-						onClick={() => signIn("github")}
-					>
-						<FaGithub size={18} />
-						Sign in with Github
-					</button>
+					<SignInWithButton
+						icon={<FaGoogle size={18} />}
+						provider_name="google"
+						displayed_name="Google"
+					/>
+					<SignInWithButton
+						icon={<FaGithub size={18} />}
+						provider_name="github"
+						displayed_name="GitHub"
+					/>
 				</div>
 			</div>
 		);

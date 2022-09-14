@@ -29,22 +29,12 @@ const SidebarEntry = ({
 
 const Sidebar = (): JSX.Element => {
 	return (
-		<div className="bg-grey-700 w-40 hidden md:block pt-16 pl-1">
-			<nav className="flex flex-col items-center text-white gap-4">
-				<SidebarEntry text="Home" icon={<HomeIcon />} page="/" />
-				<SidebarEntry
-					text="Projects"
-					icon={<BriefcaseIcon />}
-					page="/projects"
-				/>
-				<SidebarEntry
-					text="Calendar"
-					icon={<CalendarIcon />}
-					page="/calendar"
-				/>
-				<SidebarEntry text="Settings" icon={<CogIcon />} page="/" />
-			</nav>
-		</div>
+		<nav className="flex flex-col items-center text-white gap-4">
+			<SidebarEntry text="Home" icon={<HomeIcon />} page="/" />
+			<SidebarEntry text="Projects" icon={<BriefcaseIcon />} page="/projects" />
+			<SidebarEntry text="Calendar" icon={<CalendarIcon />} page="/calendar" />
+			<SidebarEntry text="Settings" icon={<CogIcon />} page="/" />
+		</nav>
 	);
 };
 

@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import LoadingSVG from "../assets/puff.svg";
-import PageContainer from "../components/page-container";
+import PageContainer from "../components/layout/page-container";
 import {
 	CreateWorkPhaseInputType,
 	createWorkPhaseValidator,

@@ -136,20 +136,14 @@ const SessionsContainer = ({
 	return (
 		<div ref={sessionsContainer}>
 			{projectSessions.map((x, i) => {
-				return x.finishTime ? (
+				const endTime = x.finishTime ? x.finishTime : currentDate;
+
+				return (
 					<SessionElement
 						key={x.id}
-						milliseconds={getMillisecondsDifference(x.finishTime, x.startTime)}
+						milliseconds={getMillisecondsDifference(endTime, x.startTime)}
 						sessionId={x.id}
-						finished={true}
-						editMode={editMode}
-					/>
-				) : (
-					<SessionElement
-						key={x.id}
-						milliseconds={getMillisecondsDifference(currentDate, x.startTime)}
-						sessionId={x.id}
-						finished={false}
+						finished={x.finishTime ? true : false}
 						editMode={editMode}
 					/>
 				);
@@ -168,7 +162,6 @@ const SessionsGrid = ({
 	const [parent] = useAutoAnimate<HTMLDivElement>();
 
 	const [editMode, setEditMode] = useState<boolean>(false);
-
 	return (
 		<div
 			className="bg-grey-600 pt-2 text-sm mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"
@@ -190,6 +183,7 @@ const SessionsGrid = ({
 						type="checkbox"
 						className="toggle toggle-sm"
 						checked={editMode}
+						readOnly
 					/>
 				</label>
 			</div>
@@ -298,7 +292,7 @@ const CreateSessionForm = (): JSX.Element => {
 };
 
 const WorkSessions = (): JSX.Element => {
-	const [currentDate, setCurrentDate] = useState<Date>(new Date());
+	const [currentDate, setCurrentDate] = useState(new Date());
 
 	const { data: workSessions, isLoading: workSessionsIsLoading } =
 		trpc.useQuery(["worksessions.get-todays-sessions"], {});
@@ -320,16 +314,10 @@ const WorkSessions = (): JSX.Element => {
 				: {};
 		}, [workSessions]);
 
-	const totalMillisecondsToday =
-		workSessions && workSessions.length > 0
-			? workSessions
-					.map((x) => {
-						return x.finishTime
-							? getMillisecondsDifference(x.finishTime, x.startTime)
-							: getMillisecondsDifference(currentDate, x.startTime);
-					})
-					.reduce((acc, x) => acc + x)
-			: 0;
+	const totalMillisecondsToday = getTotalMilliseconds(
+		currentDate,
+		workSessions
+	);
 
 	return (
 		<div>
