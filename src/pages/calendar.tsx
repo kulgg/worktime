@@ -1,5 +1,4 @@
 import { CalendarIcon } from "@heroicons/react/solid";
-import "datejs";
 import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
 import Image from "next/image";

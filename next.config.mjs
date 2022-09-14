@@ -1,5 +1,3 @@
-import { env } from "./src/env/server.mjs";
-
 /**
  * Don't be scared of the generics here.
  * All they do is to give us autocompletion when using this.
@@ -8,12 +6,16 @@ import { env } from "./src/env/server.mjs";
  * @param {T} config - A generic parameter that flows through to the return type
  * @constraint {{import('next').NextConfig}}
  */
+import withBundleAnalyzer from "@next/bundle-analyzer";
+
 function defineNextConfig(config) {
 	return config;
 }
 
-export default defineNextConfig({
-	reactStrictMode: true,
-	swcMinify: true,
-	experimental: { newNextLinkBehavior: true },
-});
+export default withBundleAnalyzer(
+	defineNextConfig({
+		reactStrictMode: true,
+		swcMinify: true,
+		experimental: { newNextLinkBehavior: true },
+	})
+);
