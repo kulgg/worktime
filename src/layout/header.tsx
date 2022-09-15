@@ -8,9 +8,7 @@ const Header = (): JSX.Element => {
 		<header className="sticky top-0 z-50 py-4 bg-grey-600 px-2 lg:px-6 drop-shadow-lg h-14 flex flex-col justify-center">
 			<div className="flex justify-between items-center w-full self-center">
 				<Link href="/">
-					<h1 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-500">
-						WTT
-					</h1>
+					<h1 className="text-2xl font-semibold">WTT</h1>
 				</Link>
 				<div className="text-sm leading-normal">
 					{session && (
