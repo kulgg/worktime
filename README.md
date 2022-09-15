@@ -1,5 +1,7 @@
 # Work Time Tracker
 
+A work time tracker built using all modules of the [T3 Stack](https://github.com/t3-oss/create-t3-app) (Next.js, tRPC, Prisma, NextAuth.js and Tailwind).
+
 ## Additional features
 
 - [x] Server Side Rendering
