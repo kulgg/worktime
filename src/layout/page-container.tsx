@@ -1,8 +1,8 @@
 import { useSession } from "next-auth/react";
 import React from "react";
-import Sidebar from "../sidebar";
 import Footer from "./footer";
 import Header from "./header";
+import Sidebar from "./sidebar";
 
 const PageContainer = ({
 	children,

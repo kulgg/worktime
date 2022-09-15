@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useState } from "react";
 import LoadingSVG from "../assets/puff.svg";
 import ClipboardTimer from "../components/clipboard-timer";
-import PageContainer from "../components/layout/page-container";
 import { WorkSessionWithWorkPhase } from "../components/worksessions";
+import PageContainer from "../layout/page-container";
 import { groupBy } from "../utils/arrays";
 import {
 	getStartOfMonth,

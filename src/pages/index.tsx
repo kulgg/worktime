@@ -2,9 +2,9 @@ import type { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
-import Header from "../components/layout/header";
-import PageContainer from "../components/layout/page-container";
 import WorkSessions from "../components/worksessions";
+import Header from "../layout/header";
+import PageContainer from "../layout/page-container";
 import { authOptions } from "./api/auth/[...nextauth]";
 
 const SignInWithButton = ({
