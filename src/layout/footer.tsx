@@ -1,10 +1,6 @@
-import {
-	BookOpenIcon,
-	BriefcaseIcon,
-	CogIcon,
-	HomeIcon,
-} from "@heroicons/react/solid";
+import { BookOpenIcon, BriefcaseIcon, HomeIcon } from "@heroicons/react/solid";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const FooterNavEntry = ({
 	icon,
@@ -13,9 +9,16 @@ const FooterNavEntry = ({
 	icon: JSX.Element;
 	href: string;
 }): JSX.Element => {
+	const router = useRouter();
 	return (
 		<Link className="flex flex-col items-center gap-[2px]" href={href}>
-			<div className="w-6 h-6 text-grey-200">{icon}</div>
+			<div
+				className={`${
+					router.pathname === href ? "text-white" : "text-grey-200"
+				} w-6 h-6`}
+			>
+				{icon}
+			</div>
 		</Link>
 	);
 };
@@ -28,7 +31,6 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 				<FooterNavEntry icon={<HomeIcon />} href="/" />
 				<FooterNavEntry icon={<BriefcaseIcon />} href="/projects" />
 				<FooterNavEntry icon={<BookOpenIcon />} href="/total" />
-				<FooterNavEntry icon={<CogIcon />} href="/" />
 			</nav>
 		</footer>
 	);
