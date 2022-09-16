@@ -168,23 +168,23 @@ const SessionsGrid = ({
 			ref={parent}
 		>
 			<div
-				className="sm:hidden my-0 py-0 pr-1"
-				onClick={() => setEditMode((x) => !x)}
+				className={`${
+					Object.keys(sessionsByProject).length > 0 ? "flex" : "hidden"
+				} md:hidden justify-end pr-2`}
 			>
-				<label className="label flex justify-end items-center gap-2 my-0 py-0">
-					<span
-						className={`label-text text-sm ${
-							editMode ? "text-grey-100" : "text-grey-200"
-						}`}
-					>
-						Edit
-					</span>
+				<label
+					htmlFor="small-toggle"
+					className="inline-flex relative items-center justify-end cursor-pointer"
+				>
 					<input
 						type="checkbox"
-						className="toggle toggle-sm"
-						checked={editMode}
-						readOnly
+						value=""
+						id="small-toggle"
+						className="sr-only peer"
+						onClick={() => setEditMode((y) => !y)}
 					/>
+					<div className="w-7 h-4 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+					<span className="ml-1 text-xs font-medium text-grey-200">Edit</span>
 				</label>
 			</div>
 			{Object.keys(sessionsByProject).map((project: string, i) => {
