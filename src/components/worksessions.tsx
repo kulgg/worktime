@@ -80,10 +80,6 @@ const SessionElement = ({
 
 	const isMutating = finishWorkSessionIsLoading || deleteWorkSessionIsLoading;
 
-	const trashIconClassName = `${
-		editMode ? "block" : "hidden"
-	} sm:hidden sm:group-hover:block hover:text-red-500 w-5 h-5 place-self-end self-center cursor-pointer text-red-400`;
-
 	return (
 		<div>
 			<div
@@ -160,7 +156,6 @@ const SessionsGrid = ({
 	currentDate: Date;
 }): JSX.Element => {
 	const [parent] = useAutoAnimate<HTMLDivElement>();
-
 	const [editMode, setEditMode] = useState<boolean>(false);
 	return (
 		<div
@@ -170,7 +165,7 @@ const SessionsGrid = ({
 			<div
 				className={`${
 					Object.keys(sessionsByProject).length > 0 ? "flex" : "hidden"
-				} md:hidden justify-end pr-2`}
+				} md:hidden justify-end pr-[1px]`}
 			>
 				<label
 					htmlFor="small-toggle"
