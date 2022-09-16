@@ -1,3 +1,4 @@
+import { Menu } from "@headlessui/react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
@@ -14,21 +15,43 @@ const Header = (): JSX.Element => {
 					{session && (
 						<div className="flex flex-row gap-4 justify-center items-center">
 							{session.user?.image && (
-								<div className="dropdown dropdown-end cursor-pointer">
-									<img
-										src={session.user.image}
-										className="rounded-full w-8"
-										tabIndex={0}
-									/>
-									<ul
-										tabIndex={0}
-										className="dropdown-content bg-grey-800 menu shadow mt-2 rounded-md w-32"
+								<Menu as="div">
+									<Menu.Button className="cursor-pointer">
+										<img
+											src={session.user.image}
+											className="rounded-full w-8"
+											tabIndex={0}
+										/>
+									</Menu.Button>
+
+									<Menu.Items
+										id="dropdownInformation"
+										className={`absolute top-[50px] right-4 z-10 w-50 bg-white rounded divide-y divide-grey-100 shadow dark:bg-grey-700 dark:divide-grey-600`}
+										data-popper-reference-hidden=""
+										data-popper-escaped=""
+										data-popper-placement="bottom"
 									>
-										<li className="hover:bg-grey-700 focus:bg-grey-900">
-											<a onClick={() => signOut()}>Sign Out</a>
-										</li>
-									</ul>
-								</div>
+										<div className="py-3 px-4 text-sm text-grey-900 dark:text-white">
+											<div>{session.user.name}</div>
+											<div className="font-medium truncate">
+												{session.user.email}
+											</div>
+										</div>
+										<ul
+											className="py-1 text-sm text-grey-700 dark:text-grey-200"
+											aria-labelledby="dropdownInformationButton"
+										>
+											<li>
+												<a
+													onClick={() => signOut()}
+													className="cursor-pointer block py-2 px-4 hover:bg-grey-100 dark:hover:bg-grey-600 dark:hover:text-white"
+												>
+													Sign Out
+												</a>
+											</li>
+										</ul>
+									</Menu.Items>
+								</Menu>
 							)}
 						</div>
 					)}
