@@ -258,7 +258,7 @@ const CreateSessionForm = (): JSX.Element => {
 			>
 				<select
 					{...register("workPhaseId")}
-					className="input w-full h-9 rounded-xl bg-grey-700 text-grey-100 text-sm"
+					className="input w-full h-9 pl-3 rounded-xl bg-grey-700 text-grey-100 text-sm"
 					defaultValue={0}
 				>
 					{workPhases &&

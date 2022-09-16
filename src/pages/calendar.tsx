@@ -33,7 +33,7 @@ const timeFrames: TimeFrameStats[] = [
 ];
 
 const Calendar = (): JSX.Element => {
-	const [activeTimeFrameIndex, setActiveTimeFrameIndex] = useState(1);
+	const [activeTimeFrameIndex, setActiveTimeFrameIndex] = useState(0);
 	const activeTimeFrame = timeFrames[activeTimeFrameIndex];
 
 	if (!activeTimeFrame) {
@@ -98,10 +98,8 @@ const Calendar = (): JSX.Element => {
 						</div>
 					) : (
 						<div>
-							<div className="mt-2 stat bg-grey-700">
-								<div className="stat-title text-grey-100 text-sm">
-									Total Work Time
-								</div>
+							<div className="mt-2 h-20 bg-grey-700 flex flex-col justify-center px-6">
+								<div className="text-grey-200 text-sm">Total Work Time</div>
 								<ClipboardTimer
 									clock={getHoursClockFromMilliseconds(totalMilliseconds)}
 									clockClassName="stat-value font-medium text-grey-100 text-xl"

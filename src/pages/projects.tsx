@@ -211,7 +211,7 @@ const Projects = () => {
 									>
 										<input
 											{...register("name")}
-											className="input w-full rounded-xl h-9 bg-grey-700 text-grey-100 text-sm"
+											className="input w-full rounded-xl h-9 pl-4 bg-grey-700 text-grey-100 text-sm"
 											type="text"
 											placeholder="Secret Project"
 										/>
