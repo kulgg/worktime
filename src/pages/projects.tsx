@@ -121,7 +121,7 @@ const ProjectContainer = ({
 
 	return (
 		<div>
-			<div className="flex md:hidden justify-end pb-2">
+			<div className="flex md:hidden justify-end pb-2 pr-[1px]">
 				<label
 					htmlFor="small-toggle"
 					className="inline-flex relative items-center justify-end cursor-pointer"

@@ -1,6 +1,6 @@
 import {
+	BookOpenIcon,
 	BriefcaseIcon,
-	CalendarIcon,
 	CogIcon,
 	HomeIcon,
 } from "@heroicons/react/solid";
@@ -27,7 +27,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 			<nav className="bg-grey-800 w-full flex items-center justify-around h-14">
 				<FooterNavEntry icon={<HomeIcon />} href="/" />
 				<FooterNavEntry icon={<BriefcaseIcon />} href="/projects" />
-				<FooterNavEntry icon={<CalendarIcon />} href="/calendar" />
+				<FooterNavEntry icon={<BookOpenIcon />} href="/total" />
 				<FooterNavEntry icon={<CogIcon />} href="/" />
 			</nav>
 		</footer>

@@ -1,4 +1,4 @@
-import { CalendarIcon } from "@heroicons/react/solid";
+import { BookOpenIcon } from "@heroicons/react/solid";
 import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
 import Image from "next/image";
@@ -32,7 +32,7 @@ const timeFrames: TimeFrameStats[] = [
 	{ name: "Year", afterDate: getStartOfYear() },
 ];
 
-const Calendar = (): JSX.Element => {
+const Total = (): JSX.Element => {
 	const [activeTimeFrameIndex, setActiveTimeFrameIndex] = useState(0);
 	const activeTimeFrame = timeFrames[activeTimeFrameIndex];
 
@@ -66,8 +66,8 @@ const Calendar = (): JSX.Element => {
 			<main className="overflow-hidden">
 				<div className="flex items-center justify-between">
 					<div className="flex gap-2 items-center">
-						<CalendarIcon className="w-5 h-5" />
-						<h2 className="text-lg">Calendar</h2>
+						<BookOpenIcon className="w-5 h-5" />
+						<h2 className="text-lg">Total</h2>
 					</div>
 				</div>
 				<div className="mt-5">
@@ -158,4 +158,4 @@ export const getServerSideProps = async (
 	};
 };
 
-export default Calendar;
+export default Total;
