@@ -236,7 +236,13 @@ const SessionsGrid = ({
 	);
 };
 
-const CreateSessionForm = ({ day }: { day: Date }): JSX.Element => {
+const CreateSessionForm = ({
+	day,
+	isToday,
+}: {
+	day: Date;
+	isToday: boolean;
+}): JSX.Element => {
 	const { register, handleSubmit, control, formState, reset } =
 		useForm<StartSessionInputType>({
 			resolver: zodResolver(startSessionValidator),
@@ -274,7 +280,7 @@ const CreateSessionForm = ({ day }: { day: Date }): JSX.Element => {
 	});
 
 	const submitDisabled =
-		!formState.isValid || formState.isSubmitting || isLoading;
+		!formState.isValid || formState.isSubmitting || isLoading || !isToday;
 
 	return (
 		<div>
@@ -416,7 +422,7 @@ const WorkSessions = (): JSX.Element => {
 				</div>
 			</div>
 			<div className="py-2"></div>
-			<CreateSessionForm day={day} />
+			<CreateSessionForm day={day} isToday={isToday} />
 			{workSessionsIsLoading ? (
 				<div className="flex animate-fade-in-delay justify-center mt-12">
 					<Image src={LoadingSVG} alt="loading..." width={50} height={50} />
