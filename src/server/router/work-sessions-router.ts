@@ -53,26 +53,10 @@ export const workSessionsRouter = createProtectedRouter()
 			});
 		},
 	})
-	.query("get-todays-sessions", {
-		async resolve({ ctx }) {
-			const midnight = new Date();
-			midnight.setHours(0, 0, 0, 0);
-			return await ctx.prisma.workSession.findMany({
-				where: {
-					userId: ctx.session.user.id,
-					startTime: {
-						gte: midnight,
-					},
-				},
-				include: {
-					workPhase: true,
-				},
-			});
-		},
-	})
 	.query("get-sessions-after", {
 		input: z.object({
 			after: z.date(),
+			before: z.date().optional(),
 		}),
 		async resolve({ ctx, input }) {
 			return await ctx.prisma.workSession.findMany({
@@ -80,6 +64,7 @@ export const workSessionsRouter = createProtectedRouter()
 					userId: ctx.session.user.id,
 					startTime: {
 						gte: input.after,
+						lt: input.before,
 					},
 				},
 				include: {

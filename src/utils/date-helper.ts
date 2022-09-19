@@ -19,4 +19,28 @@ const getStartOfYear = (): Date => {
 	return firstDay;
 };
 
-export { getStartOfWeek, getStartOfMonth, getStartOfYear };
+const getStartOfDay = (date: Date): Date => {
+	const a = new Date(date);
+	a.setHours(0, 0, 0, 0);
+	return a;
+};
+
+const getEndOfDay = (date: Date): Date => {
+	const a = new Date(date);
+	a.setHours(23, 59, 59, 999);
+	return a;
+};
+
+const datesAreOnSameDay = (first: Date, second: Date): boolean =>
+	first.getFullYear() === second.getFullYear() &&
+	first.getMonth() === second.getMonth() &&
+	first.getDate() === second.getDate();
+
+export {
+	getStartOfWeek,
+	getStartOfMonth,
+	getStartOfYear,
+	getStartOfDay,
+	getEndOfDay,
+	datesAreOnSameDay,
+};

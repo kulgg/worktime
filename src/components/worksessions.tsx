@@ -18,11 +18,21 @@ import {
 
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { TrashIcon } from "@heroicons/react/outline";
-import { FireIcon, StopIcon } from "@heroicons/react/solid";
+import {
+	ChevronLeftIcon,
+	ChevronRightIcon,
+	FireIcon,
+	StopIcon,
+} from "@heroicons/react/solid";
 import Image from "next/image";
 import { useQueryClient } from "react-query";
 import LoadingSVG from "../assets/puff.svg";
 import { groupBy } from "../utils/arrays";
+import {
+	datesAreOnSameDay,
+	getEndOfDay,
+	getStartOfDay,
+} from "../utils/date-helper";
 import { getTotalMilliseconds } from "../utils/worksessions";
 import ClipboardTimer from "./clipboard-timer";
 
@@ -38,11 +48,13 @@ const SessionElement = ({
 	finished,
 	sessionId,
 	editMode,
+	day,
 }: {
 	milliseconds: number;
 	finished: boolean;
 	sessionId: string;
 	editMode: boolean;
+	day: Date;
 }): JSX.Element => {
 	const qc = useQueryClient();
 
@@ -50,7 +62,10 @@ const SessionElement = ({
 		trpc.useMutation(["worksessions.finish"], {
 			onSuccess: (data: WorkSessionWithWorkPhase) => {
 				qc.setQueryData(
-					["worksessions.get-todays-sessions"],
+					[
+						"worksessions.get-sessions-after",
+						{ after: getStartOfDay(day), before: getEndOfDay(day) },
+					],
 					(old: WorkSessionWithWorkPhase[] | undefined) => {
 						if (!old) {
 							return [data];
@@ -67,7 +82,10 @@ const SessionElement = ({
 		trpc.useMutation(["worksessions.delete"], {
 			onSuccess: (data: WorkSession) => {
 				qc.setQueryData(
-					["worksessions.get-todays-sessions"],
+					[
+						"worksessions.get-sessions-after",
+						{ after: getStartOfDay(day), before: getEndOfDay(day) },
+					],
 					(old: WorkSessionWithWorkPhase[] | undefined) => {
 						if (!old) {
 							return [];
@@ -122,10 +140,12 @@ const SessionsContainer = ({
 	projectSessions,
 	currentDate,
 	editMode,
+	day,
 }: {
 	projectSessions: WorkSessionWithWorkPhase[];
 	currentDate: Date;
 	editMode: boolean;
+	day: Date;
 }): JSX.Element => {
 	const [sessionsContainer] = useAutoAnimate<HTMLDivElement>();
 
@@ -141,6 +161,7 @@ const SessionsContainer = ({
 						sessionId={x.id}
 						finished={x.finishTime ? true : false}
 						editMode={editMode}
+						day={day}
 					/>
 				);
 			})}
@@ -151,21 +172,20 @@ const SessionsContainer = ({
 const SessionsGrid = ({
 	sessionsByProject,
 	currentDate,
+	day,
 }: {
 	sessionsByProject: Record<string, WorkSessionWithWorkPhase[]>;
 	currentDate: Date;
+	day: Date;
 }): JSX.Element => {
 	const [parent] = useAutoAnimate<HTMLDivElement>();
 	const [editMode, setEditMode] = useState<boolean>(false);
 	return (
-		<div
-			className="bg-grey-600 pt-2 text-sm mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"
-			ref={parent}
-		>
+		<div className="mt-5 px-1">
 			<div
 				className={`${
 					Object.keys(sessionsByProject).length > 0 ? "flex" : "hidden"
-				} md:hidden justify-end pr-[1px]`}
+				} md:hidden justify-end pr-[1px] py-1`}
 			>
 				<label
 					htmlFor="small-toggle"
@@ -182,32 +202,41 @@ const SessionsGrid = ({
 					<span className="ml-1 text-xs font-medium text-grey-200">Edit</span>
 				</label>
 			</div>
-			{Object.keys(sessionsByProject).map((project: string, i) => {
-				return (
-					<div key={project} className="bg-grey-500 shadow-md">
-						<div className="px-4 py-2 bg-grey-400 text-grey-100 flex justify-between items-center">
-							<span>{sessionsByProject[project]?.at(0)?.workPhase.name}</span>
-							<ClipboardTimer
-								clock={getClockFromMilliseconds(
-									getTotalMilliseconds(currentDate, sessionsByProject[project])
-								)}
-								clockClassName="text-blue-400 font-sans font-medium"
+			<div
+				className="bg-grey-600 pt-2 text-sm grid grid-cols-1 md:grid-cols-2 gap-4"
+				ref={parent}
+			>
+				{Object.keys(sessionsByProject).map((project: string, i) => {
+					return (
+						<div key={project} className="bg-grey-500 shadow-md">
+							<div className="px-4 py-2 bg-grey-400 text-grey-100 flex justify-between items-center">
+								<span>{sessionsByProject[project]?.at(0)?.workPhase.name}</span>
+								<ClipboardTimer
+									clock={getClockFromMilliseconds(
+										getTotalMilliseconds(
+											currentDate,
+											sessionsByProject[project]
+										)
+									)}
+									clockClassName="text-blue-400 font-sans font-medium"
+								/>
+							</div>
+
+							<SessionsContainer
+								projectSessions={sessionsByProject[project]!}
+								currentDate={currentDate}
+								editMode={editMode}
+								day={day}
 							/>
 						</div>
-
-						<SessionsContainer
-							projectSessions={sessionsByProject[project]!}
-							currentDate={currentDate}
-							editMode={editMode}
-						/>
-					</div>
-				);
-			})}
+					);
+				})}
+			</div>
 		</div>
 	);
 };
 
-const CreateSessionForm = (): JSX.Element => {
+const CreateSessionForm = ({ day }: { day: Date }): JSX.Element => {
 	const { register, handleSubmit, control, formState, reset } =
 		useForm<StartSessionInputType>({
 			resolver: zodResolver(startSessionValidator),
@@ -223,7 +252,10 @@ const CreateSessionForm = (): JSX.Element => {
 		{
 			onSuccess: (data: WorkSessionWithWorkPhase) => {
 				qc.setQueryData(
-					["worksessions.get-todays-sessions"],
+					[
+						"worksessions.get-sessions-after",
+						{ after: getStartOfDay(day), before: getEndOfDay(day) },
+					],
 					(old: WorkSessionWithWorkPhase[] | undefined) => {
 						if (!old) {
 							return [data];
@@ -287,14 +319,42 @@ const CreateSessionForm = (): JSX.Element => {
 };
 
 const WorkSessions = (): JSX.Element => {
-	const [currentDate, setCurrentDate] = useState(new Date());
+	const [timerDate, setTimerDate] = useState(new Date());
+	const [day, setDay] = useState(new Date());
+
+	const isToday = datesAreOnSameDay(day, timerDate);
+
+	const setPreviousDay = () => {
+		setDay((oldDay) => {
+			const newDay = new Date(oldDay);
+			newDay.setDate(newDay.getDate() - 1);
+			return newDay;
+		});
+	};
+
+	const setNextDay = () => {
+		// Dont allow switching to future days
+		if (!isToday) {
+			setDay((oldDay) => {
+				const newDay = new Date(oldDay);
+				newDay.setDate(newDay.getDate() + 1);
+				return newDay;
+			});
+		}
+	};
 
 	const { data: workSessions, isLoading: workSessionsIsLoading } =
-		trpc.useQuery(["worksessions.get-todays-sessions"], {});
+		trpc.useQuery(
+			[
+				"worksessions.get-sessions-after",
+				{ after: getStartOfDay(day), before: getEndOfDay(day) },
+			],
+			{}
+		);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setCurrentDate(new Date());
+			setTimerDate(new Date());
 		}, 1000);
 
 		return () => {
@@ -309,20 +369,24 @@ const WorkSessions = (): JSX.Element => {
 				: {};
 		}, [workSessions]);
 
-	const totalMillisecondsToday = getTotalMilliseconds(
-		currentDate,
-		workSessions
-	);
+	const totalMillisecondsToday = getTotalMilliseconds(timerDate, workSessions);
 
 	return (
 		<div>
 			<div className="flex flex-row justify-between items-center">
 				<div className="flex gap-1 items-center justify-left">
 					<FireIcon className="w-5 h-5" />
-					<h2 className="text-lg">Today</h2>
-					<span className="text-grey-200 text-[10px] mt-1">
-						{currentDate.toDateString()}
-					</span>
+					<div onClick={() => setPreviousDay()}>
+						<ChevronLeftIcon className="w-6 h-6 cursor-pointer" />
+					</div>
+					<h2 className="text-lg">{day.toLocaleDateString()}</h2>
+					<div onClick={() => setNextDay()}>
+						<ChevronRightIcon
+							className={`w-6 h-6 cursor-pointer ${
+								isToday ? "text-grey-300" : "text-white"
+							}`}
+						/>
+					</div>
 				</div>
 				<div className="text-center flex flex-row gap-1 sm:gap-2 items-center justify-center">
 					<span className="text-grey-200 text-[10px] sm:text-xs">Total</span>
@@ -333,15 +397,16 @@ const WorkSessions = (): JSX.Element => {
 				</div>
 			</div>
 			<div className="py-2"></div>
-			<CreateSessionForm />
+			<CreateSessionForm day={day} />
 			{workSessionsIsLoading ? (
 				<div className="flex animate-fade-in-delay justify-center mt-12">
 					<Image src={LoadingSVG} alt="loading..." width={50} height={50} />
 				</div>
 			) : (
 				<SessionsGrid
-					currentDate={currentDate}
+					currentDate={timerDate}
 					sessionsByProject={sessionsByProject}
+					day={day}
 				/>
 			)}
 		</div>
