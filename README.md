@@ -16,3 +16,4 @@ A work time tracker built using all modules of the [T3 Stack](https://github.com
 - [x] Calendar Page
 - [x] Use hover for sm and larger on /projects
 - [x] Replace the few DaisyUI usages to be able to remove the package
+- [ ] Add day pagination on home
