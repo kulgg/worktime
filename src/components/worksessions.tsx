@@ -19,6 +19,7 @@ import {
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { TrashIcon } from "@heroicons/react/outline";
 import {
+	ChevronDoubleRightIcon,
 	ChevronLeftIcon,
 	ChevronRightIcon,
 	FireIcon,
@@ -404,11 +405,24 @@ const WorkSessions = (): JSX.Element => {
 					<div onClick={() => setPreviousDay()}>
 						<ChevronLeftIcon className="w-6 h-6 cursor-pointer" />
 					</div>
-					<h2 className="text-lg">{day.toLocaleDateString()}</h2>
+					<div className="text-lg">
+						{isToday ? (
+							<h2>{day.toLocaleDateString()}</h2>
+						) : (
+							<h2>{day.toLocaleDateString()}</h2>
+						)}
+					</div>
 					<div onClick={() => setNextDay()}>
 						<ChevronRightIcon
 							className={`w-6 h-6 cursor-pointer ${
 								isToday ? "text-grey-300" : "text-white"
+							}`}
+						/>
+					</div>
+					<div onClick={() => setDay(new Date())}>
+						<ChevronDoubleRightIcon
+							className={`ml-[-8px] w-5 h-5 cursor-pointer text-white ${
+								isToday ? "hidden" : "block"
 							}`}
 						/>
 					</div>
