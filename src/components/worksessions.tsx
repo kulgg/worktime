@@ -402,7 +402,7 @@ const WorkSessions = (): JSX.Element => {
 			<div className="flex flex-row justify-between items-center">
 				<div className="flex gap-1 items-center justify-left">
 					<FireIcon className="w-5 h-5" />
-					<div onClick={() => setPreviousDay()}>
+					<div className="select-none" onClick={() => setPreviousDay()}>
 						<ChevronLeftIcon className="w-6 h-6 cursor-pointer" />
 					</div>
 					<div className="text-lg">
@@ -412,14 +412,14 @@ const WorkSessions = (): JSX.Element => {
 							<h2>{day.toLocaleDateString()}</h2>
 						)}
 					</div>
-					<div onClick={() => setNextDay()}>
+					<div className="select-none" onClick={() => setNextDay()}>
 						<ChevronRightIcon
 							className={`w-6 h-6 cursor-pointer ${
 								isToday ? "text-grey-300" : "text-white"
 							}`}
 						/>
 					</div>
-					<div onClick={() => setDay(new Date())}>
+					<div className="select-none" onClick={() => setDay(new Date())}>
 						<ChevronDoubleRightIcon
 							className={`ml-[-8px] w-5 h-5 cursor-pointer text-white ${
 								isToday ? "hidden" : "block"
