@@ -51,7 +51,7 @@ const Home = () => {
             displayed_name="GitHub"
           />
         </div>
-        <div className="text-lg font-semibold px-3 py-2">
+        <div className="text-md px-3 py-2 font-cabin">
           by{" "}
           <a
             className="text-blue-400 hover:text-blue-300"
