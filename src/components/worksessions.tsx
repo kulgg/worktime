@@ -240,9 +240,11 @@ const SessionsGrid = ({
 const CreateSessionForm = ({
   day,
   isToday,
+  sessionsByProject,
 }: {
   day: Date;
   isToday: boolean;
+  sessionsByProject: Record<string, WorkSessionWithWorkPhase[]>;
 }): JSX.Element => {
   const { register, handleSubmit, control, formState, reset } =
     useForm<StartSessionInputType>({
@@ -283,10 +285,18 @@ const CreateSessionForm = ({
   const submitDisabled =
     !formState.isValid || formState.isSubmitting || isLoading || !isToday;
 
+  console.log(sessionsByProject);
   return (
     <div>
       <form
         onSubmit={handleSubmit((data) => {
+          if (
+            sessionsByProject[data.workPhaseId]?.filter((x) => !x.finishTime)
+              .length ??
+            0 > 1
+          ) {
+            return;
+          }
           createWorkSession({ ...data, startTime: getCurrentDate() });
         })}
         className="flex justify-between items-center gap-2 mt-2"
@@ -432,7 +442,11 @@ const WorkSessions = (): JSX.Element => {
         </div>
       </div>
       <div className="py-2"></div>
-      <CreateSessionForm day={day} isToday={isToday} />
+      <CreateSessionForm
+        day={day}
+        isToday={isToday}
+        sessionsByProject={sessionsByProject}
+      />
       {workSessionsIsLoading ? (
         <div className="flex animate-fade-in-delay justify-center mt-12">
           <Image src={LoadingSVG} alt="loading..." width={50} height={50} />
