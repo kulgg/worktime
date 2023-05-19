@@ -39,7 +39,7 @@ const Home = () => {
           <h1 className="font-sans w-52 sm:w-64 md:w-80 font-base text-2xl sm:text-3xl lg:text-4xl">
             Start tracking your work time today.
           </h1>
-          <h2 className="text-grey-200">Speak friend and enter</h2>
+          <h2 className="text-grey-200">Free forever</h2>
           <SignInWithButton
             icon={<FaGoogle size={18} />}
             provider_name="google"
