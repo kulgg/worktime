@@ -13,7 +13,7 @@ const Header = (): JSX.Element => {
       <div className="flex justify-between items-center w-full self-center">
         <Link
           href="/"
-          className="flex items-center gap-0 bg-grey-400 pl-1 pr-4 rounded-full ring-1 ring-grey-350"
+          className="flex items-center gap-0 bg-grey-400 pr-3 rounded-full ring-1 ring-grey-350"
         >
           <Image
             src={worktimeLogo}
@@ -21,7 +21,7 @@ const Header = (): JSX.Element => {
             height={44}
             alt={"Worktime Logo"}
           />
-          <h1 className="text-2xl font-semibold">WTT</h1>
+          <h1 className="text-lg font-semibold">WTT</h1>
         </Link>
         <div className="text-sm leading-normal">
           {session && (
