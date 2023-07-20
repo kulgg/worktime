@@ -55,9 +55,9 @@ const Home = () => {
           by{" "}
           <a
             className="text-blue-400 hover:text-blue-300"
-            href="https://kul.gg"
+            href="https://kul.cx"
           >
-            kul.gg
+            kul.cx
           </a>
         </div>
       </div>
